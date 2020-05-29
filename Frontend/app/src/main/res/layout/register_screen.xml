@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#141412"
-    tools:context=".Start_Screen">
-
+    tools:context=".Register_Screen">
 
     <View
         android:id="@+id/view5"
@@ -60,21 +59,20 @@
         app:layout_constraintVertical_bias="0.185" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnRegister"
         android:layout_width="271dp"
         android:layout_height="39dp"
         android:background="@drawable/btn_rounded"
-        android:text="Log In"
+        android:text="Register"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="#141412"
         android:textFontWeight="900"
         android:textSize="20dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.725" />
+        app:layout_constraintVertical_bias="0.856" />
 
     <TextView
         android:id="@+id/titlescreen_title"
@@ -96,11 +94,11 @@
         android:layout_height="34dp"
         android:background="@null"
         android:ems="10"
-        android:hint="E-Mail"
+        android:hint="Full Name"
         android:paddingLeft="10dp"
         android:textColorHint="#716528"
         android:textColor="#C5B358"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintStart_toEndOf="@+id/view5" />
 
@@ -110,64 +108,21 @@
         android:layout_height="34dp"
         android:background="@null"
         android:ems="10"
-        android:hint="Password"
+        android:hint="E-Mail"
         android:paddingLeft="10dp"
         android:textColorHint="#716528"
         android:textColor="#C5B358"
-        android:inputType="textPassword"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/view6"
         app:layout_constraintStart_toEndOf="@+id/view4" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot your Password?"
-        android:textColor="#C5B358"
-        android:textSize="20dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.637" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Join now"
-        android:textColor="#C5B358"
-        android:textSize="20dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
-        app:layout_constraintHorizontal_bias="0.903"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.801" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not a Member?"
-        android:textColor="#716528"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.692"
-        app:layout_constraintStart_toStartOf="@+id/btnLogin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.801" />
 
     <ImageView
         android:id="@+id/email_icon"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:padding="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintEnd_toStartOf="@+id/view5"
+        app:layout_constraintBottom_toTopOf="@+id/view6"
+        app:layout_constraintEnd_toStartOf="@+id/view4"
         app:srcCompat="@drawable/ic_action_name" />
 
     <ImageView
@@ -175,8 +130,109 @@
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:padding="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/view6"
-        app:layout_constraintEnd_toStartOf="@+id/editText2"
+        app:layout_constraintBottom_toTopOf="@+id/view8"
+        app:layout_constraintEnd_toStartOf="@+id/editText3"
         app:srcCompat="@drawable/pw_icon" />
+
+    <View
+        android:id="@+id/view7"
+        android:layout_width="1dp"
+        android:layout_height="35dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toTopOf="@+id/view8"
+        app:layout_constraintEnd_toEndOf="@+id/view8"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="@+id/view8" />
+
+    <View
+        android:id="@+id/view8"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view6"
+        app:layout_constraintVertical_bias="0.231" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="265dp"
+        android:layout_height="34dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="Password"
+        android:paddingLeft="10dp"
+        android:textColorHint="#716528"
+        android:textColor="#C5B358"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/view8"
+        app:layout_constraintStart_toEndOf="@+id/view7" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:padding="6dp"
+        android:src="@drawable/person_icon"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintEnd_toStartOf="@+id/email_ph" />
+
+    <View
+        android:id="@+id/view9"
+        android:layout_width="1dp"
+        android:layout_height="35dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toTopOf="@+id/view10"
+        app:layout_constraintEnd_toEndOf="@+id/view10"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toStartOf="@+id/view10" />
+
+    <View
+        android:id="@+id/view10"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view8"
+        app:layout_constraintVertical_bias="0.289" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="265dp"
+        android:layout_height="34dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:textColor="#C5B358"
+        android:textColorHint="#716528"
+        app:layout_constraintBottom_toTopOf="@+id/view10"
+        app:layout_constraintStart_toEndOf="@+id/view9" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:padding="6dp"
+        app:srcCompat="@drawable/pw_icon"
+        app:layout_constraintBottom_toTopOf="@+id/view10"
+        app:layout_constraintEnd_toStartOf="@+id/editText4" />
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
