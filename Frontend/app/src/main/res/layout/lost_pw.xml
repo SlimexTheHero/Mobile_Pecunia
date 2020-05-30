@@ -7,6 +7,85 @@
     android:background="#141412"
     tools:context=".Lost_PW">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.697" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.627" />
+
+    <Button
+        android:id="@+id/btnSendEmail"
+        android:layout_width="271dp"
+        android:layout_height="39dp"
+        android:background="@drawable/btn_rounded"
+        android:text="Send E-Mail"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#141412"
+        android:textFontWeight="900"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.466" />
+
+    <Button
+        android:id="@+id/btnResetPW"
+        android:layout_width="271dp"
+        android:layout_height="39dp"
+        android:background="@drawable/btn_rounded"
+        android:text="Reset Password"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#141412"
+        android:textFontWeight="900"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.783" />
+
+    <EditText
+        android:id="@+id/email_ph"
+        android:layout_width="265dp"
+        android:layout_height="34dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="E-Mail"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="10dp"
+        android:textColor="#C5B358"
+        android:textColorHint="#716528"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintStart_toEndOf="@+id/email_icon2" />
+
+    <ImageView
+        android:id="@+id/email_icon2"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:padding="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintEnd_toStartOf="@+id/view5"
+        app:srcCompat="@drawable/ic_action_name" />
+
     <ImageView
         android:id="@+id/back_button"
         android:layout_width="40dp"
@@ -18,17 +97,98 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/view5"
+        android:layout_width="1dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="51dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/titlescreen_title"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/view11"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view12"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="#C5B358"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38" />
+
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:textSize="30dp"
+        android:id="@+id/description_one"
+        android:layout_width="284dp"
+        android:layout_height="62dp"
+        android:text="Type in your E-Mail adress to receive a reset code"
         android:textColor="#C5B358"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215" />
+
+    <TextView
+        android:id="@+id/description_two"
+        android:layout_width="271dp"
+        android:layout_height="31dp"
+        android:text="Type in your 6 digit reset code"
+        android:textColor="#C5B358"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.572" />
+
+    <EditText
+        android:id="@+id/editText6"
+        android:layout_width="107dp"
+        android:layout_height="43dp"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Code"
+        android:textColor="#C5B358"
+        android:letterSpacing="0.10"
+        android:inputType="number"
+        android:textColorHint="#716528"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@+id/view12"
+        app:layout_constraintStart_toEndOf="@+id/view11"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
