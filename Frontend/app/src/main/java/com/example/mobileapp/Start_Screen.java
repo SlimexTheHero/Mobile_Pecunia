@@ -49,6 +49,10 @@ public class Start_Screen extends AppCompatActivity {
             }
         });
 
+
+        /**
+         * Testusage for wrong PW/E-Mail input, has to be connected to our DB
+         */
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
