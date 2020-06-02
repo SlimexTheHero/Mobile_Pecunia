@@ -4,17 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 public class Start_Screen extends AppCompatActivity {
 
-    private TextView register;
-    private Button login;
-    private TextView pw_lost;
-    private EditText email;
-    private EditText password;
+    private TextInputLayout textInputEmail;
+    private TextInputLayout textInputPW;
 
 
 
@@ -23,45 +20,51 @@ public class Start_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        register = (TextView)findViewById(R.id.textView4);
-        login = (Button)findViewById(R.id.btnLogin);
-        pw_lost = (TextView)findViewById(R.id.textView2);
+        textInputEmail = findViewById(R.id.text_input_email);
+        textInputPW = findViewById(R.id.text_input_pw);
 
-        email = (EditText)findViewById(R.id.email_ph);
-        password = (EditText)findViewById(R.id.editText2);
+    }
 
+        private boolean validateEmail () {
+            String emailInput = textInputEmail.getEditText().getText().toString().trim();
 
+            if(emailInput.isEmpty()) {
+                textInputEmail.setError("Field cannot be empty");
+                return false;
+            } else {
+                textInputEmail.setError(null);
 
-        /**
-         * Opens Register Screen
-         */
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Start_Screen.this, Register_Screen.class));
+                return true;
             }
-        });
+        }
 
-        pw_lost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Start_Screen.this, Lost_PW.class));
+        public void forgotPW (View v) {
+            startActivity(new Intent(Start_Screen.this, Lost_PW.class));
+        }
+
+        public void joinNow (View v) {
+            startActivity(new Intent(Start_Screen.this, Register_Screen.class));
+        }
+
+        private boolean validatePW () {
+            String pwInput = textInputPW.getEditText().getText().toString().trim();
+
+            if(pwInput.isEmpty()) {
+                textInputPW.setError("Field cannot be empty");
+                return false;
+            } else {
+                textInputPW.setError(null);
+
+                return true;
             }
-        });
+        }
 
-
-        /**
-         * Testusage for wrong PW/E-Mail input, has to be connected to our DB
-         */
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                email.setError("Username or PW wrong");
-                password.setError("Username or PW wrong");
+        public void login (View v) {
+            if (!validateEmail() | !validatePW()) {
+                return;
             }
-        });
 
-
+            Toast.makeText(this, "Logging in ...", Toast.LENGTH_SHORT).show();
         }
 
     /**

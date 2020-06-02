@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="#141412"
     android:orientation="vertical"
-    android:layout_gravity="center_horizontal"
-    tools:context=".Register_Screen">
+
+    tools:context=".New_PW_Screen">
 
     <ImageView
         android:layout_width="40dp"
@@ -20,67 +20,6 @@
         android:clickable="true"
         android:onClick="backButton"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/msyi"
-        android:letterSpacing="0.10"
-        android:text="PECUNIA"
-        android:textColor="#C5B358"
-        android:textSize="70dp" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#716528"
-        app:errorEnabled="true"
-        app:startIconDrawable="@drawable/person_icon"
-        app:startIconTint="#C5B358"
-        app:endIconMode="clear_text"
-        app:endIconTint="#C5B358"
-        android:layout_marginTop="70dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#C5B358"
-            android:hint="Full Name"
-            android:inputType="text"
-            android:textColor="#C5B358" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#716528"
-        app:errorEnabled="true"
-        app:startIconDrawable="@drawable/ic_action_name"
-        app:startIconTint="#C5B358"
-        app:endIconMode="clear_text"
-        app:endIconTint="#C5B358"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#C5B358"
-            android:hint="E-Mail"
-            android:inputType="textEmailAddress"
-            android:textColor="#C5B358" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_pw"
         android:layout_width="match_parent"
@@ -91,7 +30,7 @@
         app:passwordToggleTint="#C5B358"
         app:startIconDrawable="@drawable/pw_icon"
         app:startIconTint="#C5B358"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="180dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp">
 
@@ -99,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#C5B358"
-            android:hint="Password"
+            android:hint="New Password"
             android:inputType="textPassword"
             android:textColor="#C5B358" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -124,24 +63,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#C5B358"
-            android:hint="Confirm Password"
+            android:hint="Confirm new Password"
             android:inputType="textPassword"
             android:textColor="#C5B358" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <Button
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:background="@drawable/btn_rounded"
-        android:text="Register"
+        android:text="Reset"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="#141414"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:textSize="20dp"
-        android:onClick="register"/>
+        android:onClick="backButton"/>
 
 </LinearLayout>
-

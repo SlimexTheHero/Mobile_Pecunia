@@ -2,58 +2,78 @@ package com.example.mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.os.Bundle;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
+
 
 public class Lost_PW extends AppCompatActivity {
 
-    private ImageView back_button;
-    private TextView input_email;
-    private Button send_email;
-    private EditText email_ph;
-    private TextView notification;
+    private TextInputLayout textInputEmail;
+    private TextInputLayout textInputCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lost_pw);
 
-        back_button = (ImageView)findViewById(R.id.back_button);
-        send_email = (Button)findViewById(R.id.btnSendEmail);
-        input_email = (TextView)findViewById(R.id.email_stuck);
-        email_ph = (EditText)findViewById(R.id.email_ph);
-        notification = (TextView)findViewById(R.id.email_notification);
-
-        back_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Lost_PW.this, Start_Screen.class));
-            }
-        });
-
-
-        /**
-         * Makes the inputEmail not click and changeable again. So the user
-         * knows to witch e-mail the reset code was send.
-         */
-        send_email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                email_ph.setVisibility(View.GONE);
-                input_email.setVisibility(View.VISIBLE);
-                input_email.setText(email_ph.getText());
-                notification.setText("E-Mail was send");
-            }
-        });
+        textInputEmail = findViewById(R.id.text_input_email);
+        textInputCode = findViewById(R.id.text_input_reset_code);
 
     }
 
+    private boolean validateEmail() {
+        String emailInput = textInputEmail.getEditText().getText().toString().trim();
 
+        if (emailInput.isEmpty()) {
+            textInputEmail.setError("Field cannot be empty");
+            return false;
+        } else {
+            textInputEmail.setError(null);
+
+            return true;
+        }
+    }
+
+    private boolean validateCode() {
+        String codeInput = textInputCode.getEditText().getText().toString();
+
+        if (codeInput.isEmpty()) {
+            textInputCode.setError("Field cannot be empty");
+            return false;
+        } else if (codeInput.length()!=6) {
+            textInputCode.setError("Code is to short");
+            return false;
+        } else {
+            textInputCode.setError(null);
+            return true;
+        }
+    }
+
+    public void resetPW (View v) {
+        if (!validateEmail() || (!validateCode())) {
+            return;
+        } else {
+            startActivity(new Intent(Lost_PW.this, New_PW_Screen.class));
+        }
+
+    }
+
+    public void sendEmail(View v) {
+        if (!validateEmail()) {
+            return;
+        }
+        textInputEmail.setEnabled(false);
+        textInputEmail.setEndIconVisible(false);
+        Toast.makeText(this, "Sending E-Mail ...", Toast.LENGTH_SHORT).show();
+    }
+
+    public void backButton(View view) {
+        finish();
+    }
 }
