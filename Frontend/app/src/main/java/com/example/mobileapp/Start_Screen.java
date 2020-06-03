@@ -63,7 +63,7 @@ public class Start_Screen extends AppCompatActivity {
             if (!validateEmail() | !validatePW()) {
                 return;
             }
-
+            startActivity(new Intent(Start_Screen.this, Trip_Overview_Screen.class));
             Toast.makeText(this, "Logging in ...", Toast.LENGTH_SHORT).show();
         }
 
