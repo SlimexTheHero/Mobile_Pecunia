@@ -17,7 +17,7 @@ public class UserController {
 
     @GetMapping("/getById")
     public String getUserById(@RequestParam String id){
-        return String.valueOf(userRepository.findById(new ObjectId(id)));
+        return String.valueOf(userRepository.findById(id));
     }
 
     @GetMapping("/getAll")
@@ -38,6 +38,6 @@ public class UserController {
 
     @DeleteMapping("/deleteUser")
     public void deleteUser(@RequestParam String eMail){
-        userRepository.deleteById(new ObjectId(eMail));
+        userRepository.deleteById(eMail);
     }
 }

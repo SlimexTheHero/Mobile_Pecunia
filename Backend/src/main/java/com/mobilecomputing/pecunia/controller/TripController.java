@@ -15,7 +15,7 @@ public class TripController {
     @GetMapping("/getTripById")
     public String getTripById(@RequestParam String id){
 
-        return String.valueOf(tripRepository.findById(new ObjectId(id)));
+        return String.valueOf(tripRepository.findById(id));
     }
 
     @GetMapping("/getAllTrips")
