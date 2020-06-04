@@ -1,10 +1,10 @@
 package com.mobilecomputing.pecunia.controller;
 
-import com.mobilecomputing.pecunia.model.User;
+import com.mobilecomputing.pecunia.model.ApplicationUser;
 import com.mobilecomputing.pecunia.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserRepository userRepository;
+
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/getById")
     public String getUserById(@RequestParam String id){
@@ -27,17 +29,11 @@ public class UserController {
         return String.valueOf(userRepository.findAll());
     }
 
-    @PostMapping("/registrateUser")
-    public String registrateUser(@RequestParam String eMail, @RequestParam String name, @RequestParam String surname,
-                                 @RequestParam String password){
-        User user = new User();
-        user.seteMail(eMail); // überprüfen ob email schon vergeben ist
-        user.setName(name);
-        user.setSurname(surname);
-        user.setPassword(password);
+    @PostMapping("/sign-up")
+    public void signUp(@RequestBody ApplicationUser user){
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
-        return "ok?";
     }
 
     @DeleteMapping("/deleteUser")

@@ -11,9 +11,9 @@ public class Trip {
     private String tripName;
     private Date startOfTrip;
     private Date endOfTrip;
-    private List<User> tripParticipants;
+    private List<ApplicationUser> tripParticipants;
 
-    public Trip(String tripId, String tripName, Date startOfTrip, Date endOfTrip, List<User> tripParticipants) {
+    public Trip(String tripId, String tripName, Date startOfTrip, Date endOfTrip, List<ApplicationUser> tripParticipants) {
         this.tripId = tripId;
         this.tripName = tripName;
         this.startOfTrip = startOfTrip;
@@ -53,11 +53,11 @@ public class Trip {
         this.endOfTrip = endOfTrip;
     }
 
-    public List<User> getTripParticipants() {
+    public List<ApplicationUser> getTripParticipants() {
         return tripParticipants;
     }
 
-    public void setTripParticipants(List<User> tripParticipants) {
+    public void setTripParticipants(List<ApplicationUser> tripParticipants) {
         this.tripParticipants = tripParticipants;
     }
 }

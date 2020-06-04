@@ -2,7 +2,7 @@ package com.mobilecomputing.pecunia.model;
 
 import org.springframework.data.annotation.Id;
 
-public class User {
+public class ApplicationUser {
 
     @Id
     private String eMail;
@@ -10,7 +10,7 @@ public class User {
     private String surname;
     private String password;
 
-    public String geteMail() {
+    public String getEMail() {
         return eMail;
     }
 
