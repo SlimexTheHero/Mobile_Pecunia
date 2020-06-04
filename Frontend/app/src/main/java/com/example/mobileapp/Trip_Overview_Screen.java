@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -43,7 +41,6 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         mTripNames.add("Portugal");
         mTripDuration.add("21.05 - 28.08");
 
-
         mTripImages.add("https://i.redd.it/j6myfqglup501.jpg");
         mTripNames.add("Max. 25 Zeichen, wegen Space");
         mTripDuration.add("21.05 - 28.08");
@@ -73,7 +70,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        Recycler_View_Adapter adapter = new Recycler_View_Adapter(mTripNames, mTripImages, mTripDuration, this);
+        Recycler_View_Adapter_Group adapter = new Recycler_View_Adapter_Group(mTripNames, mTripImages, mTripDuration, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

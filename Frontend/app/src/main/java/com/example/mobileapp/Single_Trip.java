@@ -8,13 +8,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.badge.BadgeDrawable;
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -23,11 +22,12 @@ import java.util.List;
 public class Single_Trip extends AppCompatActivity {
 
     private TextView tripName;
+    private ImageView tripImage;
     private TextView tripDuration;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private MemberFragement memberFragement;
-    private TransactionFragement transactionFragement;
+    private MemberFragment memberFragement;
+    private TransactionFragment transactionFragement;
 
 
     @Override
@@ -35,13 +35,14 @@ public class Single_Trip extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_trip);
 
+        tripImage = findViewById(R.id.trip_image);
         tripName = findViewById(R.id.trip_name);
         tripDuration = findViewById(R.id.trip_duration);
         viewPager = findViewById(R.id.tab_view);
         tabLayout = findViewById(R.id.tab_layout);
 
-        memberFragement = new MemberFragement();
-        transactionFragement = new TransactionFragement();
+        memberFragement = new MemberFragment();
+        transactionFragement = new TransactionFragment();
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -55,9 +56,11 @@ public class Single_Trip extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
+        String image = bundle.getString("Image").toString();
         String duration = bundle.getString("Duration").toString();
         String name = bundle.getString("Name").toString();
 
+        Glide.with(this).asBitmap().load(image).into(tripImage);
         tripName.setText(name);
         tripDuration.setText(duration);
     }

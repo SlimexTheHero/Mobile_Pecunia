@@ -58,6 +58,7 @@ public class Start_Screen extends AppCompatActivity {
                 return true;
             }
         }
+        
 
         public void login (View v) {
             if (!validateEmail() | !validatePW()) {
