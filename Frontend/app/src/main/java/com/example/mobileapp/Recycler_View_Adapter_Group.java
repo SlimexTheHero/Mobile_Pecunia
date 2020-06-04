@@ -2,8 +2,8 @@ package com.example.mobileapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_View_Adapter_Group.ViewHolder>{
-    private static final String TAG = "Recycler_View_Adapter_Group";
 
     private ArrayList<String> mTripNames = new ArrayList<>();
     private ArrayList<String> mTripImages = new ArrayList<>();
@@ -39,7 +38,6 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
         Glide.with(mContext)
                 .asBitmap()
                 .load(mTripImages.get(position))
@@ -51,7 +49,6 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         holder.tripElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on " + mTripNames.get(position));
                 openTrip(position);
             }
         });
@@ -62,13 +59,11 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         Bundle content = new Bundle();
         content.putString("Name", mTripNames.get(position));
         content.putString("Duration", mTripDuration.get(position));
+        content.putString("Image", mTripImages.get(position));
         intent.putExtras(content);
         mContext.startActivity(intent);
     }
 
-    private void imageToBit(CircleImageView image) {
-
-    }
 
     @Override
     public int getItemCount() {

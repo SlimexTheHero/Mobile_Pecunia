@@ -1,6 +1,5 @@
 package com.example.mobileapp;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,6 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_View_Adapter_User.ViewHolder> {
-
-
-
 
     private ArrayList<String> mUserNames = new ArrayList<>();
     private ArrayList<String> mUserImages = new ArrayList<>();

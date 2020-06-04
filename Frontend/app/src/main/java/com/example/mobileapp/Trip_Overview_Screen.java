@@ -41,7 +41,6 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         mTripNames.add("Portugal");
         mTripDuration.add("21.05 - 28.08");
 
-
         mTripImages.add("https://i.redd.it/j6myfqglup501.jpg");
         mTripNames.add("Max. 25 Zeichen, wegen Space");
         mTripDuration.add("21.05 - 28.08");
