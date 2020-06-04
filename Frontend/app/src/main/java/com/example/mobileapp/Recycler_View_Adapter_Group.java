@@ -2,8 +2,6 @@ package com.example.mobileapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,21 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Recycler_View_Adapter extends RecyclerView.Adapter<Recycler_View_Adapter.ViewHolder>{
-    private static final String TAG = "Recycler_View_Adapter";
+public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_View_Adapter_Group.ViewHolder>{
+    private static final String TAG = "Recycler_View_Adapter_Group";
 
     private ArrayList<String> mTripNames = new ArrayList<>();
     private ArrayList<String> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
     private Context mContext;
 
-    public Recycler_View_Adapter(ArrayList<String> mTripNames, ArrayList<String> mTripImages, ArrayList<String> mTripDuration, Context mContext) {
+    public Recycler_View_Adapter_Group(ArrayList<String> mTripNames, ArrayList<String> mTripImages, ArrayList<String> mTripDuration, Context mContext) {
         this.mTripNames = mTripNames;
         this.mTripImages = mTripImages;
         this.mTripDuration = mTripDuration;

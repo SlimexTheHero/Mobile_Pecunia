@@ -8,13 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class Single_Trip extends AppCompatActivity {
     private TextView tripDuration;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private MemberFragement memberFragement;
+    private MemberFragment memberFragement;
     private TransactionFragement transactionFragement;
 
 
@@ -40,7 +37,7 @@ public class Single_Trip extends AppCompatActivity {
         viewPager = findViewById(R.id.tab_view);
         tabLayout = findViewById(R.id.tab_layout);
 
-        memberFragement = new MemberFragement();
+        memberFragement = new MemberFragment();
         transactionFragement = new TransactionFragement();
 
         tabLayout.setupWithViewPager(viewPager);
