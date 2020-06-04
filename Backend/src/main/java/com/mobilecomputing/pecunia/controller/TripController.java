@@ -3,8 +3,11 @@ package com.mobilecomputing.pecunia.controller;
 import com.mobilecomputing.pecunia.model.Trip;
 import com.mobilecomputing.pecunia.model.User;
 import com.mobilecomputing.pecunia.repository.TripRepository;
+import com.mobilecomputing.pecunia.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,50 +20,69 @@ public class TripController {
 
     @Autowired
     TripRepository tripRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/getTripById")
-    public String getTripById(@RequestParam String id) {
+    public ResponseEntity getTripById(@RequestParam String id) {
+        Trip response = tripRepository.findById(id).get();
 
-        return String.valueOf(tripRepository.findById(id));
+        if(response==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(tripRepository.findById(id).get());
     }
 
     @GetMapping("/getAllTrips")
-    public ArrayList<Trip> getAllTrips() {
+    public ResponseEntity getAllTrips() {
         ArrayList<Trip> response = new ArrayList<>();
         tripRepository.findAll().forEach(trip -> {
             response.add(trip);
         });
-        return response;
+
+        if(response.size()==0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/addTrip")
-    public String addTrip(@RequestParam String tripName, @RequestParam String startOfTrip,
-                          @RequestParam String endOfTrip, @RequestParam List<User> tripParticipants) {
-        Trip temp = new Trip(tripName, null, null, tripParticipants, null);
-        tripRepository.save(temp).getTripId();
-        return tripRepository.save(temp).getTripId();
+    public ResponseEntity addTrip(@RequestBody Trip trip) {
+
+        return ResponseEntity.ok(tripRepository.save(trip));
     }
 
-    @GetMapping("/getTripByUser")
-    public List<Trip> getTripsByUser(@RequestParam String eMail) {
+    @GetMapping("/getTripsByUser")
+    public ResponseEntity getTripsByUser(@RequestParam String eMail) {
+
+        if(userRepository.findById(eMail).get()==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
         ArrayList<Trip> temp = new ArrayList<>();
         ArrayList<Trip> response = new ArrayList<>();
         tripRepository.findAll().forEach(trip -> {
             temp.add(trip);
         });
-        for (Trip t : temp) {
-            boolean eMailIsEqual = false;
-            for (User u : t.getTripParticipants()) {
-                if (u.geteMail().equals(eMail)) {
-                    eMailIsEqual = true;
-                    break;
+
+        for (Trip t: temp) {
+            boolean userIsParticipant = false;
+            for(String tempEmail: t.getTripParticipants()){
+                if(tempEmail.equals(eMail)){
+                    userIsParticipant=true;
                 }
             }
-            if (eMailIsEqual) {
+
+            if(userIsParticipant){
                 response.add(t);
-                eMailIsEqual = false;
             }
         }
-        return response;
+
+        if(response.size()==0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User has no trip");
+        }
+
+        return ResponseEntity.ok(response);
     }
 }

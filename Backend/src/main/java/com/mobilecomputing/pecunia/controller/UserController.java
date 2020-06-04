@@ -6,6 +6,7 @@ import com.mobilecomputing.pecunia.repository.TripRepository;
 import com.mobilecomputing.pecunia.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/user", method = RequestMethod.GET)
+@RequestMapping(value = "/user")
 public class UserController {
     @Autowired
     UserRepository userRepository;
@@ -22,45 +23,67 @@ public class UserController {
     TripRepository tripRepository;
 
     @GetMapping("/getByEMail")
-    public String getUserByEmail(@RequestParam String eMail){
-        return String.valueOf(userRepository.findById(eMail));
+    public ResponseEntity getUserByEmail(@RequestParam String eMail) {
+        User response = userRepository.findById(eMail).get();
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @GetMapping("/getAll")
-    public List<User> getAllUsers(){
+    public ResponseEntity getAllUsers() {
         ArrayList<User> response = new ArrayList<>();
         userRepository.findAll().forEach(user -> {
             response.add(user);
         });
-        return response;
+        if (response.size() > 0) {
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @PostMapping("/registrateUser")
-    public String registrateUser(@RequestParam String eMail, @RequestParam String name, @RequestParam String surname,
-                                 @RequestParam String password){
+    public ResponseEntity registrateUser(@RequestBody User user) {
 
-        if (userRepository.findById(eMail).isEmpty()) {
-
-            User user = new User();
-            user.seteMail(eMail); // überprüfen ob email schon vergeben ist
-            user.setName(name);
-            user.setSurname(surname);
-            user.setPassword(password);
-
+        if (userRepository.findById(user.geteMail()).isEmpty()) {
             userRepository.save(user);
-            return "ok";
+            return ResponseEntity.ok(HttpStatus.OK);
         }
-        return "error";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already registered");
     }
 
     @PostMapping("/addUserToTrip")
-    public void addUserToTrip(@RequestParam String eMail,@RequestParam String tripId){
-        Optional<Trip> t = tripRepository.findById(tripId);
-        t.get().getTripParticipants().add(userRepository.findById(eMail).get());
+    public ResponseEntity addUserToTrip(@RequestParam String eMail, @RequestParam String tripId) {
+        boolean userAlreadyexists = false;
+        Trip trip = tripRepository.findById(tripId).get();
+        User user = userRepository.findById(eMail).get();
+
+        for (String currentUserEMail : trip.getTripParticipants()) {
+            if (currentUserEMail.equals(eMail)) {
+                userAlreadyexists = true;
+            }
+        }
+
+        if (userAlreadyexists) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+        }
+        if (trip == null || user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        trip.getTripParticipants().add(eMail);
+        tripRepository.save(trip);
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteUser")
-    public void deleteUser(@RequestParam String eMail){
+    public ResponseEntity deleteUser(@RequestParam String eMail) {
+        if(userRepository.findById(eMail).get()==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
         userRepository.deleteById(eMail);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -5,12 +5,12 @@ import org.springframework.data.annotation.Id;
 public class Transaction {
     @Id
     String transactionId;
-    private User debtor; //Schuldner
-    private User creditor; // Gläubiger
-    private String currency;
+    private String debtor; //Schuldner
+    private String creditor; // Gläubiger
+    private String currency; // vllt Enum?
     private double loan;
 
-    public Transaction(User debtor, User creditor, String currency, double loan) {
+    public Transaction(String debtor, String creditor, String currency, double loan) {
         this.debtor = debtor;
         this.creditor = creditor;
         this.currency = currency;
@@ -25,19 +25,19 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public User getDebtor() {
+    public String getDebtor() {
         return debtor;
     }
 
-    public void setDebtor(User debtor) {
+    public void setDebtor(String debtor) {
         this.debtor = debtor;
     }
 
-    public User getCreditor() {
+    public String getCreditor() {
         return creditor;
     }
 
-    public void setCreditor(User creditor) {
+    public void setCreditor(String creditor) {
         this.creditor = creditor;
     }
 
