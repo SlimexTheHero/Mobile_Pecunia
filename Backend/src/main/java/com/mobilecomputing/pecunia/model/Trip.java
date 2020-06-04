@@ -12,13 +12,15 @@ public class Trip {
     private Date startOfTrip;
     private Date endOfTrip;
     private List<User> tripParticipants;
+    private List<Transaction> transactions;
 
-    public Trip(String tripId, String tripName, Date startOfTrip, Date endOfTrip, List<User> tripParticipants) {
-        this.tripId = tripId;
+    public Trip(String tripName, Date startOfTrip, Date endOfTrip, List<User> tripParticipants,
+                List<Transaction> transactions) {
         this.tripName = tripName;
         this.startOfTrip = startOfTrip;
         this.endOfTrip = endOfTrip;
         this.tripParticipants = tripParticipants;
+        this.transactions=transactions;
     }
 
     public String getTripId() {
