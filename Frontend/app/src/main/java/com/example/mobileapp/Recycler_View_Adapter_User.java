@@ -1,5 +1,7 @@
 package com.example.mobileapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         this.mUserAdmin = mUserAdmin;
         this.mContext = mContext;
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,6 +52,28 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
             holder.userAdmin.setImageResource(R.drawable.no_admin_crown);
         }
 
+
+        holder.userAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(changeAdminStatus(position)) {
+                    mUserAdmin.set(position,true);
+                    Recycler_View_Adapter_User.this.notifyItemChanged(position);
+                } else {
+                    mUserAdmin.set(position,false);
+                    Recycler_View_Adapter_User.this.notifyItemChanged(position);
+                }
+            }
+        });
+    }
+
+
+    public boolean changeAdminStatus(int position) {
+        if (mUserAdmin.get(position)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
