@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -24,11 +25,12 @@ public class UserController {
 
     @GetMapping("/getByEMail")
     public ResponseEntity getUserByEmail(@RequestParam String eMail) {
-        User response = userRepository.findById(eMail).get();
-        if (response != null) {
+        try{
+            User response = userRepository.findById(eMail).get();
             return ResponseEntity.ok(response);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @GetMapping("/getAll")
@@ -40,7 +42,7 @@ public class UserController {
         if (response.size() > 0) {
             return ResponseEntity.ok(response);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
     @PostMapping("/registrateUser")
@@ -78,12 +80,19 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    /**
+     * TODO User auch in den Gruppen löschen
+     * @param eMail
+     * @return
+     */
     @DeleteMapping("/deleteUser")
     public ResponseEntity deleteUser(@RequestParam String eMail) {
-        if(userRepository.findById(eMail).get()==null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        try{
+            userRepository.findById(eMail).get();
+            userRepository.deleteById(eMail);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        userRepository.deleteById(eMail);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

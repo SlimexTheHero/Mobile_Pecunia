@@ -7,7 +7,6 @@ public class User {
     @Id
     private String eMail;
     private String name;
-    private String surname;
     private String password;
 
     public String geteMail() {
@@ -26,14 +25,6 @@ public class User {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -47,7 +38,6 @@ public class User {
         return "User{" +
                 "eMail='" + eMail + '\'' +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

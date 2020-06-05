@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping(value = "/trip", method = RequestMethod.GET)
+@RequestMapping(value = "/trip")
 public class TripController {
 
     @Autowired
@@ -25,13 +26,11 @@ public class TripController {
 
     @GetMapping("/getTripById")
     public ResponseEntity getTripById(@RequestParam String id) {
-        Trip response = tripRepository.findById(id).get();
-
-        if(response==null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        try{
+            return ResponseEntity.ok(tripRepository.findById(id).get());
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }
-
-        return ResponseEntity.ok(tripRepository.findById(id).get());
     }
 
     @GetMapping("/getAllTrips")
@@ -49,8 +48,7 @@ public class TripController {
 
     @PostMapping("/addTrip")
     public ResponseEntity addTrip(@RequestBody Trip trip) {
-
-        return ResponseEntity.ok(tripRepository.save(trip));
+        return ResponseEntity.ok(tripRepository.save(trip).getTripId());
     }
 
     @GetMapping("/getTripsByUser")
@@ -84,5 +82,16 @@ public class TripController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/deleteTrip")
+    public ResponseEntity deleteTrip(@RequestParam String id){
+        try{
+            tripRepository.findById(id).get();
+            tripRepository.deleteById(id);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
+        }
     }
 }

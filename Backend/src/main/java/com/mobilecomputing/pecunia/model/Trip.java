@@ -62,4 +62,12 @@ public class Trip {
     public void setTripParticipants(List<String> tripParticipants) {
         this.tripParticipants = tripParticipants;
     }
+
+    public List<String> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<String> transactions) {
+        this.transactions = transactions;
+    }
 }
