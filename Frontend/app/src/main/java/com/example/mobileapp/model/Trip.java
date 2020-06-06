@@ -1,12 +1,9 @@
-package com.mobilecomputing.pecunia.model;
-
-import org.springframework.data.annotation.Id;
+package com.example.mobileapp.model;
 
 import java.util.Date;
 import java.util.List;
 
 public class Trip {
-    @Id
     private String tripId;
     private String tripName;
     private Date startOfTrip;
