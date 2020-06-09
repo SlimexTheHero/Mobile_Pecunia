@@ -23,15 +23,10 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_main_screen);
-
-
         initImageBitmaps();
     }
 
     private void initImageBitmaps(){
-        mTripImages.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mTripNames.add("Havasu Falls");
-        mTripDuration.add("21.05 - 28.08");
 
         mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
         mTripNames.add("Trondheim");
