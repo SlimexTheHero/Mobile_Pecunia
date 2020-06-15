@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -48,6 +50,13 @@ public class MemberFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        rootView.findViewById(R.id.add_member).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addUserButton();
+            }
+        });
+
         rootView.findViewById(R.id.leave_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +65,32 @@ public class MemberFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void addUserButton () {
+        MaterialAlertDialogBuilder addUser = new MaterialAlertDialogBuilder(getActivity());
+        final TextInputLayout addUserLayout = new TextInputLayout(getActivity());
+        final TextInputEditText addUserText = new TextInputEditText(getActivity());
+
+        addUser.setTitle("Add user to trip");
+        addUser.setMessage("Type in the E-Mail of the user you want to add.");
+        addUserText.setHint("E-Mail");
+        addUserLayout.addView(addUserText);
+        addUserLayout.setStartIconDrawable(R.drawable.person_icon);
+        addUser.setView(addUserLayout);
+        addUser.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        addUser.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        addUser.show();
     }
 
     public void leaveTripButton() {
@@ -72,7 +107,6 @@ public class MemberFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Delete User from Group, so he cant see it anymore
-                //startActivity(new Intent(getActivity(), Trip_Overview_Screen.class));
                 getActivity().finish();
             }
         });
