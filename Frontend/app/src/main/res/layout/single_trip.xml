@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/single_trip"
     android:layout_gravity="center_horizontal"
     android:background="#141412"
     tools:context=".Single_Trip"

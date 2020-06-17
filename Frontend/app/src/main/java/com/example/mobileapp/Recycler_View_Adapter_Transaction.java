@@ -1,38 +1,44 @@
 package com.example.mobileapp;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
 class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_View_Adapter_Transaction.ViewHolder> {
 
-    private ArrayList<String> mUserNamesOne = new ArrayList<>();
-    private ArrayList <String> mUserNamesTwo = new ArrayList<>();
-    private ArrayList <String> mTitles = new ArrayList<>();
-    private ArrayList <Boolean> mGiveOrGet = new ArrayList<>();
-    private ArrayList <String> mAmount = new ArrayList<>();
-    private ArrayList <String> mAmount_Converted = new ArrayList<>();
-    private ArrayList <String> mCurrency_Converted = new ArrayList<>();
-    private ArrayList <String> mCurrency = new ArrayList<>();
+    private ArrayList<String> Debtor;
+    private ArrayList <String> Creditor;
+    private ArrayList <String> mTitles;
+    private ArrayList <String> mAmount;
+    private ArrayList <String> mAmount_Converted;
+    private ArrayList <String> mCurrency_Converted;
+    private ArrayList <String> mCurrency;
     private TransactionFragment mContext;
+    private ArrayList <String> mDate;
+    private ArrayList <String> mTime;
 
-    public Recycler_View_Adapter_Transaction(TransactionFragment mContext, ArrayList<String> mUserNamesOne, ArrayList<String> mUserNamesTwo, ArrayList<String> mTitles, ArrayList<Boolean> mGiveOrGet, ArrayList<String> mAmount, ArrayList<String> mCurrency, ArrayList<String> mAmount_Converted, ArrayList<String> mCurrency_Converted) {
-        this.mUserNamesOne = mUserNamesOne;
-        this.mUserNamesTwo = mUserNamesTwo;
-        this.mTitles = mTitles;
-        this.mGiveOrGet = mGiveOrGet;
-        this.mAmount = mAmount;
-        this.mCurrency = mCurrency;
+    public Recycler_View_Adapter_Transaction(TransactionFragment mContext, ArrayList<ArrayList<String>> mContent) {
         this.mContext = mContext;
-        this.mAmount_Converted = mAmount_Converted;
-        this.mCurrency_Converted = mCurrency_Converted;
+        Debtor = mContent.get(0);
+        Creditor = mContent.get(1);
+        mTitles = mContent.get(2);
+        mAmount = mContent.get(3);
+        mCurrency = mContent.get(4);
+        mAmount_Converted = mContent.get(5);
+        mCurrency_Converted = mContent.get(6);
+        mDate = mContent.get(7);
+        mTime = mContent.get(8);
     }
+
 
     @NonNull
     @Override
@@ -46,21 +52,26 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.userName.setText(mUserNamesTwo.get(position));
+        holder.userName.setText(Creditor.get(position));
         holder.title.setText(mTitles.get(position));
         holder.amount.setText(mAmount.get(position));
         holder.currency.setText(mCurrency.get(position));
 
+        holder.transactionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transactionDetails(position);
+            }
+        });
+
         if (!mCurrency.get(position).equals(mCurrency_Converted.get(position))) {
             holder.currency_converted.setText(mCurrency_Converted.get(position));
             holder.amount_converted.setText(mAmount_Converted.get(position));
+        } else {
+            holder.currency_converted.setText("");
+            holder.amount_converted.setText("");
         }
 
-        if (mGiveOrGet.get(position)) {
-            holder.giveOrGet.setImageResource(R.drawable.get_symbol);
-        } else {
-            holder.giveOrGet.setImageResource(R.drawable.give_symbol);
-        }
 
     }
 
@@ -69,12 +80,36 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         return mTitles.size();
     }
 
+    public void transactionDetails (int position) {
+        MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(mContext.getActivity());
+        seeDetails.setTitle(mTitles.get(position).toString());
+        String amount = "Amount: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + mAmount.get(position).toString() + "\t" + mCurrency.get(position).toString();
+        String one = "Debtor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Debtor.get(position).toString();
+        String two = "Creditor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Creditor.get(position).toString();
+        String date = "Transaction Date: " + "\t\t\t\t" + mDate.get(position).toString();
+        String time = "Transaction Time: " + "\t\t\t\t" + mTime.get(position).toString();
+        seeDetails.setMessage(amount + "\n" + "\n" + one + "\n" + two + "\n" + date + "\n" + time);
+        seeDetails.setNeutralButton("Ask for Deletion", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        seeDetails.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        seeDetails.show();
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView userName;
         TextView title;
         TextView amount;
-        ImageView giveOrGet;
         TextView amount_converted;
         TextView currency_converted;
         TextView currency;
@@ -82,8 +117,6 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            giveOrGet = itemView.findViewById(R.id.give_or_get);
             userName = itemView.findViewById(R.id.person_two);
             title = itemView.findViewById(R.id.transaction_title);
             amount = itemView.findViewById(R.id.transaction_amount);
