@@ -80,11 +80,15 @@ public class Start_Screen extends AppCompatActivity {
                 public void onResponse(Call<User> call, Response<User> response) {
                     // https://medium.com/@prakash_pun/retrofit-a-simple-android-tutorial-48437e4e5a23
                     testUser[0] = response.body();
+                    textInputPW.setError(null);
+                    textInputEmail.setError(null);
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    //onFailure
+                    textInputEmail.setError("Invalid Data");
+                    textInputPW.setError("Invalid Data");
+
                 }
             });
         }

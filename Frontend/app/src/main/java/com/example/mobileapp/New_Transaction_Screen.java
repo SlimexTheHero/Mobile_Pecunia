@@ -3,6 +3,7 @@ package com.example.mobileapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -18,5 +19,9 @@ public class New_Transaction_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_transaction_screen);
 
+    }
+
+    public void backButton(View view) {
+        finish();
     }
 }
