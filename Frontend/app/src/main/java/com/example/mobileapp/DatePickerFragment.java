@@ -12,6 +12,9 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
 
+    int DATE_PICKER_START = 0;
+    int DATE_PICKER_END = 1;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

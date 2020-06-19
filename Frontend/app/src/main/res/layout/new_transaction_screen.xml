@@ -23,6 +23,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/participant_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -41,7 +42,6 @@
             android:focusable="false"
             android:gravity="left|center_vertical"
             android:hint="Participant"
-            android:inputType="none"
             android:maxLength="7"
             android:textSize="30dp" />
 
@@ -96,6 +96,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/amount_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -135,6 +136,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/location_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -152,7 +154,6 @@
             android:focusable="false"
             android:gravity="left|center_vertical"
             android:hint="Location"
-            android:inputType="none"
             android:maxLength="7"
             android:textSize="30dp" />
 
@@ -160,6 +161,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/date_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -177,8 +179,6 @@
             android:focusable="false"
             android:gravity="left|center_vertical"
             android:hint="Date"
-            android:inputType="none"
-            android:maxLength="7"
             android:textSize="30dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -188,7 +188,7 @@
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/btn_rounded"
         android:onClick="createTransaction"
         android:text="Create Transaction"

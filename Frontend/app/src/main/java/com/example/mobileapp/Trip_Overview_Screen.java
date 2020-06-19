@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 
 import java.util.ArrayList;
@@ -24,6 +26,11 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_main_screen);
         initImageBitmaps();
+
+    }
+
+    public void createNewTrip(View view) {
+        startActivity(new Intent(this, New_Trip_Screen.class));
     }
 
     private void initImageBitmaps(){
