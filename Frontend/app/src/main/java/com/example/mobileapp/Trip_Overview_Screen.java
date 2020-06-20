@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 
 import java.util.ArrayList;
@@ -17,15 +18,20 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     private ArrayList<String> mTripNames = new ArrayList<>();
     private ArrayList<String> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
-
-
-
+    private ImageView settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_main_screen);
         initImageBitmaps();
+        settings = findViewById(R.id.settings_button);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Trip_Overview_Screen.this, Settings_Screen.class));
+            }
+        });
 
     }
 

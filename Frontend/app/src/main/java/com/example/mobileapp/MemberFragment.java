@@ -75,6 +75,7 @@ public class MemberFragment extends Fragment {
         addUser.setTitle("Add user to trip");
         addUser.setMessage("Type in the E-Mail of the user you want to add.");
         addUserText.setHint("E-Mail");
+        addUserLayout.setPadding(60,0,60,30);
         addUserLayout.addView(addUserText);
         addUserLayout.setStartIconDrawable(R.drawable.person_icon);
         addUser.setView(addUserLayout);

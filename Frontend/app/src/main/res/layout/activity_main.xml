@@ -33,8 +33,7 @@
         app:endIconTint="#C5B358"
         android:layout_marginTop="70dp"
         android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        >
+        android:paddingRight="40dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"

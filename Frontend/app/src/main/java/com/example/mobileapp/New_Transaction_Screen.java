@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,6 +48,8 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
     TextInputEditText vDate;
     String date;
 
+    private int flag = 0;
+    public static final int FLAG_PICK_DATE = 2;
 
 
     //ScreenLayout
@@ -63,15 +64,14 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
     RadioGroup decider;
 
 
-
-
-
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_transaction_screen);
-
 
         //Gives the views their content
         transactionLayout = findViewById(R.id.new_transaction_layout);
@@ -101,7 +101,15 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
 
         //Calls for participant-, location-, date-lists and currency dropdown
-        vDate.setOnClickListener(v -> chooseDate());
+        vDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePickerFragment = new DatePickerFragment();
+                setFlag(FLAG_PICK_DATE);
+                datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+                return;
+            }
+        });
 
         vParticipant.setOnClickListener(v -> chooseParticipant());
 
@@ -120,40 +128,32 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         });
     }
 
+    public void setFlag(int i) {
+        flag = i;
+    }
 
-    /**
-     * Method to call and create the calendar for the datepicker
-     * @param view with no view the calendar wont be displayed
-     * @param year year attribute
-     * @param month month attribute
-     * @param dayOfMonth day attribute for days in a month (27-31)
-     */
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        date = DateFormat.getDateInstance().format(calendar.getTime());
-        vDate.setText(date);
+        if (flag == FLAG_PICK_DATE) {
+            vDate.setText(DateFormat.getDateInstance().format(calendar.getTime()));
+        }
     }
-    public void chooseDate() {
-        DialogFragment datePicker = new DatePickerFragment();
-        datePicker.show(getSupportFragmentManager(), "date picker");
-    }
-
 
     /**
      * Creates transaction and displays the input as a toast, also checks if there is any input
      * @param view with no view the calendar wont be displayed
      */
     public void createTransaction(View view) {
+        vDate.setText(date);
         decideDebtorOrCreditor();
         location = vLocation.getText().toString();
         amount = vAmount.getText().toString();
-        if(!validateUser() | !validateAmount() | !validateLocation() | !validateDate()){
-            return;
-        }
+
         String text = "Title: " + location + "\n" +
                 "From: " + debtor + "\n" +
                 "To: " + creditor + "\n" +
@@ -161,6 +161,9 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
                 "Currency: " + currency + "\n" +
                 "Date: " + date;
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        if(!validateUser() | !validateAmount() | !validateLocation() | !validateDate()){
+            return;
+        }
     }
 
     /**

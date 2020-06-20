@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#141412"
+    android:orientation="vertical"
+    tools:context=".Settings_Screen">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:onClick="backButton"
+        android:src="@drawable/back_button" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/acc_user_picture"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ic_launcher"
+        app:civ_border_color="#C5B358"
+        app:civ_border_width="2dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="40dp"
+        android:textColor="#C5B358"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="Name"/>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="E-Mail"
+        android:textColor="#C5B358"
+        android:gravity="center"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/tripTransactionCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="Trips and active Transactions" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:checked="true"
+        android:layout_marginTop="20dp"
+        android:onClick="enableNotification"
+        android:text="Enable notifications"/>
+
+    <Button
+        android:id="@+id/profileButton"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_rounded"
+        android:text="Account"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#141414"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/extractsButton"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_rounded"
+        android:text="Extracts"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#141414"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_rounded"
+        android:text="Log out"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/design_default_color_error"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/appInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="App Info"
+        android:layout_gravity="center"
+        android:gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:textColor="#C5B358"/>
+
+
+</LinearLayout>
