@@ -3,27 +3,28 @@ package com.example.mobileapp;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,9 +48,11 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     TextInputEditText vEndDuration;
     String endDuration;
 
-    ImageView addMemberButton;
+    TextInputLayout addMemberNameLayout;
+    TextInputEditText addMemberNameText;
 
-    LinearLayout addMemberLayout;
+    ImageView addMemberButton;
+    ListView addMemberLayout;
 
     private int flag = 0;
     public static final int FLAG_START_DATE = 0;
@@ -69,24 +72,24 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         vStartDuration = findViewById(R.id.create_start_trip_duration);
         endDurationHolder = findViewById(R.id.trip_end_date_holder);
         vEndDuration = findViewById(R.id.create_end_trip_duration);
-        addMemberLayout = findViewById(R.id.add_member_layout);
         addMemberButton = findViewById(R.id.add_member_button);
+        addMemberLayout = findViewById(R.id.add_member_layout);
+        addMemberNameLayout = findViewById(R.id.add_member_holder);
+        addMemberNameText = findViewById(R.id.add_member_name);
 
-        addMemberLayout.getChildCount();
+        ArrayList<String> arrayList = new ArrayList<>();
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
 
-
-        //Not really working
         addMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText newMember = new EditText(getApplication());
-                newMember.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                newMember.setHint("E-Mail");
-                newMember.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
-                newMember.setHintTextColor(Color.parseColor("#716528"));
-                addMemberLayout.addView(newMember);
-
-            }
+                if(!validateMemberName()) {
+                    return;
+                }
+                arrayList.add(addMemberNameLayout.getEditText().getText().toString());
+                addMemberLayout.setAdapter(arrayAdapter);
+                addMemberNameText.getText().clear();
+                }
         });
 
         tripProfile.setOnClickListener(v -> changePicture());
@@ -101,6 +104,8 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
                 imm.hideSoftInputFromWindow(vStartDuration.getWindowToken(),0);
                 vEndDuration.clearFocus();
                 imm.hideSoftInputFromWindow(vEndDuration.getWindowToken(),0);
+                addMemberNameText.clearFocus();
+                imm.hideSoftInputFromWindow(addMemberNameText.getWindowToken(),0);
             }
         });
 
@@ -123,6 +128,37 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
                 return;
             }
         });
+
+        addMemberLayout.setOnItemClickListener((parent, view, position, id) -> {
+            MaterialAlertDialogBuilder deleteDialog = new MaterialAlertDialogBuilder(this);
+            deleteDialog.setTitle("Remove " + addMemberLayout.getItemAtPosition(position).toString());
+            deleteDialog.setMessage("Do you want to remove " + addMemberLayout.getItemAtPosition(position).toString() + " from this trip?");
+            deleteDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    arrayList.remove(position);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            });
+            deleteDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                }
+            });
+            deleteDialog.show();
+        });
+    }
+
+    public boolean validateMemberName () {
+        String nameInput = addMemberNameText.getText().toString();
+        if(nameInput.isEmpty()) {
+            addMemberNameLayout.setError("Field cannot be empty");
+            return false;
+        } else {
+            addMemberNameLayout.setError(null);
+            return true;
+        }
     }
 
 
@@ -148,10 +184,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         name = vName.getText().toString();
         startDuration = vStartDuration.getText().toString();
         endDuration = vEndDuration.getText().toString();
+
         String text = "Title: " + name + "\n" +
                 "From: " + startDuration + "\n" +
-                "To: " + endDuration + "\n" +
-                "Amount: " + addMemberLayout.getChildCount();
+                "To: " + endDuration;
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 

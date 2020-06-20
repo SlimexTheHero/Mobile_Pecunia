@@ -41,7 +41,6 @@
         android:id="@+id/trip_name_holder"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:textColor="#C5B358"
         app:startIconDrawable="@drawable/trip_name"
         app:startIconTint="#C5B358"
         app:endIconMode="clear_text"
@@ -56,11 +55,12 @@
             android:id="@+id/create_trip_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#C5B358"
+            android:singleLine="true"
+            android:hint="Tripname"
             android:maxLength="25"
             android:maxLines="1"
-            android:textSize="30dp"
-            android:backgroundTint="#C5B358"
-            android:hint="Tripname"/>
+            android:textSize="30dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -123,43 +123,49 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:text="Add Member"
-        android:layout_gravity="center"
-        android:textColor="#C5B358"
-        android:textSize="24dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_member_holder"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/person_icon"
+            app:startIconTint="#C5B358"
+            app:endIconMode="clear_text"
+            app:endIconTint="#C5B358"
+            app:errorEnabled="true"
+            android:layout_gravity="center_horizontal"
+            android:textColorHint="#716528">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_member_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="15dp"
+                android:backgroundTint="#C5B358"
+                android:hint="Add member (E-Mail)"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/add_member_button"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="-130dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/add_button"/>
 
     </LinearLayout>
 
-    <LinearLayout
+    <ListView
         android:id="@+id/add_member_layout"
         android:layout_width="320dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_height="150dp" >
-
-    <EditText
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#C5B358"
-        android:hint="E-Mail"
-        android:textColorHint="#716528"
-        android:gravity="start" />
-
-    </LinearLayout>
+        android:layout_height="130dp" >
+    </ListView>
 
     <Button
         android:layout_width="270dp"
+        android:layout_marginTop="20dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/btn_rounded"

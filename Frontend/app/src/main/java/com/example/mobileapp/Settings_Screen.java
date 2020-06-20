@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Settings_Screen extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class Settings_Screen extends AppCompatActivity {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent());
+                startActivity(new Intent(Settings_Screen.this, Account_Settings_Screen.class));
             }
         });
 
@@ -53,22 +54,22 @@ public class Settings_Screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Shows a list of all extracts
-                startActivity(new Intent());
+                Toast.makeText(Settings_Screen.this, "Needs to be created" , Toast.LENGTH_SHORT).show();
             }
         });
 
         appInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent());
+                Toast.makeText(Settings_Screen.this, "AppInfo will follow soon", Toast.LENGTH_SHORT).show();
             }
         });
 
         //Will be replaced by actual amount
         int trips = 5;
         int transactions = 10;
-        counter.setText("Active trips: \t\t\t\t\t\t\t\t" + trips +"\n" +
-                                "Active transactions: " + transactions);
+        counter.setText("Active trips: \t\t\t\t\t\t\t\t\t" + trips +"\n" +
+                                "Active transactions: \t\t" + transactions);
     }
 
 
