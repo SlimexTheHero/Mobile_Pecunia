@@ -25,9 +25,9 @@ public class TripController {
     UserRepository userRepository;
 
     @GetMapping("/getTripById")
-    public ResponseEntity getTripById(@RequestParam String id) {
+    public ResponseEntity getTripById(@RequestParam String TripId) {
         try{
-            return ResponseEntity.ok(tripRepository.findById(id).get());
+            return ResponseEntity.ok(tripRepository.findById(TripId).get());
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }
@@ -51,13 +51,33 @@ public class TripController {
         return ResponseEntity.ok(tripRepository.save(trip).getTripId());
     }
 
+    @PostMapping("/addAdminToTrip")
+    public ResponseEntity addAdminToTrip(@RequestParam String eMail,@RequestParam String TripId){
+        try{
+            tripRepository.findById(TripId).get().getAdmins().add(eMail);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
+        }
+    }
+
+    @DeleteMapping("/deleteAdmin")
+    public ResponseEntity deleteAdmin(@RequestParam String eMail, @RequestParam String TripId){
+        try{
+            tripRepository.findById(TripId).get().getAdmins().remove(eMail);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
+        }
+    }
+
     @GetMapping("/getTripsByUser")
     public ResponseEntity getTripsByUser(@RequestParam String eMail) {
 
         if(userRepository.findById(eMail).get()==null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-
+        //Eigentlich Datenbankabfrage
         ArrayList<Trip> temp = new ArrayList<>();
         ArrayList<Trip> response = new ArrayList<>();
         tripRepository.findAll().forEach(trip -> {
@@ -85,10 +105,10 @@ public class TripController {
     }
 
     @DeleteMapping("/deleteTrip")
-    public ResponseEntity deleteTrip(@RequestParam String id){
+    public ResponseEntity deleteTrip(@RequestParam String TripId){
         try{
-            tripRepository.findById(id).get();
-            tripRepository.deleteById(id);
+            tripRepository.findById(TripId).get();
+            tripRepository.deleteById(TripId);
             return ResponseEntity.ok(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");

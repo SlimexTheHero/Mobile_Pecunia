@@ -9,12 +9,26 @@ public class Transaction {
     private String creditor; // Gläubiger
     private String currency; // vllt Enum?
     private double loan;
+    private String transactionName;
 
-    public Transaction(String debtor, String creditor, String currency, double loan) {
+    public Transaction(String debtor, String creditor, String currency, double loan,String transactionName) {
         this.debtor = debtor;
         this.creditor = creditor;
         this.currency = currency;
         this.loan = loan;
+        this.transactionName=transactionName;
+    }
+
+    public String prettyToString(){
+        return transactionName+": "+ creditor+" owes "+debtor+" "+ loan;
+    }
+
+    public String getTransactionName() {
+        return transactionName;
+    }
+
+    public void setTransactionName(String transactionName) {
+        this.transactionName = transactionName;
     }
 
     public String getTransactionId() {

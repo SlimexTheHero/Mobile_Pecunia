@@ -1,5 +1,6 @@
 package com.mobilecomputing.pecunia;
 
+import com.mobilecomputing.pecunia.application.CurrencyManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

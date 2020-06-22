@@ -53,4 +53,9 @@ public class TransactionController {
         }
 
     }
+
+    @DeleteMapping("/deleteTransaction")
+    public ResponseEntity deleteTransaction(@RequestParam String transactionId, @RequestParam String tripId){
+        return  null; //Todo
+    }
 }
