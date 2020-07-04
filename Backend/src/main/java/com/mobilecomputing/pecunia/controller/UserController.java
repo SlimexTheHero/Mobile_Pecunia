@@ -58,26 +58,31 @@ public class UserController {
     @PostMapping("/addUserToTrip")
     public ResponseEntity addUserToTrip(@RequestParam String eMail, @RequestParam String tripId) {
         boolean userAlreadyexists = false;
-        Trip trip = tripRepository.findById(tripId).get();
-        User user = userRepository.findById(eMail).get();
+        try{
+            Trip trip = tripRepository.findById(tripId).get();
+            User user = userRepository.findById(eMail).get();
 
-        for (String currentUserEMail : trip.getTripParticipants()) {
-            if (currentUserEMail.equals(eMail)) {
-                userAlreadyexists = true;
+            for (String currentUserEMail : trip.getTripParticipants()) {
+                if (currentUserEMail.equals(eMail)) {
+                    userAlreadyexists = true;
+                }
             }
-        }
 
-        if (userAlreadyexists) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
-        }
-        if (trip == null || user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+            if (userAlreadyexists) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+            }
+            if (trip == null || user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
 
-        trip.getTripParticipants().add(eMail);
-        tripRepository.save(trip);
+            trip.getTripParticipants().add(eMail);
+            tripRepository.save(trip);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+            return ResponseEntity.ok(HttpStatus.OK);
+
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");
+        }
     }
 
     /**

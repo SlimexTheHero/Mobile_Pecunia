@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 
 public class Transaction {
     @Id
-    String transactionId;
+    private String transactionId;
     private String debtor; //Schuldner
     private String creditor; // Gläubiger
     private String currency; // vllt Enum?
@@ -18,6 +18,8 @@ public class Transaction {
         this.loan = loan;
         this.transactionName=transactionName;
     }
+
+
 
     public String prettyToString(){
         return transactionName+": "+ creditor+" owes "+debtor+" "+ loan;

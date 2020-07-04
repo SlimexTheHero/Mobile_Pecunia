@@ -1,5 +1,6 @@
 package com.mobilecomputing.pecunia.controller;
 
+import com.mobilecomputing.pecunia.application.BillingCalculator;
 import com.mobilecomputing.pecunia.model.Trip;
 import com.mobilecomputing.pecunia.model.User;
 import com.mobilecomputing.pecunia.repository.TripRepository;
@@ -23,6 +24,8 @@ public class TripController {
     TripRepository tripRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BillingCalculator billingCalculator;
 
     @GetMapping("/getTripById")
     public ResponseEntity getTripById(@RequestParam String TripId) {
@@ -104,11 +107,21 @@ public class TripController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/deleteTrip")
-    public ResponseEntity deleteTrip(@RequestParam String TripId){
+    @GetMapping("/getBillFromTrip")
+    public ResponseEntity getBillFromTrip(@RequestParam String tripId){
         try{
-            tripRepository.findById(TripId).get();
-            tripRepository.deleteById(TripId);
+            billingCalculator.calcBill(tripRepository.findById(tripId).get());
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
+        }
+    }
+
+    @DeleteMapping("/deleteTrip")
+    public ResponseEntity deleteTrip(@RequestParam String tripId){
+        try{
+            tripRepository.findById(tripId).get();
+            tripRepository.deleteById(tripId);
             return ResponseEntity.ok(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");

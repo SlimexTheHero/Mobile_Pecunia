@@ -24,8 +24,11 @@ public class TransactionController {
     UserRepository userRepository;
 
     @GetMapping("/getTransactionById")
-    public ResponseEntity getTransactionById(@RequestAttribute String id) {
+    public ResponseEntity getTransactionById(@RequestParam String id) {
         try {
+            transactionRepository.findAll().forEach(transaction -> {
+                System.out.println(transaction);
+            });
             return ResponseEntity.ok(transactionRepository.findById(id).get());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction not found");
@@ -47,6 +50,7 @@ public class TransactionController {
             Trip trip = tripRepository.findById(tripId).get();
             String newTransId= transactionRepository.save(transaction).getTransactionId();
             trip.getTransactions().add(newTransId);
+            tripRepository.save(trip);
             return  ResponseEntity.ok(newTransId);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
