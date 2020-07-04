@@ -64,10 +64,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
     RadioGroup decider;
 
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +137,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         if (flag == FLAG_PICK_DATE) {
             vDate.setText(DateFormat.getDateInstance().format(calendar.getTime()));
+            date = DateFormat.getDateInstance().format(calendar.getTime());
         }
     }
 
