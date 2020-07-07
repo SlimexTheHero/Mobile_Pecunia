@@ -25,8 +25,12 @@ public class UserController {
 
     @GetMapping("/getByEMail")
     public ResponseEntity getUserByEmail(@RequestParam String eMail) {
+        System.out.println(eMail+" Anfrage aus App");
         try{
             User response = userRepository.findById(eMail).get();
+            if(response==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
             return ResponseEntity.ok(response);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");

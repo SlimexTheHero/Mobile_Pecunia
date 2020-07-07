@@ -11,7 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 
+import com.example.mobileapp.model.Trip;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Trip_Overview_Screen extends AppCompatActivity {
 
@@ -37,6 +40,12 @@ public class Trip_Overview_Screen extends AppCompatActivity {
 
     public void createNewTrip(View view) {
         startActivity(new Intent(this, New_Trip_Screen.class));
+    }
+
+    private void buildTripsTable(){
+        String userEmail = (String) getIntent().getExtras().get("UserName"); // Später von der
+        // intern DB setzen
+        //Call <List<Trip>>
     }
 
     private void initImageBitmaps(){

@@ -8,16 +8,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * https://www.baeldung.com/retrofit
  */
 public class RetrofitClient {
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    //private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://localhost:8080/";
+    private static final String BASE_URL = "http://f06a854a6fda.ngrok.io/";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build())
+                   // .client(httpClient.build())
                     .build();
         }
         return retrofit;
