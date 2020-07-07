@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,14 @@ public class Start_Screen extends AppCompatActivity {
     private TextInputLayout textInputPW;
     private UserService userService;
 
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String EMAIL = "E-Mail";
+    public static final String NAME = "Name";
+    public static final String PASSWORD = "Password";
+
+    private String userEmail;
+    private String userName;
+    private String userPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +95,10 @@ public class Start_Screen extends AppCompatActivity {
                     textInputPW.setError("Invalid Data");
                 } else {
                     User testUser = response.body();
+                    userEmail = testUser.geteMail();
+                    userName = testUser.getName();
+                    userPassword = testUser.getPassword();
+                    saveData();
                     startActivity(new Intent(Start_Screen.this,
                             Trip_Overview_Screen.class).putExtra("UserName",testUser.geteMail()));
                 }
@@ -97,6 +110,30 @@ public class Start_Screen extends AppCompatActivity {
 
             }
         });
+    }
+
+    public String getUserEmail() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(EMAIL, "");
+    }
+
+    public String getUserName() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(NAME, "");
+    }
+
+    public String getUserPassword() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(PASSWORD, "");
+    }
+
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EMAIL, userEmail);
+        editor.putString(NAME, userName);
+        editor.putString(PASSWORD, userPassword);
+        editor.commit();
     }
 
     /**
