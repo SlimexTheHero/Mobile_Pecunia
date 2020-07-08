@@ -47,13 +47,13 @@
 
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/Dev1_Bruno"/>
+        android:src="@drawable/dev1bruno"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginLeft="50dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/Dev2_Filip"/>
+            android:src="@drawable/dev2filip"/>
 
     </LinearLayout>
 
