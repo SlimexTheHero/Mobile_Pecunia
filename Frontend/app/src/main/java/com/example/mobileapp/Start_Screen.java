@@ -45,6 +45,8 @@ public class Start_Screen extends AppCompatActivity {
 
     }
 
+
+
     private boolean validateEmail() {
         String emailInput = textInputEmail.getEditText().getText().toString().trim();
         if (emailInput.isEmpty()) {

@@ -1,20 +1,31 @@
 package com.example.mobileapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.example.mobileapp.model.Trip;
+import com.example.mobileapp.networking.RetrofitClient;
+import com.example.mobileapp.networking.TripService;
+import com.example.mobileapp.networking.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Trip_Overview_Screen extends AppCompatActivity {
 
@@ -22,12 +33,14 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     private ArrayList<String> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
     private ImageView settings;
+    private TripService tripService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_main_screen);
-        initImageBitmaps();
+        //initImageBitmaps();
+        tripService= RetrofitClient.getRetrofitInstance().create(TripService.class);
         settings = findViewById(R.id.settings_button);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,7 +48,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
                 startActivity(new Intent(Trip_Overview_Screen.this, Settings_Screen.class));
             }
         });
-
+        buildTripsTable();
     }
 
     public void createNewTrip(View view) {
@@ -43,9 +56,34 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     }
 
     private void buildTripsTable(){
-        String userEmail = (String) getIntent().getExtras().get("UserName"); // Später von der
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        String userEmail = sharedPreferences.getString("E-Mail",""); // Später von der
         // intern DB setzen
-        //Call <List<Trip>>
+        //Call <List<Trip>> Über dem User seine Trips holen und darstellen
+        Call<List<Trip>> call = tripService.getTripsByUser(userEmail);
+        call.enqueue(new Callback<List<Trip>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
+                List<Trip> trips = response.body();
+                if (response.body()==null) {
+                    initRecyclerView();
+                }else{
+                    trips.forEach(trip -> {
+                        mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg"); //TODO 
+                        mTripNames.add(trip.getTripName());
+                        mTripDuration.add("21.05 - 28.08"); // TODO Zeitraum berechnen
+                    });
+                    initRecyclerView();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Trip>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Make sure to have a connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void initImageBitmaps(){

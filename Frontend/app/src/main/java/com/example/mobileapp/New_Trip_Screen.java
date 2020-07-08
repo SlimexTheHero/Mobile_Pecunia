@@ -189,6 +189,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
                 "From: " + startDuration + "\n" +
                 "To: " + endDuration;
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        finish(); // Recyler Vied muss in Trip Overview geupdated werden, hier gruppe hinzufügen
     }
 
 
