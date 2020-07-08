@@ -71,44 +71,12 @@
         android:textSize="10dp" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/change_email_holder"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColorHint="#716528"
-        app:endIconMode="clear_text"
-        app:endIconTint="#C5B358"
-        app:startIconDrawable="@drawable/ic_action_name"
-        app:startIconTint="#C5B358">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/change_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#C5B358"
-            android:hint="Aktuelle E-Mail"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textSize="24dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingLeft="5dp"
-        android:text="Change E-Mail"
-        android:textColor="#716528"
-        android:textSize="10dp" />
-
-
     <LinearLayout
         android:id="@+id/unlock_pw"
         android:layout_width="320dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:visibility="visible"
         android:gravity="center">
 

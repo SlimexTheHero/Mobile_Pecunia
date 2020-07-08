@@ -33,9 +33,6 @@ public class Account_Settings_Screen extends AppCompatActivity {
     TextInputLayout changeNameHolder;
     TextInputEditText changeName;
 
-    TextInputLayout changeEmailHolder;
-    TextInputEditText changeEmail;
-
     LinearLayout unlockPw;
     LinearLayout unlockPWInputLayout;
 
@@ -59,8 +56,6 @@ public class Account_Settings_Screen extends AppCompatActivity {
         accountLayout = findViewById(R.id.account_settings_layout);
         changeNameHolder = findViewById(R.id.change_name_holder);
         changeName = findViewById(R.id.change_name);
-        changeEmailHolder = findViewById(R.id.change_email_holder);
-        changeEmail = findViewById(R.id.change_email);
         unlockPw = findViewById(R.id.unlock_pw);
         unlockPWInputLayout = findViewById(R.id.input_pw_changes);
         applyChanges = findViewById(R.id.applyChanges);
@@ -77,11 +72,9 @@ public class Account_Settings_Screen extends AppCompatActivity {
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 changeName.clearFocus();
-                changeEmail.clearFocus();
                 changePWText.clearFocus();
                 changePWConfirmationText.clearFocus();
                 imm.hideSoftInputFromWindow(changeName.getWindowToken(),0);
-                imm.hideSoftInputFromWindow(changeEmail.getWindowToken(),0);
                 imm.hideSoftInputFromWindow(changePWText.getWindowToken(),0);
                 imm.hideSoftInputFromWindow(changePWConfirmationText.getWindowToken(),0);
             }
@@ -132,7 +125,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    if (changeNameHolder.getEditText().getText().toString().isEmpty() | changeEmailHolder.getEditText().getText().toString().isEmpty() | changePWHolder.getEditText().getText().toString().isEmpty()) {
+                    if (changeNameHolder.getEditText().getText().toString().isEmpty() | changePWHolder.getEditText().getText().toString().isEmpty()) {
                         Toast.makeText(context, "No changes were made", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
