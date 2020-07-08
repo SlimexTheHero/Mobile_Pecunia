@@ -33,6 +33,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     private ArrayList<String> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
     private ImageView settings;
+    private ImageView notifications;
     private TripService tripService;
 
     @Override
@@ -42,6 +43,14 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         //initImageBitmaps();
         tripService= RetrofitClient.getRetrofitInstance().create(TripService.class);
         settings = findViewById(R.id.settings_button);
+        notifications = findViewById(R.id.notifications);
+
+        notifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Trip_Overview_Screen.this, Notifications_Screen.class));
+            }
+        });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
