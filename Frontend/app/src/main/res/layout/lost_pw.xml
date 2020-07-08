@@ -53,6 +53,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/send_email_button"
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:background="@drawable/btn_rounded"
@@ -61,8 +62,7 @@
         android:textColor="#141414"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
-        android:onClick="sendEmail"/>
+        android:textSize="20dp"/>
 
 
 
@@ -100,6 +100,7 @@
 
 
     <Button
+        android:id="@+id/reset_password_button"
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:background="@drawable/btn_rounded"
@@ -108,8 +109,7 @@
         android:textColor="#141414"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
-        android:onClick="resetPW"/>
+        android:textSize="20dp"/>
 
 
 
