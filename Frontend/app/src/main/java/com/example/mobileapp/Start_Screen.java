@@ -112,15 +112,7 @@ public class Start_Screen extends AppCompatActivity {
             }
         });
     }
-
-    public void setUserEmail(String input) {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(EMAIL);
-        editor.putString(EMAIL, input);
-        editor.apply();
-    }
-
+    
     public void setUserName(String input) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
