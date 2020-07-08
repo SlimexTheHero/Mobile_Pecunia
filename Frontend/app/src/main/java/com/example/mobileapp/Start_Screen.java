@@ -82,8 +82,6 @@ public class Start_Screen extends AppCompatActivity {
 
 
     public void login(View v) {
-        startActivity(new Intent(Start_Screen.this,
-                Trip_Overview_Screen.class).putExtra("UserName","bruno@mail.com"));
         if (!validateEmail() | !validatePW()) {
             return;
         }
@@ -103,8 +101,7 @@ public class Start_Screen extends AppCompatActivity {
                     userName = testUser.getName();
                     userPassword = testUser.getPassword();
                     saveData();
-                   // startActivity(new Intent(Start_Screen.this,
-                            //Trip_Overview_Screen.class).putExtra("UserName",testUser.geteMail()));
+                    startActivity(new Intent(Start_Screen.this,Trip_Overview_Screen.class));
                 }
             }
 
