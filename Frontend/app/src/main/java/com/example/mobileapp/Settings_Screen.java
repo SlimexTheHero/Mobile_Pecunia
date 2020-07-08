@@ -17,9 +17,7 @@ public class Settings_Screen extends AppCompatActivity {
     private TextView counter;
     private Button profileButton;
     private Button logOutButton;
-    private Button extractsButton;
     private TextView appInfo;
-    private Intent fileIntent;
 
     int trips;
     int transactions;
@@ -35,7 +33,6 @@ public class Settings_Screen extends AppCompatActivity {
         counter = findViewById(R.id.tripTransactionCounter);
         profileButton = findViewById(R.id.profileButton);
         logOutButton = findViewById(R.id.logoutButton);
-        extractsButton = findViewById(R.id.extractsButton);
         appInfo = findViewById(R.id.appInfo);
 
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -53,14 +50,7 @@ public class Settings_Screen extends AppCompatActivity {
             }
         });
 
-        extractsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                fileIntent.setType("*/*");
-                startActivity(fileIntent);
-            }
-        });
+
 
         appInfo.setOnClickListener(new View.OnClickListener() {
             @Override

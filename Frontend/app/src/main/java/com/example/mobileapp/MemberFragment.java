@@ -98,11 +98,13 @@ public class MemberFragment extends Fragment {
         MaterialAlertDialogBuilder endTrip = new MaterialAlertDialogBuilder(getActivity());
         endTrip.setTitle("End Trip");
 
-        endTrip.setMessage("Do you want to end this trip? All active transactions will be summarized in a PDF file and send to each member of the trip");
+        endTrip.setMessage("Do you want to end this trip? All active transactions will be summarized in a PDF file and send to each member of the trip. Furthermore " +
+                "the trip will be deleted for ever user.");
         endTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Send a notification to every member and create the PDF
+                //Kick all Members and delete the trip
                 getActivity().finish();
             }
         });
