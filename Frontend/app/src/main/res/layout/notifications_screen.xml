@@ -21,12 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="65dp"
         android:fontFamily="@font/msyi"
         android:letterSpacing="0.10"
         android:text="NOTIFICATIONS"
         android:textColor="#C5B358"
-        android:textSize="50dp"/>
+        android:textSize="45dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_notification"

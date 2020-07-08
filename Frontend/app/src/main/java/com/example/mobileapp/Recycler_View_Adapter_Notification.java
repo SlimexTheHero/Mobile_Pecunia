@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         holder.notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 switch (notificationType.get(position)) {
                     case 0:
                     case 1:
@@ -82,6 +84,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                 return;
             }
         });
+        seeDetails.show();
     }
 
     public void transactionTwoDetails (int position) {
@@ -108,6 +111,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                 return;
             }
         });
+        seeDetails.show();
     }
 
     @Override
