@@ -17,4 +17,10 @@ public interface UserService {
 
     @POST("user/addUserToTrip")
     public Call<String> addUserToTrip(@Body User user);
+
+    @POST("user/changeNameOfUser")
+    public Call<String> changeNameOfUser(@Query("eMail") String eMail,@Query("newName") String newName);
+
+    @POST("user/deleteUser")
+    public Call<String> deleteUser(@Query("eMail") String eMail);
 }

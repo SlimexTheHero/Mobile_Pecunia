@@ -36,6 +36,21 @@ public class UserController {
         }
     }
 
+    @PostMapping("/changeNameOfUser")
+    public ResponseEntity changeNameOfUser(@RequestParam String eMail, @RequestParam String newName){
+        try{
+            User user = userRepository.findById(eMail).get();
+            if(user==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            user.setName(newName);
+            userRepository.save(user);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
     @GetMapping("/getAll")
     public ResponseEntity getAllUsers() {
         ArrayList<User> response = new ArrayList<>();

@@ -18,15 +18,18 @@ public interface TripService {
     @GET("trip/getTripById")
     public Call<Trip> getTripId(@Query("id") String id);
 
-    @GET("/trip/getTripsByUser")
+    @GET("trip/getTripsByUser")
     public Call<List<Trip>> getTripsByUser(@Query("eMail") String eMail);
 
-    @POST("/trip/addTrip")
+    @POST("trip/addTrip")
     public Call<String> addTrip(@Body Trip trip);
 
-    @POST("/addAdminToTrip")
+    @POST("trip/addAdminToTrip")
     public Call<String> addAdminToTrip(@Query("eMail") String eMail,@Query("TripId") String tripId);
 
-    @DELETE("/deleteAdmin")
+    @DELETE("trip/deleteAdmin")
     public Call <String> deleteAdminFromTrip(@Query("eMail") String eMail,@Query("TripId") String tripId);
+
+    @POST("trip/getBillFromTrip")
+    public Call<String> getBillFromTrip(@Query("tripId") String tripId);
 }

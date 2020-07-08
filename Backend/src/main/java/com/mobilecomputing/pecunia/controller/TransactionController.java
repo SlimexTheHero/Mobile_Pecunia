@@ -60,6 +60,19 @@ public class TransactionController {
 
     @DeleteMapping("/deleteTransaction")
     public ResponseEntity deleteTransaction(@RequestParam String transactionId, @RequestParam String tripId){
+        try{
+            Trip trip = tripRepository.findById(tripId).get();
+            transactionRepository.deleteById(transactionId);
+            for(int i =0; i <trip.getTransactions().size();i++){
+                if(trip.getTransactions().get(i).equals(transactionId)){
+                    trip.getTransactions().remove(i);
+                }
+            }
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");
+        }
+
+
         return  null; //Todo
     }
 }

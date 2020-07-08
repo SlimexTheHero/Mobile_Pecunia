@@ -110,8 +110,8 @@ public class TripController {
     @GetMapping("/getBillFromTrip")
     public ResponseEntity getBillFromTrip(@RequestParam String tripId){
         try{
-            billingCalculator.calcBill(tripRepository.findById(tripId).get());
-            return ResponseEntity.ok(HttpStatus.OK);
+           String billingString= billingCalculator.calcBill(tripRepository.findById(tripId).get());
+            return ResponseEntity.ok(billingString);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }
