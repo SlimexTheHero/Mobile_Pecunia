@@ -8,11 +8,13 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface TripService {
+
     @GET("trip/getTripById")
     public Call<Trip> getTripId(@Query("id") String id);
 
@@ -21,4 +23,10 @@ public interface TripService {
 
     @POST("/trip/addTrip")
     public Call<String> addTrip(@Body Trip trip);
+
+    @POST("/addAdminToTrip")
+    public Call<String> addAdminToTrip(@Query("eMail") String eMail,@Query("TripId") String tripId);
+
+    @DELETE("/deleteAdmin")
+    public Call <String> deleteAdminFromTrip(@Query("eMail") String eMail,@Query("TripId") String tripId);
 }

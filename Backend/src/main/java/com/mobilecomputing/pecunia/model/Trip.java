@@ -10,18 +10,16 @@ public class Trip {
     private String tripId;
     private String tripName;
     private String currency;
-    private Date startOfTrip;
-    private Date endOfTrip;
+    private String tripDuration;
     private List<String> tripParticipants;
     private List<String> transactions;
     private List<String> admins;
 
-    public Trip(String tripName,String currency, Date startOfTrip, Date endOfTrip, List<String> tripParticipants,
+    public Trip(String tripName, String currency, String tripDuration, List<String> tripParticipants,
                 List<String> transactions, List<String> admins) {
         this.tripName = tripName;
-        this.currency= currency;
-        this.startOfTrip = startOfTrip;
-        this.endOfTrip = endOfTrip;
+        this.currency = currency;
+        this.tripDuration = tripDuration;
         this.tripParticipants = tripParticipants;
         this.transactions = transactions;
         this.admins = admins;
@@ -51,20 +49,12 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public Date getStartOfTrip() {
-        return startOfTrip;
+    public String getTripDuration() {
+        return tripDuration;
     }
 
-    public void setStartOfTrip(Date startOfTrip) {
-        this.startOfTrip = startOfTrip;
-    }
-
-    public Date getEndOfTrip() {
-        return endOfTrip;
-    }
-
-    public void setEndOfTrip(Date endOfTrip) {
-        this.endOfTrip = endOfTrip;
+    public void setTripDuration(String tripDuration) {
+        this.tripDuration = tripDuration;
     }
 
     public List<String> getTripParticipants() {
@@ -97,8 +87,7 @@ public class Trip {
                 "tripId='" + tripId + '\'' +
                 ", tripName='" + tripName + '\'' +
                 ", currency='" + currency + '\'' +
-                ", startOfTrip=" + startOfTrip +
-                ", endOfTrip=" + endOfTrip +
+                ", tripDuration='" + tripDuration + '\'' +
                 ", tripParticipants=" + tripParticipants.size() +
                 ", transactions=" + transactions.size() +
                 ", admins=" + admins +

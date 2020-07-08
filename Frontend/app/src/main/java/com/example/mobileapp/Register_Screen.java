@@ -100,7 +100,7 @@ public class Register_Screen extends AppCompatActivity {
             return;
         } else {
             Toast.makeText(this, "Registrierung erfolgreich", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(Register_Screen.this, Start_Screen.class));
+            startActivity(new Intent(Register_Screen.this, Start_Screen.class)); // TODO Registrierung
         }
     }
 }

@@ -25,7 +25,6 @@ public class UserController {
 
     @GetMapping("/getByEMail")
     public ResponseEntity getUserByEmail(@RequestParam String eMail) {
-        System.out.println(eMail+" Anfrage aus App");
         try{
             User response = userRepository.findById(eMail).get();
             if(response==null){
