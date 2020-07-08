@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#141412"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".App_Info_Screen">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:onClick="backButton"
+        android:src="@drawable/back_button" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/msyi"
+        android:letterSpacing="0.10"
+        android:textColor="#C5B358"
+        android:gravity="center"
+        android:textSize="70dp"
+        android:text="App Info"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:textSize="15dp"
+        android:textColor="#C5B358"
+        android:text="Created by two dudes, with not as \n much time as they thought"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/Dev1_Bruno"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginLeft="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/Dev2_Filip"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#C5B358"
+        android:text="Bruno Texeira"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:gravity="center"
+            android:textColor="#C5B358"
+            android:text="Filip Stanicak"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#C5B358"
+        android:layout_marginTop="50dp"
+        android:textSize="15dp"
+        android:text="In cooperation with \n Reutlingen University "/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#C5B358"
+        android:text="Supervised by \n Prof. Dr. Natividad Martínez Madrid"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+
+</LinearLayout>

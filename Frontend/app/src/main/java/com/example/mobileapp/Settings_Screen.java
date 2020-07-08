@@ -61,7 +61,7 @@ public class Settings_Screen extends AppCompatActivity {
         appInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Settings_Screen.this, "AppInfo will follow soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Settings_Screen.this, App_Info_Screen.class));
             }
         });
 
