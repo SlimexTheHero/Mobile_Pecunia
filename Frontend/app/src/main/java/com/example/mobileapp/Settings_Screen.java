@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,6 +18,7 @@ public class Settings_Screen extends AppCompatActivity {
     private Button logOutButton;
     private Button extractsButton;
     private TextView appInfo;
+    private Intent fileIntent;
 
     int trips;
     int transactions;
@@ -53,8 +55,9 @@ public class Settings_Screen extends AppCompatActivity {
         extractsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Shows a list of all extracts
-                Toast.makeText(Settings_Screen.this, "Needs to be created" , Toast.LENGTH_SHORT).show();
+                fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                fileIntent.setType("*/*");
+                startActivity(fileIntent);
             }
         });
 

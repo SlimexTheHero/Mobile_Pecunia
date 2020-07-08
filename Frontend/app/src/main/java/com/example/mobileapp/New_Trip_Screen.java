@@ -48,6 +48,8 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     TextInputEditText vEndDuration;
     String endDuration;
 
+    String totalDuration;
+
     TextInputLayout addMemberNameLayout;
     TextInputEditText addMemberNameText;
 
@@ -184,10 +186,12 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         name = vName.getText().toString();
         startDuration = vStartDuration.getText().toString();
         endDuration = vEndDuration.getText().toString();
+        totalDuration = startDuration + " - " + endDuration;
 
         String text = "Title: " + name + "\n" +
                 "From: " + startDuration + "\n" +
-                "To: " + endDuration;
+                "To: " + endDuration + "\n" +
+                "Total: " + totalDuration;
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         finish(); // Recyler Vied muss in Trip Overview geupdated werden, hier gruppe hinzufügen
     }
