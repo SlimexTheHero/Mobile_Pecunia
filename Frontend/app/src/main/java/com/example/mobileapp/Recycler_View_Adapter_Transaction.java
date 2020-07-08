@@ -82,12 +82,12 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
 
     public void transactionDetails (int position) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(mContext.getActivity());
-        seeDetails.setTitle(mTitles.get(position).toString());
-        String amount = "Amount: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + mAmount.get(position).toString() + "\t" + mCurrency.get(position).toString();
-        String one = "Debtor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Debtor.get(position).toString();
-        String two = "Creditor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Creditor.get(position).toString();
-        String date = "Transaction Date: " + "\t\t\t\t" + mDate.get(position).toString();
-        String time = "Transaction Time: " + "\t\t\t\t" + mTime.get(position).toString();
+        seeDetails.setTitle(mTitles.get(position));
+        String amount = "Amount: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + mAmount.get(position) + "\t" + mCurrency.get(position);
+        String one = "Debtor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Debtor.get(position);
+        String two = "Creditor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Creditor.get(position);
+        String date = "Transaction Date: " + "\t\t\t\t" + mDate.get(position);
+        String time = "Transaction Time: " + "\t\t\t\t" + mTime.get(position);
         seeDetails.setMessage(amount + "\n" + "\n" + one + "\n" + two + "\n" + date + "\n" + time);
         seeDetails.setNeutralButton("Ask for Deletion", new DialogInterface.OnClickListener() {
             @Override
