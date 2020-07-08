@@ -9,12 +9,15 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -70,6 +73,31 @@ public class Single_Trip extends AppCompatActivity {
         finish();
     }
 
+    public void leaveTripButton(View view) {
+        MaterialAlertDialogBuilder leaveTrip = new MaterialAlertDialogBuilder(this);
+        leaveTrip.setTitle("Leave Trip");
+
+        //Kommende IF Abfrage ob
+        //1. Man ein Admin ist
+        //2. Eine Aktive Transaktion hat
+        //Punkte 1 und 2 können ignoriert werden falls der Trip in der Vergangenheit liegt.
+
+        leaveTrip.setMessage("Do you want to leave this trip? Be aware that once you leave this trip only an admin can add you back.");
+        leaveTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Delete User from Group, so he cant see it anymore
+                finish();
+            }
+        });
+        leaveTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        leaveTrip.show();
+    }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 

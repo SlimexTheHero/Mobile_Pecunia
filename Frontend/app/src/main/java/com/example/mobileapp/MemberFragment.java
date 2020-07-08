@@ -60,7 +60,7 @@ public class MemberFragment extends Fragment {
         rootView.findViewById(R.id.leave_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                leaveTripButton();
+                endTripButton();
             }
         });
 
@@ -94,30 +94,25 @@ public class MemberFragment extends Fragment {
         addUser.show();
     }
 
-    public void leaveTripButton() {
-        MaterialAlertDialogBuilder leaveTrip = new MaterialAlertDialogBuilder(getActivity());
-        leaveTrip.setTitle("Leave Trip");
+    public void endTripButton() {
+        MaterialAlertDialogBuilder endTrip = new MaterialAlertDialogBuilder(getActivity());
+        endTrip.setTitle("End Trip");
 
-        //Kommende IF Abfrage ob
-        //1. Man ein Admin ist
-        //2. Eine Aktive Transaktion hat
-        //Punkte 1 und 2 können ignoriert werden falls der Trip in der Vergangenheit liegt.
-
-        leaveTrip.setMessage("Do you want to leave this trip? Be aware that once you leave this trip only an admin can add you back.");
-        leaveTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        endTrip.setMessage("Do you want to end this trip? All active transactions will be summarized in a PDF file and send to each member of the trip");
+        endTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Delete User from Group, so he cant see it anymore
+                //Send a notification to every member and create the PDF
                 getActivity().finish();
             }
         });
-        leaveTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+        endTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 return;
             }
         });
-        leaveTrip.show();
+        endTrip.show();
     }
 
 

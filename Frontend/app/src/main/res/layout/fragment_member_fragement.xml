@@ -34,7 +34,7 @@
             android:layout_marginRight="30dp"
             android:layout_gravity="center_vertical|left"
             android:background="@drawable/btn_rounded"
-            android:text="Leave Trip"
+            android:text="End Trip"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#141414"
             android:textSize="20dp"
