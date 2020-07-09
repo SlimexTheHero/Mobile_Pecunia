@@ -47,7 +47,7 @@ public class Lost_PW extends AppCompatActivity {
                 textInputEmail.setEndIconVisible(false);
                 SendMail sm = new SendMail(context, email,
                         "Pecunia Password reset",
-                        "This is your 6 digit code to reset your password: \n" + code, "app/src/main/assets/Test.pdf");
+                        "This is your 6 digit code to reset your password: \n" + code);
                 sm.execute();
             }
         });
