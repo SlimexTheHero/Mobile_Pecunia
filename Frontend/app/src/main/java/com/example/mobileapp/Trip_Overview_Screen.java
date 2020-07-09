@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,12 +36,15 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     private ImageView settings;
     private ImageView notifications;
     private TripService tripService;
+    private Loading_Dialog loading_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_main_screen);
         //initImageBitmaps();
+
+        loading_dialog = new Loading_Dialog(Trip_Overview_Screen.this);
         tripService= RetrofitClient.getRetrofitInstance().create(TripService.class);
         settings = findViewById(R.id.settings_button);
         notifications = findViewById(R.id.notifications);
@@ -58,6 +62,19 @@ public class Trip_Overview_Screen extends AppCompatActivity {
             }
         });
         buildTripsTable();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loading_dialog.startLoadingDialog();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loading_dialog.dismissDialog();
+            }
+        }, 2000);
     }
 
     public void createNewTrip(View view) {
