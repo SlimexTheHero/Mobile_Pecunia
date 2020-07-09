@@ -20,12 +20,24 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
     private ArrayList<String> mTripNames = new ArrayList<>();
     private ArrayList<String> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
+    private ArrayList<String> mTripIds = new ArrayList<>();
+    private ArrayList<ArrayList<String>> mTripParticipants=new ArrayList<>();
+    private ArrayList<ArrayList<String>> mTransactions=new ArrayList<>();
+    private ArrayList<ArrayList<String>> mAdmins=new ArrayList<>();
     private Context mContext;
 
-    public Recycler_View_Adapter_Group(ArrayList<String> mTripNames, ArrayList<String> mTripImages, ArrayList<String> mTripDuration, Context mContext) {
+    public Recycler_View_Adapter_Group(ArrayList<String> mTripNames, ArrayList<String> mTripImages,
+                                       ArrayList<String> mTripDuration, ArrayList<String> mTripIds,
+                                       ArrayList<ArrayList<String>> mTripParticipants,
+                                       ArrayList<ArrayList<String>> mTransactions,
+                                       ArrayList<ArrayList<String>> mAdmins, Context mContext) {
         this.mTripNames = mTripNames;
         this.mTripImages = mTripImages;
         this.mTripDuration = mTripDuration;
+        this.mTripIds = mTripIds;
+        this.mTripParticipants = mTripParticipants;
+        this.mTransactions = mTransactions;
+        this.mAdmins = mAdmins;
         this.mContext = mContext;
     }
 
@@ -60,6 +72,10 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         content.putString("Name", mTripNames.get(position));
         content.putString("Duration", mTripDuration.get(position));
         content.putString("Image", mTripImages.get(position));
+        content.putString("Id",mTripIds.get(position));
+        content.putStringArrayList("Participants",mTripParticipants.get(position));
+        content.putStringArrayList("Transactions",mTransactions.get(position));
+        content.putStringArrayList("Admins",mAdmins.get(position));
         intent.putExtras(content);
         mContext.startActivity(intent);
     }

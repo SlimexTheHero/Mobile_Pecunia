@@ -42,7 +42,6 @@ public class Start_Screen extends AppCompatActivity {
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         textInputEmail = findViewById(R.id.text_input_email);
         textInputPW = findViewById(R.id.text_input_pw);
-
     }
 
     @Override

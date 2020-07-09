@@ -2,6 +2,7 @@ package com.example.mobileapp.networking;
 
 
 
+import com.example.mobileapp.model.CompleteTrip;
 import com.example.mobileapp.model.Trip;
 
 import java.util.List;
@@ -32,4 +33,7 @@ public interface TripService {
 
     @POST("trip/getBillFromTrip")
     public Call<String> getBillFromTrip(@Query("tripId") String tripId);
+
+    @GET("trip/getCompleteTripById")
+    public Call<CompleteTrip> getCompleteTripById(@Query("tripId") String tripId);
 }

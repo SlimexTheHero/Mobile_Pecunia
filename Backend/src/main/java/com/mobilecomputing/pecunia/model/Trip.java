@@ -14,6 +14,7 @@ public class Trip {
     private List<String> tripParticipants;
     private List<String> transactions;
     private List<String> admins;
+    private String imageBase64String;
 
     public Trip(String tripName, String currency, String tripDuration, List<String> tripParticipants,
                 List<String> transactions, List<String> admins) {
@@ -23,6 +24,14 @@ public class Trip {
         this.tripParticipants = tripParticipants;
         this.transactions = transactions;
         this.admins = admins;
+    }
+
+    public String getImageBase64String() {
+        return imageBase64String;
+    }
+
+    public void setImageBase64String(String imageBase64String) {
+        this.imageBase64String = imageBase64String;
     }
 
     public String getCurrency() {

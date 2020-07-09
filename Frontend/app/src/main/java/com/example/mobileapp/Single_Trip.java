@@ -32,6 +32,10 @@ public class Single_Trip extends AppCompatActivity {
     private TabLayout tabLayout;
     private MemberFragment memberFragement;
     private TransactionFragment transactionFragement;
+    private String tripId;
+    private ArrayList<String> participants;
+    private ArrayList<String> transactions;
+    private ArrayList<String> admins;
 
 
     @Override
@@ -63,6 +67,7 @@ public class Single_Trip extends AppCompatActivity {
         String image = bundle.getString("Image").toString();
         String duration = bundle.getString("Duration").toString();
         String name = bundle.getString("Name").toString();
+        tripId = bundle.getString("Id");
 
         Glide.with(this).asBitmap().load(image).into(tripImage);
         tripName.setText(name);
@@ -132,4 +137,19 @@ public class Single_Trip extends AppCompatActivity {
     }
 
 
+    public String getiD() {
+        return tripId;
+    }
+
+    public ArrayList<String> getParticipants() {
+        return participants;
+    }
+
+    public ArrayList<String> getTransactions() {
+        return transactions;
+    }
+
+    public ArrayList<String> getAdmins() {
+        return admins;
+    }
 }

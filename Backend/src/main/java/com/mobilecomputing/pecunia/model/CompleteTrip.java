@@ -1,24 +1,16 @@
-package com.example.mobileapp.model;
+package com.mobilecomputing.pecunia.model;
 
-import java.util.Date;
 import java.util.List;
 
-public class Trip {
+public class CompleteTrip {
     private String tripId;
     private String tripName;
+    private String currency;
     private String tripDuration;
-    private List<String> tripParticipants;
-    private List<String> transactions;
+    private List<User> tripParticipants;
+    private List<Transaction> transactions;
     private List<String> admins;
     private String imageBase64String;
-
-    public String getImageBase64String() {
-        return imageBase64String;
-    }
-
-    public void setImageBase64String(String imageBase64String) {
-        this.imageBase64String = imageBase64String;
-    }
 
     public String getTripId() {
         return tripId;
@@ -36,6 +28,14 @@ public class Trip {
         this.tripName = tripName;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     public String getTripDuration() {
         return tripDuration;
     }
@@ -44,19 +44,19 @@ public class Trip {
         this.tripDuration = tripDuration;
     }
 
-    public List<String> getTripParticipants() {
+    public List<User> getTripParticipants() {
         return tripParticipants;
     }
 
-    public void setTripParticipants(List<String> tripParticipants) {
+    public void setTripParticipants(List<User> tripParticipants) {
         this.tripParticipants = tripParticipants;
     }
 
-    public List<String> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<String> transactions) {
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 
@@ -66,5 +66,13 @@ public class Trip {
 
     public void setAdmins(List<String> admins) {
         this.admins = admins;
+    }
+
+    public String getImageBase64String() {
+        return imageBase64String;
+    }
+
+    public void setImageBase64String(String imageBase64String) {
+        this.imageBase64String = imageBase64String;
     }
 }

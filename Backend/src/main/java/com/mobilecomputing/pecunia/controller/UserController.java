@@ -4,16 +4,14 @@ import com.mobilecomputing.pecunia.model.Trip;
 import com.mobilecomputing.pecunia.model.User;
 import com.mobilecomputing.pecunia.repository.TripRepository;
 import com.mobilecomputing.pecunia.repository.UserRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -113,6 +111,31 @@ public class UserController {
         try{
             userRepository.findById(eMail).get();
             userRepository.deleteById(eMail);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+    @PostMapping("/addImg")
+    public ResponseEntity addImg(@RequestParam String base64String,@RequestParam String eMail) throws IOException {
+        System.out.println("Ist drinnen");
+        FileOutputStream fos = new FileOutputStream("C:\\Users\\Bruno\\Desktop\\Mobile\\Backend\\src\\main\\resources");
+        fos.write(Base64.getDecoder().decode(base64String));
+        fos.close();
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/addImgToUser")
+    public ResponseEntity addImgToUser(@RequestParam String base64String,@RequestParam String eMail) throws IOException {
+        try{
+            System.out.println("Ist drinnen");
+            User user = userRepository.findById(eMail).get();
+            if(user==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            user.setImageBase64String(base64String);
+            userRepository.save(user);
             return ResponseEntity.ok(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");

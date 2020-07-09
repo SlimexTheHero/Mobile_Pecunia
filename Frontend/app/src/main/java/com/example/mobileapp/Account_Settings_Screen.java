@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,11 +19,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.mobileapp.logic.ImageEncoder;
+import com.example.mobileapp.networking.RetrofitClient;
+import com.example.mobileapp.networking.UserService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Account_Settings_Screen extends AppCompatActivity {
 
@@ -46,6 +58,8 @@ public class Account_Settings_Screen extends AppCompatActivity {
 
     Context context = this;
 
+    UserService userService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +77,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
         changePWText = findViewById(R.id.change_pw);
         changePWConfirmationHolder = findViewById(R.id.change_pw_confirm_holder);
         changePWConfirmationText = findViewById(R.id.change_pw_confirm);
+        userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
 
 
         userProfile.setOnClickListener(v -> changePicture());
@@ -160,9 +175,32 @@ public class Account_Settings_Screen extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE ) {
             imageUri = data.getData();
             userProfile.setImageURI(imageUri);
+            InputStream imageStream = null;
+/*                imageStream = getContentResolver().openInputStream(imageUri);
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = new ImageEncoder().encodeImage(selectedImage);
+
+                Call<String> call = userService.addImgToUser(encodedImage,getSharedPreferences
+                        ("sharedPrefs", MODE_PRIVATE).getString("E-Mail",""));
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        System.err.println(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }else {
             Toast.makeText(getApplicationContext(), "Format nicht unterstützt", Toast.LENGTH_SHORT).show();
-        //TODO vor abgabe löschen
+        //TODO vor abgabe löschen*/
         }
     }
 

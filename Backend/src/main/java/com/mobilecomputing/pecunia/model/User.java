@@ -8,6 +8,7 @@ public class User {
     private String eMail;
     private String name;
     private String password;
+    private String imageBase64String;
 
     public String geteMail() {
         return eMail;
@@ -27,6 +28,14 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getImageBase64String() {
+        return imageBase64String;
+    }
+
+    public void setImageBase64String(String imageBase64String) {
+        this.imageBase64String = imageBase64String;
     }
 
     public void setPassword(String password) {

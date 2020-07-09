@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ImageEncoder {
-    
+
     public  String encodeFileToBase64Binary(File file){
         String encodedfile = null;
         try {

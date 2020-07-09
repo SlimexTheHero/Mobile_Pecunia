@@ -33,6 +33,10 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     private ArrayList<String> mTripNames = new ArrayList<>();
     private ArrayList<String> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
+    private ArrayList<String> mTripId = new ArrayList<>();
+    private ArrayList<ArrayList<String>> mTripParticipants = new ArrayList<>();
+    private ArrayList<ArrayList<String>> mTransactions = new ArrayList<>();
+    private ArrayList<ArrayList<String>> mAdmins = new ArrayList<>();
     private ImageView settings;
     private ImageView notifications;
     private TripService tripService;
@@ -45,7 +49,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         //initImageBitmaps();
 
         loading_dialog = new Loading_Dialog(Trip_Overview_Screen.this);
-        tripService= RetrofitClient.getRetrofitInstance().create(TripService.class);
+        tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
         settings = findViewById(R.id.settings_button);
         notifications = findViewById(R.id.notifications);
 
@@ -78,24 +82,28 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         startActivity(new Intent(this, New_Trip_Screen.class));
     }
 
-    private void buildTripsTable(){
+    private void buildTripsTable() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        String userEmail = sharedPreferences.getString("E-Mail",""); // Später von der
-        // intern DB setzen
-        //Call <List<Trip>> Über dem User seine Trips holen und darstellen
+        String userEmail = sharedPreferences.getString("E-Mail", "");
         Call<List<Trip>> call = tripService.getTripsByUser(userEmail);
         call.enqueue(new Callback<List<Trip>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
                 List<Trip> trips = response.body();
-                if (response.body()==null) {
+                if (response.body() == null) {
                     initRecyclerView();
-                }else{
+                } else {
                     trips.forEach(trip -> {
-                        mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg"); //TODO 
+                        mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
                         mTripNames.add(trip.getTripName());
-                        mTripDuration.add("21.05 - 28.08"); // TODO Zeitraum berechnen
+                        mTripDuration.add("20-30"); //TODO get trip duration
+                        mTripId.add(trip.getTripId());
+                        mTripParticipants.add((ArrayList<String>) trip.getTripParticipants());
+                        mAdmins.add((ArrayList<String>) trip.getAdmins());
+                        mTransactions.add((ArrayList<String>) trip.getTransactions());
+                        System.err.println(mTripParticipants.size());
+
                     });
                     initRecyclerView();
                 }
@@ -109,7 +117,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         });
     }
 
-    private void initImageBitmaps(){
+    private void initImageBitmaps() {
 
         mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
         mTripNames.add("Trondheim");
@@ -148,13 +156,14 @@ public class Trip_Overview_Screen extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        Recycler_View_Adapter_Group adapter = new Recycler_View_Adapter_Group(mTripNames, mTripImages, mTripDuration, this);
+        Recycler_View_Adapter_Group adapter = new Recycler_View_Adapter_Group(mTripNames, mTripImages,
+                mTripDuration, mTripId, mTripParticipants, mTransactions, mAdmins, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent close = new Intent(Intent.ACTION_MAIN);
         close.addCategory(Intent.CATEGORY_HOME);
         close.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

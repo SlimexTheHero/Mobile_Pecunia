@@ -1,9 +1,13 @@
 package com.example.mobileapp;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,13 +16,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.mobileapp.model.CompleteTrip;
+import com.example.mobileapp.model.Trip;
+import com.example.mobileapp.model.User;
+import com.example.mobileapp.networking.RetrofitClient;
+import com.example.mobileapp.networking.TripService;
+import com.example.mobileapp.networking.UserService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MemberFragment extends Fragment {
@@ -26,6 +42,10 @@ public class MemberFragment extends Fragment {
     private ArrayList<String> mUserNames = new ArrayList<>();
     private ArrayList<String> mUserImages = new ArrayList<>();
     private ArrayList<Boolean> mUserAdmin = new ArrayList<>();
+    private ArrayList<String> mParticipants = new ArrayList<>();
+    private String tripId;
+    private UserService userService;
+    private TripService tripService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,19 +53,39 @@ public class MemberFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-
-        initImageBitmaps();
+        //initImageBitmaps();
         View rootView = inflater.inflate(R.layout.fragment_member_fragement, container, false);
-
-
-
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view) ;
-        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this,mUserNames, mUserImages, mUserAdmin);
+        Single_Trip single_trip = (Single_Trip) getActivity();
+        tripId=single_trip.getiD();
+        userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
+        tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
+        //fillWithMember(single_trip);
+        @SuppressLint("StaticFieldLeak") AsyncTask asyncTask = new AsyncTask() { //TODO Sollte vllt static sein?
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    fillWithMember(tripId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return "";
+            }
+        };
+        try {
+            asyncTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
+        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames, mUserImages, mUserAdmin);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,7 +107,7 @@ public class MemberFragment extends Fragment {
         return rootView;
     }
 
-    public void addUserButton () {
+    public void addUserButton() {
         MaterialAlertDialogBuilder addUser = new MaterialAlertDialogBuilder(getActivity());
         final TextInputLayout addUserLayout = new TextInputLayout(getActivity());
         final TextInputEditText addUserText = new TextInputEditText(getActivity());
@@ -75,7 +115,7 @@ public class MemberFragment extends Fragment {
         addUser.setTitle("Add user to trip");
         addUser.setMessage("Type in the E-Mail of the user you want to add.");
         addUserText.setHint("E-Mail");
-        addUserLayout.setPadding(60,0,60,30);
+        addUserLayout.setPadding(60, 0, 60, 30);
         addUserLayout.addView(addUserText);
         addUserLayout.setStartIconDrawable(R.drawable.person_icon);
         addUser.setView(addUserLayout);
@@ -116,8 +156,56 @@ public class MemberFragment extends Fragment {
         });
         endTrip.show();
     }
+    /*
+    private void fillWithTrip(String tripId) {
+        Call<Trip> tripCall = tripService.getTripId(tripId);
+        tripCall.enqueue(new Callback<Trip>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<Trip> call, Response<Trip> response) {
+                Trip tempTrip = response.body();
+                if (tempTrip != null) {
+                    fillWithMember(tempTrip);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Trip> call, Throwable t) {
+
+            }
+        });
+    }*/
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void fillWithMember(String tripId) throws IOException {
+
+        Call<CompleteTrip> call = tripService.getCompleteTripById(tripId);
+        CompleteTrip completeTrip =call.execute().body();
+        completeTrip.getTripParticipants().forEach(participants -> {
+            mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+            mUserNames.add(participants.getName());
+            mUserAdmin.add(true);
+            //mUserAdmin.add(completeTrip.getAdmins().contains(participants.getName()));
+        });
+        /*
+        call.enqueue(new Callback<CompleteTrip>() {
+            @Override
+            public void onResponse(Call<CompleteTrip> call, Response<CompleteTrip> response) {
+                CompleteTrip completeTrip = response.body();
+                completeTrip.getTripParticipants().forEach(participants -> {
+                    mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+                    mUserNames.add(participants.getName());
+                    mUserAdmin.add(true);
+                    //mUserAdmin.add(completeTrip.getAdmins().contains(participants.getName()));
+                });
+            }
+            @Override
+            public void onFailure(Call<CompleteTrip> call, Throwable t) {
+
+            }
+        });*/
+    }
 
     private void initImageBitmaps() {
 
