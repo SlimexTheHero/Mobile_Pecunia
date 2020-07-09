@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="#C5B358"
-        android:text="Bruno Texeira"/>
+        android:text="Bruno Teixeira"/>
 
         <TextView
             android:layout_width="100dp"

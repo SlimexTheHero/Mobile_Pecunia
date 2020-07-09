@@ -3,6 +3,7 @@ package com.example.mobileapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ public class Lost_PW extends AppCompatActivity {
     private TextInputLayout textInputCode;
     private String email;
     private Button sendEmail;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +45,10 @@ public class Lost_PW extends AppCompatActivity {
                 String code = String.format("%06d", codeInt);
                 textInputEmail.setEnabled(false);
                 textInputEmail.setEndIconVisible(false);
-                Toast.makeText(getApplicationContext(), "Sending E-Mail ...", Toast.LENGTH_SHORT).show();
-                try {
-                    GMailSender sender = new GMailSender();
-                    sender.sendMail("Password reset code",
-                            "This is your 6 Digit Code: \n" +
-                            code, "stanicakfilip@gmail.com", "stanicakfilip@gmail.com");
-                } catch (Exception e) {
-                    Log.e("SendMail", e.getMessage(), e);
-                }
+                SendMail sm = new SendMail(context, email,
+                        "Pecunia Password reset",
+                        "This is your 6 digit code to reset your password: \n" + code);
+                sm.execute();
             }
         });
 
