@@ -160,6 +160,9 @@ public class Account_Settings_Screen extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE ) {
             imageUri = data.getData();
             userProfile.setImageURI(imageUri);
+        }else {
+            Toast.makeText(getApplicationContext(), "Format nicht unterstützt", Toast.LENGTH_SHORT).show();
+        //TODO vor abgabe löschen
         }
     }
 
