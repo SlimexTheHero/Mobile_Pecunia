@@ -45,7 +45,13 @@ public class Start_Screen extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!getUserEmail().isEmpty() && !getUserPassword().isEmpty()) {
+            startActivity(new Intent(Start_Screen.this,Trip_Overview_Screen.class));
+        }
+    }
 
     private boolean validateEmail() {
         String emailInput = textInputEmail.getEditText().getText().toString().trim();
