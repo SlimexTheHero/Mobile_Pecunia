@@ -62,11 +62,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
             }
         });
         buildTripsTable();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         loading_dialog.startLoadingDialog();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -76,6 +72,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
             }
         }, 2000);
     }
+
 
     public void createNewTrip(View view) {
         startActivity(new Intent(this, New_Trip_Screen.class));
