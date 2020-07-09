@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -35,6 +37,9 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     CircleImageView tripProfile;
     Uri imageUri;
     LinearLayout tripLayout;
+
+    Spinner currencyDropdownTrip;
+    String currency;
 
     TextInputLayout nameHolder;
     TextInputEditText vName;
@@ -78,9 +83,14 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         addMemberLayout = findViewById(R.id.add_member_layout);
         addMemberNameLayout = findViewById(R.id.add_member_holder);
         addMemberNameText = findViewById(R.id.add_member_name);
+        currencyDropdownTrip = findViewById(R.id.currency_dropdown_trip);
 
         ArrayList<String> arrayList = new ArrayList<>();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
+
+        String[] currencies = new String[]{"€ EUR", "$ USD" , "£ GBP"};
+        ArrayAdapter<String> currency_adapter = new ArrayAdapter<String>(this, R.layout.transaction_dropdown_item, currencies);
+        currencyDropdownTrip.setAdapter(currency_adapter);
 
         addMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +159,18 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
                 }
             });
             deleteDialog.show();
+        });
+
+        currencyDropdownTrip.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currency = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                currency = "€ EUR";
+            }
         });
     }
 

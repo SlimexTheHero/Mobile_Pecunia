@@ -119,7 +119,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //currency = groupcurrency
+                //TODO currency = groupcurrency
             }
         });
     }
