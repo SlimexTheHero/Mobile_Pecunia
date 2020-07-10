@@ -1,7 +1,9 @@
 package com.mobilecomputing.pecunia.controller;
 
+import com.mobilecomputing.pecunia.model.Notification;
 import com.mobilecomputing.pecunia.model.Transaction;
 import com.mobilecomputing.pecunia.model.Trip;
+import com.mobilecomputing.pecunia.repository.NotificationRepository;
 import com.mobilecomputing.pecunia.repository.TransactionRepository;
 import com.mobilecomputing.pecunia.repository.TripRepository;
 import com.mobilecomputing.pecunia.repository.UserRepository;
@@ -22,6 +24,8 @@ public class TransactionController {
     TripRepository tripRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @GetMapping("/getTransactionById")
     public ResponseEntity getTransactionById(@RequestParam String id) {
@@ -37,42 +41,62 @@ public class TransactionController {
 
     @GetMapping("/getAllTransactionsByTrip")
     public ResponseEntity getAllTransactionsByTrip(@RequestParam String tripId) {
-        try{
+        try {
             return ResponseEntity.ok(tripRepository.findById(tripId).get().getTransactions());
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }
     }
 
+    @PostMapping("/addTransaction")
+    public ResponseEntity addTransaction(@RequestBody Transaction transaction, @RequestParam String userId,
+                                         @RequestParam String notificationMessage, @RequestParam String tripId) {
+        try {
+            Notification notification = new Notification();
+            notification.setNotificationMessage(notificationMessage);
+            notification.setNotificationType(0);
+            notification.setUserId(userId);
+            notification.setTransactionId(transactionRepository.save(transaction).getTransactionId());
+            notification.setTripId(tripId);
+            return ResponseEntity.ok(HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while creating Transaction");
+    }
+
     @PostMapping("/addTransactionToTrip")
-    public ResponseEntity addTransactionToTrip(@RequestBody Transaction transaction,@RequestParam String tripId){
-        try{
+    public ResponseEntity addTransactionToTrip(@RequestParam String transactionId, @RequestParam String tripId,
+                                               @RequestParam String notificationId) {
+        try {
             Trip trip = tripRepository.findById(tripId).get();
-            String newTransId= transactionRepository.save(transaction).getTransactionId();
-            trip.getTransactions().add(newTransId);
-            tripRepository.save(trip);
-            return  ResponseEntity.ok(newTransId);
-        }catch (NoSuchElementException e){
+            trip.getTransactions().add(transactionId);
+            notificationRepository.deleteById(notificationId);
+            return ResponseEntity.ok(trip);
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }
 
     }
 
     @DeleteMapping("/deleteTransaction")
-    public ResponseEntity deleteTransaction(@RequestParam String transactionId, @RequestParam String tripId){
-        try{
+    public ResponseEntity deleteTransaction(@RequestParam String transactionId, @RequestParam String tripId,
+                                            @RequestParam String notificationId) {
+        try {
             Trip trip = tripRepository.findById(tripId).get();
             transactionRepository.deleteById(transactionId);
-            for(int i =0; i <trip.getTransactions().size();i++){
-                if(trip.getTransactions().get(i).equals(transactionId)){
+            for (int i = 0; i < trip.getTransactions().size(); i++) {
+                if (trip.getTransactions().get(i).equals(transactionId)) {
                     trip.getTransactions().remove(i);
                 }
             }
-        }catch (NoSuchElementException e){
+            notificationRepository.deleteById(notificationId);
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");
         }
 
-
-        return  null; //Todo
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

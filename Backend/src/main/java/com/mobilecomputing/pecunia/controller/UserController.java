@@ -1,7 +1,9 @@
 package com.mobilecomputing.pecunia.controller;
 
+import com.mobilecomputing.pecunia.model.Notification;
 import com.mobilecomputing.pecunia.model.Trip;
 import com.mobilecomputing.pecunia.model.User;
+import com.mobilecomputing.pecunia.repository.NotificationRepository;
 import com.mobilecomputing.pecunia.repository.TripRepository;
 import com.mobilecomputing.pecunia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class UserController {
     UserRepository userRepository;
     @Autowired
     TripRepository tripRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @GetMapping("/getByEMail")
     public ResponseEntity getUserByEmail(@RequestParam String eMail) {
@@ -72,11 +76,12 @@ public class UserController {
     }
 
     @PostMapping("/addUserToTrip")
-    public ResponseEntity addUserToTrip(@RequestParam String eMail, @RequestParam String tripId) {
+    public ResponseEntity addUserToTrip(@RequestParam String eMail, @RequestParam String tripId, @RequestBody Notification notification) {
         boolean userAlreadyexists = false;
         try{
             Trip trip = tripRepository.findById(tripId).get();
             User user = userRepository.findById(eMail).get();
+            notificationRepository.save(notification);
 
             for (String currentUserEMail : trip.getTripParticipants()) {
                 if (currentUserEMail.equals(eMail)) {
@@ -102,7 +107,7 @@ public class UserController {
     }
 
     /**
-     * TODO User auch in den Gruppen löschen
+     *
      * @param eMail
      * @return
      */

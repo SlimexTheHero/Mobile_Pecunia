@@ -1,10 +1,8 @@
 package com.mobilecomputing.pecunia.controller;
 
 import com.mobilecomputing.pecunia.application.BillingCalculator;
-import com.mobilecomputing.pecunia.model.CompleteTrip;
-import com.mobilecomputing.pecunia.model.Transaction;
-import com.mobilecomputing.pecunia.model.Trip;
-import com.mobilecomputing.pecunia.model.User;
+import com.mobilecomputing.pecunia.model.*;
+import com.mobilecomputing.pecunia.repository.NotificationRepository;
 import com.mobilecomputing.pecunia.repository.TransactionRepository;
 import com.mobilecomputing.pecunia.repository.TripRepository;
 import com.mobilecomputing.pecunia.repository.UserRepository;
@@ -29,6 +27,8 @@ public class TripController {
     UserRepository userRepository;
     @Autowired
     TransactionRepository transactionRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
     @Autowired
     BillingCalculator billingCalculator;
 
@@ -63,6 +63,10 @@ public class TripController {
     public ResponseEntity addAdminToTrip(@RequestParam String eMail,@RequestParam String TripId){
         try{
             tripRepository.findById(TripId).get().getAdmins().add(eMail);
+            Notification notification = new Notification();
+            notification.setNotificationType(4);
+            notification.setUserId(eMail);
+            notification.setTripId(TripId);
             return ResponseEntity.ok(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
@@ -163,5 +167,18 @@ public class TripController {
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }
+    }
+
+    @DeleteMapping("/deleteUserFromTrip")
+    public ResponseEntity deleteUserFromTrip(@RequestParam String eMail,@RequestParam String tripId,@RequestBody Notification notification){
+        try{
+            Trip trip =tripRepository.findById(tripId).get();
+            trip.getTripParticipants().remove(eMail);
+            tripRepository.save(trip);
+            notificationRepository.save(notification);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
