@@ -1,13 +1,25 @@
 package com.example.mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+import static com.example.mobileapp.Notification_Popup.CHANNEL_1_ID;
+import static com.example.mobileapp.Notification_Popup.CHANNEL_2_ID;
 
 public class Notifications_Screen extends AppCompatActivity {
 
@@ -15,6 +27,8 @@ public class Notifications_Screen extends AppCompatActivity {
     private ArrayList<String> notificationTitle = new ArrayList<>();
     private ArrayList<String> notificationGroup = new ArrayList<>();
     private ArrayList<String> notificationMessage = new ArrayList<>();
+    private TextView testButtonOne;
+    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +37,45 @@ public class Notifications_Screen extends AppCompatActivity {
 
         initNotifications();
 
+        notificationManager = NotificationManagerCompat.from(this);
+
+        testButtonOne = findViewById(R.id.notifications_test_one);
+
+        testButtonOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendOnChannel1();
+            }
+        });
+
+
     }
+
+    public void sendOnChannel1() {
+
+        Intent activityIntent = new Intent(this, Notifications_Screen.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, activityIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Type der Notification, siehe 0-4") //TODO Wird durch IF Abfrage nach Typ geändert
+                .setContentText("Gruppenname")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("Hier steht die gesamte Transaktion als Notification. Hier steht so viel scheiße drinnen, da es nicht komplett angezeigt werden kann.") //TODO
+                        .setBigContentTitle("Hier kommt der Gruppenname hin") //TODO
+                        .setSummaryText("Transaction oder Trip")) //TODO
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setColor(Color.parseColor("#C5B358"))
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .build();
+
+
+        notificationManager.notify(1, notification);
+    }
+
 
     private void initNotifications() {
 
@@ -63,7 +115,7 @@ public class Notifications_Screen extends AppCompatActivity {
     }
 
 
-    public void backButton (View v) {
+    public void backButton(View v) {
         finish();
     }
 }

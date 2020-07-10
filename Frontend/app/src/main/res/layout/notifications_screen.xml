@@ -18,6 +18,7 @@
         android:src="@drawable/back_button" />
 
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -27,6 +28,16 @@
         android:text="NOTIFICATIONS"
         android:textColor="#C5B358"
         android:textSize="45dp"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/notifications_test_one"
+        android:layout_width="wrap_content"
+        android:text="Test"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:layout_height="wrap_content" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_notification"
