@@ -46,7 +46,8 @@ public class MemberFragment extends Fragment {
     private String tripId;
     private UserService userService;
     private TripService tripService;
-
+    private boolean isAdmin = false;
+    private Single_Trip single_trip;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,7 @@ public class MemberFragment extends Fragment {
 
         //initImageBitmaps();
         View rootView = inflater.inflate(R.layout.fragment_member_fragement, container, false);
-        Single_Trip single_trip = (Single_Trip) getActivity();
+        single_trip = (Single_Trip) getActivity();
         tripId=single_trip.getiD();
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
@@ -85,7 +86,7 @@ public class MemberFragment extends Fragment {
             e.printStackTrace();
         }
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
-        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames, mUserImages, mUserAdmin);
+        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames, mUserImages, mUserAdmin,isAdmin);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -156,55 +157,19 @@ public class MemberFragment extends Fragment {
         });
         endTrip.show();
     }
-    /*
-    private void fillWithTrip(String tripId) {
-        Call<Trip> tripCall = tripService.getTripId(tripId);
-        tripCall.enqueue(new Callback<Trip>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<Trip> call, Response<Trip> response) {
-                Trip tempTrip = response.body();
-                if (tempTrip != null) {
-                    fillWithMember(tempTrip);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Trip> call, Throwable t) {
-
-            }
-        });
-    }*/
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void fillWithMember(String tripId) throws IOException {
 
         Call<CompleteTrip> call = tripService.getCompleteTripById(tripId);
         CompleteTrip completeTrip =call.execute().body();
-        completeTrip.getTripParticipants().forEach(participants -> {
+        isAdmin= completeTrip.getAdmins().contains(single_trip.geteMail());
+        completeTrip.getTripParticipants().forEach(participant -> {
             mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-            mUserNames.add(participants.getName());
-            mUserAdmin.add(true);
-            //mUserAdmin.add(completeTrip.getAdmins().contains(participants.getName()));
+            mUserNames.add(participant.getName());
+            //mUserAdmin.add(true);
+            mUserAdmin.add(completeTrip.getAdmins().contains(participant.geteMail()));
         });
-        /*
-        call.enqueue(new Callback<CompleteTrip>() {
-            @Override
-            public void onResponse(Call<CompleteTrip> call, Response<CompleteTrip> response) {
-                CompleteTrip completeTrip = response.body();
-                completeTrip.getTripParticipants().forEach(participants -> {
-                    mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-                    mUserNames.add(participants.getName());
-                    mUserAdmin.add(true);
-                    //mUserAdmin.add(completeTrip.getAdmins().contains(participants.getName()));
-                });
-            }
-            @Override
-            public void onFailure(Call<CompleteTrip> call, Throwable t) {
-
-            }
-        });*/
     }
 
     private void initImageBitmaps() {

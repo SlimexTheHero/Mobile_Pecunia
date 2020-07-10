@@ -56,6 +56,7 @@ public class TripController {
 
     @PostMapping("/addTrip")
     public ResponseEntity addTrip(@RequestBody Trip trip) {
+        //TODO Gegenprüfen ob es alle User gibt
         return ResponseEntity.ok(tripRepository.save(trip).getTripId());
     }
 

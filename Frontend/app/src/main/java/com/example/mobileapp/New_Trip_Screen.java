@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.mobileapp.model.Transaction;
+import com.example.mobileapp.model.Trip;
+import com.example.mobileapp.networking.RetrofitClient;
+import com.example.mobileapp.networking.TripService;
+import com.example.mobileapp.networking.UserService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,11 +34,19 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class New_Trip_Screen extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+//TODO validator
+    //TODO Tastaurlayout member hinzufügen
 
+    //TODO Bild
     private static final int PICK_IMAGE = 100;
     CircleImageView tripProfile;
     Uri imageUri;
@@ -61,6 +75,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     ImageView addMemberButton;
     ListView addMemberLayout;
 
+    TripService tripService;
+    ArrayList<String> arrayList = new ArrayList<>();
+
+
     private int flag = 0;
     public static final int FLAG_START_DATE = 0;
     public static final int FLAG_END_DATE = 1;
@@ -84,8 +102,8 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         addMemberNameLayout = findViewById(R.id.add_member_holder);
         addMemberNameText = findViewById(R.id.add_member_name);
         currencyDropdownTrip = findViewById(R.id.currency_dropdown_trip);
+        tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
 
-        ArrayList<String> arrayList = new ArrayList<>();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
 
         String[] currencies = new String[]{"€ EUR", "$ USD" , "£ GBP"};
@@ -205,10 +223,58 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
     public void createTrip (View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        String userEmail = sharedPreferences.getString("E-Mail", "");
+        ArrayList<String> admins = new ArrayList<>();
+        ArrayList<String> transactions = new ArrayList<>();
+        admins.add(userEmail);
+        arrayList.add(userEmail);
+        Set<String> set = new HashSet<>(arrayList);
+        arrayList.clear();
+        arrayList.addAll(set);
         name = vName.getText().toString();
         startDuration = vStartDuration.getText().toString();
         endDuration = vEndDuration.getText().toString();
         totalDuration = startDuration + " - " + endDuration;
+        String cleanCurrency ="";
+        Trip trip = new Trip();
+        switch(currency){
+            case "$ USD":
+                cleanCurrency="USD";
+                break;
+            case"€ EUR":
+                cleanCurrency="EUR";
+                break;
+            case "£ GBP":
+                cleanCurrency="GBP";
+                break;
+            default: cleanCurrency="EUR";
+            break;
+        }
+
+        trip.setAdmins(admins);
+        trip.setTransactions(transactions);
+        trip.setTripDuration(totalDuration);
+        trip.setTripName(name);
+        trip.setTripParticipants(arrayList);
+
+        trip.setCurrency(cleanCurrency);
+
+
+
+        Call<String> call = tripService.addTrip(trip);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
 
         String text = "Title: " + name + "\n" +
                 "From: " + startDuration + "\n" +
@@ -216,6 +282,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
                 "Total: " + totalDuration;
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         finish(); // Recyler Vied muss in Trip Overview geupdated werden, hier gruppe hinzufügen
+        startActivity(new Intent(this, Trip_Overview_Screen.class));
     }
 
 
@@ -234,6 +301,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
 
     public void backButton(View view) {
         finish();
+        startActivity(new Intent(this,Trip_Overview_Screen.class));
     }
 
 

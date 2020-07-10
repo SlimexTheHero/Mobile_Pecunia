@@ -117,5 +117,6 @@ public class Notifications_Screen extends AppCompatActivity {
 
     public void backButton(View v) {
         finish();
+        startActivity(new Intent(this,Trip_Overview_Screen.class));
     }
 }

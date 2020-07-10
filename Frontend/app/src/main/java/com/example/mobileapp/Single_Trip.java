@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +34,7 @@ public class Single_Trip extends AppCompatActivity {
     private MemberFragment memberFragement;
     private TransactionFragment transactionFragement;
     private String tripId;
+    private String eMail;
     private ArrayList<String> participants;
     private ArrayList<String> transactions;
     private ArrayList<String> admins;
@@ -40,6 +42,8 @@ public class Single_Trip extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        eMail = sharedPreferences.getString("E-Mail", "");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_trip);
 
@@ -139,6 +143,10 @@ public class Single_Trip extends AppCompatActivity {
 
     public String getiD() {
         return tripId;
+    }
+
+    public String geteMail() {
+        return eMail;
     }
 
     public ArrayList<String> getParticipants() {

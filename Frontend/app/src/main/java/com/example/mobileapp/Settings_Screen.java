@@ -84,5 +84,6 @@ public class Settings_Screen extends AppCompatActivity {
 
     public void backButton(View view) {
         finish();
+        startActivity(new Intent(this,Trip_Overview_Screen.class));
     }
 }

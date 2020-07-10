@@ -56,12 +56,14 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 startActivity(new Intent(Trip_Overview_Screen.this, Notifications_Screen.class));
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 startActivity(new Intent(Trip_Overview_Screen.this, Settings_Screen.class));
             }
         });
@@ -79,6 +81,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
 
 
     public void createNewTrip(View view) {
+        finish();
         startActivity(new Intent(this, New_Trip_Screen.class));
     }
 

@@ -3,6 +3,7 @@ package com.example.mobileapp;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +30,16 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
     private ArrayList<String> mUserImages = new ArrayList<>();
     private ArrayList<Boolean> mUserAdmin = new ArrayList<>();
     private MemberFragment mContext;
+    private boolean isAdmin;
 
-    public Recycler_View_Adapter_User(MemberFragment mContext, ArrayList<String> mUserNames, ArrayList<String> mUserImages, ArrayList<Boolean> mUserAdmin) {
+    public Recycler_View_Adapter_User(MemberFragment mContext, ArrayList<String> mUserNames,
+                                      ArrayList<String> mUserImages, ArrayList<Boolean> mUserAdmin,
+                                      boolean isAdmin) {
         this.mUserNames = mUserNames;
         this.mUserImages = mUserImages;
         this.mUserAdmin = mUserAdmin;
         this.mContext = mContext;
+        this.isAdmin= isAdmin;
     }
 
 
@@ -54,11 +59,19 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                 .into(holder.userImage);
         holder.userName.setText(mUserNames.get(position));
 
-        if (mUserAdmin.get(position)) {
-            holder.userAdmin.setImageResource(R.drawable.admin_crown);
-        } else {
-            holder.userAdmin.setImageResource(R.drawable.no_admin_crown);
+        if(isAdmin){
+            if (mUserAdmin.get(position)) {
+                holder.userAdmin.setImageResource(R.drawable.admin_crown);
+            } else {
+                holder.userAdmin.setImageResource(R.drawable.no_admin_crown);
+            }
+        }else{
+            if (mUserAdmin.get(position)) {
+                holder.userAdmin.setImageResource(R.drawable.admin_crown);
+            }
         }
+
+
 
         //Remove User
         holder.userName.setOnClickListener(new View.OnClickListener() {

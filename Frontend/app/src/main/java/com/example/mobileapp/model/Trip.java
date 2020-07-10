@@ -7,10 +7,19 @@ public class Trip {
     private String tripId;
     private String tripName;
     private String tripDuration;
+    private String currency;
     private List<String> tripParticipants;
     private List<String> transactions;
     private List<String> admins;
     private String imageBase64String;
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
     public String getImageBase64String() {
         return imageBase64String;
