@@ -40,14 +40,15 @@ import retrofit2.Response;
 public class MemberFragment extends Fragment {
 
     private ArrayList<String> mUserNames = new ArrayList<>();
+    private ArrayList<String> mUserEmails = new ArrayList<>();
     private ArrayList<String> mUserImages = new ArrayList<>();
     private ArrayList<Boolean> mUserAdmin = new ArrayList<>();
-    private ArrayList<String> mParticipants = new ArrayList<>();
     private String tripId;
     private UserService userService;
     private TripService tripService;
     private boolean isAdmin = false;
     private Single_Trip single_trip;
+    private CompleteTrip completeTrip;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +87,8 @@ public class MemberFragment extends Fragment {
             e.printStackTrace();
         }
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
-        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames, mUserImages, mUserAdmin,isAdmin);
+        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames,
+                mUserEmails, mUserImages, mUserAdmin,isAdmin,single_trip.geteMail(),completeTrip);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -162,12 +164,12 @@ public class MemberFragment extends Fragment {
     private void fillWithMember(String tripId) throws IOException {
 
         Call<CompleteTrip> call = tripService.getCompleteTripById(tripId);
-        CompleteTrip completeTrip =call.execute().body();
+        completeTrip =call.execute().body();
         isAdmin= completeTrip.getAdmins().contains(single_trip.geteMail());
         completeTrip.getTripParticipants().forEach(participant -> {
             mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
             mUserNames.add(participant.getName());
-            //mUserAdmin.add(true);
+            mUserEmails.add(participant.geteMail());
             mUserAdmin.add(completeTrip.getAdmins().contains(participant.geteMail()));
         });
     }

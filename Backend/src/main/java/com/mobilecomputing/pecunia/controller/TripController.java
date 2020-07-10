@@ -63,7 +63,9 @@ public class TripController {
     @PostMapping("/addAdminToTrip")
     public ResponseEntity addAdminToTrip(@RequestParam String eMail,@RequestParam String TripId){
         try{
-            tripRepository.findById(TripId).get().getAdmins().add(eMail);
+            Trip trip =tripRepository.findById(TripId).get();
+            trip.getAdmins().add(eMail);
+            tripRepository.save(trip);
             Notification notification = new Notification();
             notification.setNotificationType(4);
             notification.setUserId(eMail);
@@ -77,7 +79,9 @@ public class TripController {
     @DeleteMapping("/deleteAdmin")
     public ResponseEntity deleteAdmin(@RequestParam String eMail, @RequestParam String TripId){
         try{
-            tripRepository.findById(TripId).get().getAdmins().remove(eMail);
+            Trip trip= tripRepository.findById(TripId).get();
+            trip.getAdmins().remove(eMail);
+            tripRepository.save(trip);
             return ResponseEntity.ok(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");

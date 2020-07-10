@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Single_Trip extends AppCompatActivity {
-
+//TODO layout tripname anpassen
     private TextView tripName;
     private ImageView tripImage;
     private TextView tripDuration;

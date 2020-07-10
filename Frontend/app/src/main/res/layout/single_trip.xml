@@ -45,10 +45,10 @@
     android:layout_marginLeft="20dp"
     android:layout_marginTop="13dp"
     android:orientation="vertical">
-
         <TextView
             android:id="@+id/trip_name"
             android:layout_width="match_parent"
+            android:maxLength="190"
             android:layout_height="wrap_content"
             android:text="Groupname"
             android:textColor="#C5B358"

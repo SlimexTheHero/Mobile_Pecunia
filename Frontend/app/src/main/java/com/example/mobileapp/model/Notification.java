@@ -7,6 +7,15 @@ public class Notification {
     private String userId;
     private String tripId;
     private String transactionId;
+    private String tripName;
+
+    public String getTripName() {
+        return tripName;
+    }
+
+    public void setTripName(String tripName) {
+        this.tripName = tripName;
+    }
 
     public String getNotificationId() {
         return notificationId;

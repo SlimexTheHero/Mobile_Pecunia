@@ -3,6 +3,7 @@ package com.example.mobileapp.networking;
 
 
 import com.example.mobileapp.model.CompleteTrip;
+import com.example.mobileapp.model.Notification;
 import com.example.mobileapp.model.Trip;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -36,4 +38,8 @@ public interface TripService {
 
     @GET("trip/getCompleteTripById")
     public Call<CompleteTrip> getCompleteTripById(@Query("tripId") String tripId);
+
+    @HTTP(method = "DELETE", path = "trip/deleteUserFromTrip", hasBody = true)
+    public Call<String> deleteUserFromTrip(@Query("eMail") String eMail, @Query("tripId") String tripId,
+                                           @Body Notification notification);
 }
