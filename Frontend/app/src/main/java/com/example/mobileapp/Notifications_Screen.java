@@ -28,7 +28,6 @@ public class Notifications_Screen extends AppCompatActivity {
     private ArrayList<String> notificationGroup = new ArrayList<>();
     private ArrayList<String> notificationMessage = new ArrayList<>();
     private TextView testButtonOne;
-    private TextView testButtonTwo;
     private NotificationManagerCompat notificationManager;
 
     @Override
@@ -41,7 +40,6 @@ public class Notifications_Screen extends AppCompatActivity {
         notificationManager = NotificationManagerCompat.from(this);
 
         testButtonOne = findViewById(R.id.notifications_test_one);
-        testButtonTwo = findViewById(R.id.notifications_test_two);
 
         testButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,12 +48,6 @@ public class Notifications_Screen extends AppCompatActivity {
             }
         });
 
-        testButtonTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendOnChannel2();
-            }
-        });
 
     }
 
@@ -64,39 +56,26 @@ public class Notifications_Screen extends AppCompatActivity {
         Intent activityIntent = new Intent(this, Notifications_Screen.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
                 0, activityIntent, 0);
+
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("New Transaction oder Delete Transaction") //TODO Wird durch IF Abfrage nach Typ geändert
+                .setContentTitle("Type der Notification, siehe 0-4") //TODO Wird durch IF Abfrage nach Typ geändert
                 .setContentText("Gruppenname")
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText("Hier steht die gesamte Transaktion als Notification. Hier steht so viel scheiße drinnen, da es nicht komplett angezeigt werden kann.") //TODO
                         .setBigContentTitle("Hier kommt der Gruppenname hin") //TODO
-                        .setSummaryText("Transaction"))
+                        .setSummaryText("Transaction oder Trip")) //TODO
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setColor(Color.parseColor("#C5B358"))
                 .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
                 .build();
+
 
         notificationManager.notify(1, notification);
     }
 
-    public void sendOnChannel2() {
-        Intent activityIntent = new Intent(this, Notifications_Screen.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, activityIntent, 0);
-        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Admin, Removed or Added to Trip") //TODO Wird durch IF Abfrage nach Typ geändert
-                .setContentText("Gruppenname")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Hier steht ob Gruppe hinzugekommen, Admin geworden oder von einer Grupp entfernt") //TODO
-                        .setBigContentTitle("Hier kommt der Gruppenname hin") //TODO
-                        .setSummaryText("Trip"))
-                .setColor(Color.parseColor("#C5B358"))
-                .setContentIntent(contentIntent)
-                .build();
-
-        notificationManager.notify(2, notification);
-    }
 
     private void initNotifications() {
 
