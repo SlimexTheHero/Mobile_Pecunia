@@ -49,26 +49,18 @@ public class MemberFragment extends Fragment {
     private boolean isAdmin = false;
     private Single_Trip single_trip;
     private CompleteTrip completeTrip;
+    private Button endTrip;
+    private Button addMember;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
-        //initImageBitmaps();
-        View rootView = inflater.inflate(R.layout.fragment_member_fragement, container, false);
         single_trip = (Single_Trip) getActivity();
         tripId=single_trip.getiD();
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
-        //fillWithMember(single_trip);
+
         @SuppressLint("StaticFieldLeak") AsyncTask asyncTask = new AsyncTask() { //TODO Sollte vllt static sein?
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
@@ -86,6 +78,24 @@ public class MemberFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_member_fragement, container, false);
+
+        endTrip= rootView.findViewById(R.id.leave_trip);
+        addMember=rootView.findViewById(R.id.add_member);
+
+        if(!isAdmin){
+            endTrip.setVisibility(View.GONE);
+            addMember.setVisibility(View.GONE);
+        }
+
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
         Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames,
                 mUserEmails, mUserImages, mUserAdmin,isAdmin,single_trip.geteMail(),completeTrip);
@@ -172,33 +182,5 @@ public class MemberFragment extends Fragment {
             mUserEmails.add(participant.geteMail());
             mUserAdmin.add(completeTrip.getAdmins().contains(participant.geteMail()));
         });
-    }
-
-    private void initImageBitmaps() {
-
-        mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mUserNames.add("Bruno");
-        mUserAdmin.add(true);
-
-        mUserImages.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mUserNames.add("Dennis");
-        mUserAdmin.add(true);
-
-        mUserImages.add("https://i.redd.it/j6myfqglup501.jpg");
-        mUserNames.add("Filip");
-        mUserAdmin.add(false);
-
-        mUserImages.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mUserNames.add("Jan");
-        mUserAdmin.add(false);
-
-        mUserImages.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mUserNames.add("Philip");
-        mUserAdmin.add(false);
-
-        mUserImages.add("https://i.redd.it/glin0nwndo501.jpg");
-        mUserNames.add("Dani");
-        mUserAdmin.add(false);
-
     }
 }

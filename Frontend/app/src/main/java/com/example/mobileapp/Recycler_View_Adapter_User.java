@@ -111,6 +111,17 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         });
     }
 
+    private boolean lastAdmin(){
+        int i =0;
+        for(int k =0;k< mUserAdmin.size();k++){
+            if(mUserAdmin.get(k)){
+                i++;
+            }
+        }
+
+        return i==1;
+    }
+
 
     public void setAdmin(int position) {
             MaterialAlertDialogBuilder confirmAdmin = new MaterialAlertDialogBuilder(mContext.getActivity());
@@ -135,7 +146,7 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
 
                             }
                         });
-                        mUserAdmin.remove(position);
+                        mUserAdmin.set(position,true);
                         Recycler_View_Adapter_User.this.notifyItemChanged(position);
                         Recycler_View_Adapter_User.this.notifyItemRangeChanged(position, mUserNames.size());
                     }
@@ -147,7 +158,7 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                     }
                 });
                 confirmAdmin.show();
-            } else if(mUserEMails.get(position).equals(actualUserEMail)) {
+            } else if(mUserEMails.get(position).equals(actualUserEMail)&&!lastAdmin()) {
                 confirmAdmin.setIcon(R.drawable.admin_crown);
                 //Check ob er nicht der letzte Admin ist, wenn ja ist keine Admin entnahme möglich
                 confirmAdmin.setMessage("Do you want to remove your own Admin rights?");
@@ -168,7 +179,10 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
 
                             }
                         });
+                        mUserAdmin.set(position,false);
+                        isAdmin=false;
                         Recycler_View_Adapter_User.this.notifyItemChanged(position);
+                        Recycler_View_Adapter_User.this.notifyItemRangeChanged(position, mUserNames.size());
                     }
                 });
                 confirmAdmin.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
@@ -181,8 +195,8 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
             }
     }
 
-    public void removeUser(int position) {
-        if (!actualUserEMail.equals(mUserEMails.get(position)) || !mUserAdmin.get(position)) {
+    public void removeUser(int position) { //TODO admin check
+        if (!actualUserEMail.equals(mUserEMails.get(position)) && !mUserAdmin.get(position) &&!(mUserNames.size()==1)) {
             MaterialAlertDialogBuilder deleteUser = new MaterialAlertDialogBuilder(mContext.getActivity());
             deleteUser.setTitle("Remove User");
             deleteUser.setMessage("Are you sure you want to remove " + mUserNames.get(position) + " from this trip? Only an admin can add him back to this trip");
@@ -191,7 +205,7 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                 public void onClick(DialogInterface dialog, int which) {
                     Recycler_View_Adapter_User.this.notifyItemChanged(position);
                     Notification notification = new Notification();
-                    notification.setNotificationMessage("");
+                    notification.setNotificationMessage(""); // TODO message?
                     notification.setNotificationType(3);
                     notification.setTripName(completeTrip.getTripName());
                     notification.setUserId(mUserEMails.get(position));
