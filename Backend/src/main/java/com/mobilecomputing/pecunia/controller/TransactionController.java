@@ -58,6 +58,7 @@ public class TransactionController {
             notification.setUserId(userId);
             notification.setTransactionId(transactionRepository.save(transaction).getTransactionId());
             notification.setTripId(tripId);
+            notificationRepository.save(notification);
             return ResponseEntity.ok(HttpStatus.OK);
 
         } catch (Exception e) {
@@ -73,6 +74,7 @@ public class TransactionController {
         try {
             Trip trip = tripRepository.findById(tripId).get();
             trip.getTransactions().add(transactionId);
+            tripRepository.save(trip);
             notificationRepository.deleteById(notificationId);
             return ResponseEntity.ok(trip);
         } catch (NoSuchElementException e) {

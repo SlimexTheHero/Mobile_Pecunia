@@ -180,7 +180,9 @@ public class TripController {
             Trip trip =tripRepository.findById(tripId).get();
             trip.getTripParticipants().remove(eMail);
             tripRepository.save(trip);
-            notificationRepository.save(notification);
+            if(notification.getUserId()!=null){
+                notificationRepository.save(notification);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }

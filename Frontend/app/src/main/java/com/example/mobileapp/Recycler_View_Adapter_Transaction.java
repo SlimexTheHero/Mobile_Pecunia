@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,30 +16,26 @@ import java.util.ArrayList;
 
 class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_View_Adapter_Transaction.ViewHolder> {
 
-    private ArrayList<String> Debtor;
-    private ArrayList <String> Creditor;
-    private ArrayList <String> mTitles;
-    private ArrayList <String> mAmount;
-    private ArrayList <String> mAmount_Converted;
-    private ArrayList <String> mCurrency_Converted;
-    private ArrayList <String> mCurrency;
+    private ArrayList<String> debtor;
+    private ArrayList<String> creditor;
+    private ArrayList<String> mTitles;
+    private ArrayList<String> mAmount;
+    private ArrayList<String> mCurrency;
     private TransactionFragment mContext;
-    private ArrayList <String> mDate;
-    private ArrayList <String> mTime;
+    private ArrayList<String> mDate;
 
-    public Recycler_View_Adapter_Transaction(TransactionFragment mContext, ArrayList<ArrayList<String>> mContent) {
+    public Recycler_View_Adapter_Transaction(ArrayList<String> debtor, ArrayList<String> creditor,
+                                             ArrayList<String> mTitles, ArrayList<String> mAmount,
+                                             ArrayList<String> mCurrency, TransactionFragment mContext,
+                                             ArrayList<String> mDate) {
+        this.debtor = debtor;
+        this.creditor = creditor;
+        this.mTitles = mTitles;
+        this.mAmount = mAmount;
+        this.mCurrency = mCurrency;
         this.mContext = mContext;
-        Debtor = mContent.get(0);
-        Creditor = mContent.get(1);
-        mTitles = mContent.get(2);
-        mAmount = mContent.get(3);
-        mCurrency = mContent.get(4);
-        mAmount_Converted = mContent.get(5);
-        mCurrency_Converted = mContent.get(6);
-        mDate = mContent.get(7);
-        mTime = mContent.get(8);
+        this.mDate = mDate;
     }
-
 
     @NonNull
     @Override
@@ -52,7 +49,7 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.userName.setText(Creditor.get(position));
+        holder.userName.setText(creditor.get(position));
         holder.title.setText(mTitles.get(position));
         holder.amount.setText(mAmount.get(position));
         holder.currency.setText(mCurrency.get(position));
@@ -63,16 +60,6 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
                 transactionDetails(position);
             }
         });
-
-        if (!mCurrency.get(position).equals(mCurrency_Converted.get(position))) {
-            holder.currency_converted.setText(mCurrency_Converted.get(position));
-            holder.amount_converted.setText(mAmount_Converted.get(position));
-        } else {
-            holder.currency_converted.setText("");
-            holder.amount_converted.setText("");
-        }
-
-
     }
 
     @Override
@@ -80,15 +67,14 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         return mTitles.size();
     }
 
-    public void transactionDetails (int position) {
+    public void transactionDetails(int position) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(mContext.getActivity());
         seeDetails.setTitle(mTitles.get(position));
         String amount = "Amount: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + mAmount.get(position) + "\t" + mCurrency.get(position);
-        String one = "Debtor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Debtor.get(position);
-        String two = "Creditor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + Creditor.get(position);
+        String one = "Debtor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + debtor.get(position);
+        String two = "Creditor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + creditor.get(position);
         String date = "Transaction Date: " + "\t\t\t\t" + mDate.get(position);
-        String time = "Transaction Time: " + "\t\t\t\t" + mTime.get(position);
-        seeDetails.setMessage(amount + "\n" + "\n" + one + "\n" + two + "\n" + date + "\n" + time);
+        seeDetails.setMessage(amount + "\n" + "\n" + one + "\n" + two + "\n" + date + "\n");
         seeDetails.setNeutralButton("Ask for Deletion", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

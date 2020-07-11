@@ -100,12 +100,11 @@ public class Trip_Overview_Screen extends AppCompatActivity {
                     trips.forEach(trip -> {
                         mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
                         mTripNames.add(trip.getTripName());
-                        mTripDuration.add("20-30"); //TODO get trip duration
+                        mTripDuration.add(trip.getTripDuration());
                         mTripId.add(trip.getTripId());
                         mTripParticipants.add((ArrayList<String>) trip.getTripParticipants());
                         mAdmins.add((ArrayList<String>) trip.getAdmins());
                         mTransactions.add((ArrayList<String>) trip.getTransactions());
-                        System.err.println(mTripParticipants.size());
 
                     });
                     initRecyclerView();

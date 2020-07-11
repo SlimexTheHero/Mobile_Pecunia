@@ -14,11 +14,16 @@ import retrofit2.http.Query;
 public interface TransactionService {
 
     @POST("transaction/addTransactionToTrip")
-    public Call<String> addAdminToTrip(@Body Transaction transaction, @Query("tripId") String tripId);
+    public Call<String> addTransactionToTrip(@Body Transaction transaction, @Query("tripId") String tripId);
 
     @DELETE("transaction/deleteTransaction")
-    public Call <String> deleteAdminFromTrip(@Query("transactionId") String transactionId,@Query("tripId") String tripId);
+    public Call <String> deleteTransactionFromTrip(@Query("transactionId") String transactionId,@Query("tripId") String tripId);
 
     @GET("transaction/getAllTransactionsByTrip")
     public Call <List<Transaction>> getAllTransactionsByTrip(@Query("tripId") String tripId);
+
+    @POST("transaction/addTransaction")
+    public Call<String> addTransaction(@Body Transaction transaction, @Query("userId") String eMail,
+                                       @Query("notificationMessage") String notificationMessage,
+                                       @Query("tripId") String tripId);
 }

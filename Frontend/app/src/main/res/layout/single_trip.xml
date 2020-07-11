@@ -65,11 +65,11 @@
 </LinearLayout>
         
         <ImageView
+            android:id="@+id/leave_trip_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
-            android:onClick="leaveTripButton"
             android:src="@drawable/leave_trip" />
 
     </LinearLayout>

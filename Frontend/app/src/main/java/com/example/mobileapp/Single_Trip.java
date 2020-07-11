@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +19,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.mobileapp.model.Notification;
+import com.example.mobileapp.networking.RetrofitClient;
+import com.example.mobileapp.networking.TripService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Single_Trip extends AppCompatActivity {
 //TODO layout tripname anpassen
@@ -38,6 +46,8 @@ public class Single_Trip extends AppCompatActivity {
     private ArrayList<String> participants;
     private ArrayList<String> transactions;
     private ArrayList<String> admins;
+    private ImageView leaveTrip;
+    private TripService tripService;
 
 
     @Override
@@ -46,12 +56,14 @@ public class Single_Trip extends AppCompatActivity {
         eMail = sharedPreferences.getString("E-Mail", "");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_trip);
+        tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
 
         tripImage = findViewById(R.id.trip_image);
         tripName = findViewById(R.id.trip_name);
         tripDuration = findViewById(R.id.trip_duration);
         viewPager = findViewById(R.id.tab_view);
         tabLayout = findViewById(R.id.tab_layout);
+        leaveTrip = findViewById(R.id.leave_trip_image);
 
         memberFragement = new MemberFragment();
         transactionFragement = new TransactionFragment();
@@ -72,17 +84,40 @@ public class Single_Trip extends AppCompatActivity {
         String duration = bundle.getString("Duration").toString();
         String name = bundle.getString("Name").toString();
         tripId = bundle.getString("Id");
+        admins = bundle.getStringArrayList("Admins");
+        participants = bundle.getStringArrayList("Participants");
+        transactions = bundle.getStringArrayList("Transactions");
+
 
         Glide.with(this).asBitmap().load(image).into(tripImage);
         tripName.setText(name);
         tripDuration.setText(duration);
+
+        leaveTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                leaveTripButton();
+            }
+        });
     }
 
     public void backButton(View view) {
         finish();
     }
 
-    public void leaveTripButton(View view) {
+    private boolean lastAdmin(){
+        int i =0;
+        for(int k =0;k< admins.size();k++){
+            if(admins.get(k).equals("true")){
+                System.err.println(admins.get(k));
+                i++;
+            }
+        }
+
+        return i==1;
+    }
+
+    public void leaveTripButton() {
         MaterialAlertDialogBuilder leaveTrip = new MaterialAlertDialogBuilder(this);
         leaveTrip.setTitle("Leave Trip");
 
@@ -90,6 +125,21 @@ public class Single_Trip extends AppCompatActivity {
         //1. Man ein Admin ist
         //2. Eine Aktive Transaktion hat
         //Punkte 1 und 2 können ignoriert werden falls der Trip in der Vergangenheit liegt.
+        if(!lastAdmin()){ //todo der letzte admin darf nicht abschließen
+            Notification notification = new Notification();
+            Call<String> call = tripService.deleteUserFromTrip(eMail,tripId,notification);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
 
         leaveTrip.setMessage("Do you want to leave this trip? Be aware that once you leave this trip only an admin can add you back.");
         leaveTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -97,6 +147,7 @@ public class Single_Trip extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //Delete User from Group, so he cant see it anymore
                 finish();
+                startActivity(new Intent(getApplicationContext(),Trip_Overview_Screen.class));
             }
         });
         leaveTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {

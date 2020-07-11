@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -19,12 +20,20 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.mobileapp.model.Transaction;
+import com.example.mobileapp.networking.RetrofitClient;
+import com.example.mobileapp.networking.TransactionService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class New_Transaction_Screen extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -50,12 +59,11 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     private int flag = 0;
     public static final int FLAG_PICK_DATE = 2;
-
+    private TransactionService transactionService;
+    String userEmail;
 
     //ScreenLayout
     LinearLayout transactionLayout;
-
-
 
 
     //Strings for decision
@@ -77,11 +85,12 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         decider = findViewById(R.id.transaction_decider);
         vParticipant = findViewById(R.id.second_participant);
         currencyDropdown = findViewById(R.id.currency_dropdown);
+        transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
 
 
         //List of all supported currencies, will be swapped with DB
         //Creation of dropdown for currencies
-        String[] currencies = new String[]{"€ EUR", "$ USD" , "£ GBP"};
+        String[] currencies = new String[]{"€ EUR", "$ USD", "£ GBP"};
         ArrayAdapter<String> currency_adapter = new ArrayAdapter<String>(this, R.layout.transaction_dropdown_item, currencies);
         currencyDropdown.setAdapter(currency_adapter);
 
@@ -90,8 +99,8 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
             @Override
             public void onClick(View v) {
                 vAmount.clearFocus();
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(vAmount.getWindowToken(),0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(vAmount.getWindowToken(), 0);
             }
         });
 
@@ -143,6 +152,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Creates transaction and displays the input as a toast, also checks if there is any input
+     *
      * @param view with no view the calendar wont be displayed
      */
     public void createTransaction(View view) {
@@ -150,34 +160,75 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         decideDebtorOrCreditor();
         location = vLocation.getText().toString();
         amount = vAmount.getText().toString();
+        if (!validateUser() | !validateAmount() | !validateLocation() | !validateDate()) {
+            return;
+        }
 
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("E-Mail", "");
         String text = "Title: " + location + "\n" +
                 "From: " + debtor + "\n" +
                 "To: " + creditor + "\n" +
                 "Amount: " + amount + "\n" +
                 "Currency: " + currency + "\n" +
                 "Date: " + date;
+
+
+        Transaction transaction = new Transaction(debtor, creditor, cleanCurrency(currency),
+                Double.valueOf(amount), location, date);
+        Call<String> call = transactionService.addTransaction(transaction, userEmail, text,
+                getIntent().getExtras().getString("TripId"));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-        if(!validateUser() | !validateAmount() | !validateLocation() | !validateDate()){
-            return;
-        }
+
+
     }
+
+    private String cleanCurrency(String currency) {
+        String cleanCurrency = "EUR";
+        switch (currency) {
+            case "$ USD":
+                cleanCurrency = "USD";
+                break;
+            case "€ EUR":
+                cleanCurrency = "EUR";
+                break;
+            case "£ GBP":
+                cleanCurrency = "GBP";
+                break;
+            default:
+                cleanCurrency = "EUR";
+                break;
+        }
+        return cleanCurrency;
+    }
+
 
     /**
      * Creates dialog with a list off all locations and allows for custom location
-     *
      */
     public void chooseLocation() {
 
-        String[] titles = new String[] {"Restaurant", "Bar", "Mall", "Beach", "City",
+        String[] titles = new String[]{"Restaurant", "Bar", "Mall", "Beach", "City",
                 "Custom title"};
         final EditText setOwnTitle = new EditText(this);
         int checkedTitle = -1;
         final int[] saveTitlePosition = new int[1];
         MaterialAlertDialogBuilder chooseTitle = new MaterialAlertDialogBuilder(this);
-        chooseTitle.setTitle("Choose a title");
+        chooseTitle.setTitle("Choose a location");
         setOwnTitle.setHint("Location");
-        setOwnTitle.setPaddingRelative(220,0,100,30);
+        setOwnTitle.setPaddingRelative(220, 0, 100, 30);
         setOwnTitle.setBackground(null);
 
         //Creates items and checks if custom or normal
@@ -188,8 +239,8 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
                 if (which != 5) {
                     setOwnTitle.setInputType(InputType.TYPE_NULL);
                     setOwnTitle.clearFocus();
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(setOwnTitle.getWindowToken(),0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(setOwnTitle.getWindowToken(), 0);
                 } else {
                     setOwnTitle.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                     setOwnTitle.setClickable(true);
@@ -200,12 +251,11 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         chooseTitle.setView(setOwnTitle);
 
 
-
         chooseTitle.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(saveTitlePosition[0] == 5) {
+                if (saveTitlePosition[0] == 5) {
                     location = setOwnTitle.getText().toString();
                 } else {
                     location = titles[saveTitlePosition[0]].toString();
@@ -229,7 +279,11 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
      */
     public void chooseParticipant() {
         //Will be replaced by all members of a trip minus account user
-        String[] names = new String[] {"Dani", "Bruno", "Dennis", "Filip", "Jan", "Philip"};
+        String[] names = new String[getIntent().getExtras().getStringArrayList("Participants_EMail").size()];
+
+        for(int i =0; i<names.length;i++){
+            names[i] = getIntent().getExtras().getStringArrayList("Participants_EMail").get(i);
+        }
 
 
         int checkedName = -1;
@@ -266,11 +320,12 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if userfield is empty
+     *
      * @return false if empty, true if not
      */
     public boolean validateUser() {
         participantHolder = findViewById(R.id.participant_holder);
-        if(participant == null) {
+        if (participant == null) {
             participantHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -282,11 +337,12 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if amountfield is empty
+     *
      * @return false if empty, true if not
      */
     public boolean validateAmount() {
         amountHolder = findViewById(R.id.amount_holder);
-        if(amount == null | amount.isEmpty()){
+        if (amount == null | amount.isEmpty()) {
             amountHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -298,11 +354,12 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if locationfield is empty
+     *
      * @return false if empty, true if not
      */
     public boolean validateLocation() {
         locationHolder = findViewById(R.id.location_holder);
-        if(location == null | location.isEmpty()){
+        if (location == null | location.isEmpty()) {
             locationHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -314,11 +371,12 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if datefield is empty
+     *
      * @return false if empty, true if not
      */
     public boolean validateDate() {
         dateHolder = findViewById(R.id.date_holder);
-        if(date == null){
+        if (date == null) {
             dateHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -335,17 +393,14 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         int radioButtonID = decider.getCheckedRadioButtonId();
         View radioButton = decider.findViewById(radioButtonID);
         int idx = decider.indexOfChild(radioButton);
-        if(idx == 0) {
+        if (idx == 0) {
             debtor = participant;
-            creditor = "Test";
-            //creditor = Accountuser
+            creditor = userEmail;//TODO creditor wird null gesetzt
         } else {
             creditor = participant;
-            debtor = "Test";
-            //debtor = Accountuser;
+            debtor = userEmail;
         }
     }
-
 
 
     public void backButton(View view) {
