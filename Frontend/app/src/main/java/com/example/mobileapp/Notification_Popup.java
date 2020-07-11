@@ -3,8 +3,10 @@ package com.example.mobileapp;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.widget.Toast;
 
 public class Notification_Popup extends Application {
     public static final String CHANNEL_1_ID = "channel1";
@@ -13,6 +15,7 @@ public class Notification_Popup extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        startService(new Intent(this, BackgroundService.class));
 
         createNotificationChannels();
     }
@@ -38,7 +41,6 @@ public class Notification_Popup extends Application {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);
             manager.createNotificationChannel(channel2);
-
         }
     }
 
