@@ -58,6 +58,7 @@ public class TransactionController {
             notification.setUserId(userId);
             notification.setTransactionId(transactionRepository.save(transaction).getTransactionId());
             notification.setTripId(tripId);
+            notification.setTripName(tripRepository.findById(tripId).get().getTripName());
             notificationRepository.save(notification);
             return ResponseEntity.ok(HttpStatus.OK);
 

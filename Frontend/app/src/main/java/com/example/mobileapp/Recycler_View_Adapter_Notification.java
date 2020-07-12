@@ -63,7 +63,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.groupName.setText(notificationTripName.get(position));
         notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
-        transactionService = transactionService;
+        transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
 
         holder.notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override

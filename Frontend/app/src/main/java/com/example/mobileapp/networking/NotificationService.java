@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 
 public interface NotificationService {
 
-    @GET("notification/getNotificationFromUser")
+    @GET("notification/getNotificationsFromUser")
     Call<List<Notification>> getNotificationFromUser(@Query("userId") String userId);
 
     @DELETE("notification/deleteNotification")
