@@ -153,7 +153,6 @@
             android:focusable="false"
             android:gravity="left|center_vertical"
             android:hint="Location"
-            android:maxLength="7"
             android:textSize="30dp" />
 
     </com.google.android.material.textfield.TextInputLayout>

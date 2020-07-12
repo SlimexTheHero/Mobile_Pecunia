@@ -176,7 +176,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
         Transaction transaction = new Transaction(debtor, creditor, cleanCurrency(currency),
                 Double.valueOf(amount), location, date);
-        Call<String> call = transactionService.addTransaction(transaction, userEmail, text,
+        Call<String> call = transactionService.addTransaction(transaction,participant , text,
                 getIntent().getExtras().getString("TripId"));
         call.enqueue(new Callback<String>() {
             @Override
