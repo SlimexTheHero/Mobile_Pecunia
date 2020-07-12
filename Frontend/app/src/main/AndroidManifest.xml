@@ -4,6 +4,7 @@
     package="com.example.mobileapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".Notification_Popup"
@@ -13,9 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Notifications_Screen"></activity>
-        <activity android:name=".App_Info_Screen" />
-        <activity android:name=".Account_Settings_Screen" />
+        <activity android:name=".Notifications_Screen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"></activity>
+        <activity android:name=".App_Info_Screen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".Account_Settings_Screen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Settings_Screen"
             android:configChanges="orientation"
