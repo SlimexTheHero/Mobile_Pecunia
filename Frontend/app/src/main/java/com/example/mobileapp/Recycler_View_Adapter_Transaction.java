@@ -96,8 +96,6 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         TextView userName;
         TextView title;
         TextView amount;
-        TextView amount_converted;
-        TextView currency_converted;
         TextView currency;
         LinearLayout transactionLayout;
 
@@ -106,8 +104,6 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
             userName = itemView.findViewById(R.id.person_two);
             title = itemView.findViewById(R.id.transaction_title);
             amount = itemView.findViewById(R.id.transaction_amount);
-            amount_converted = itemView.findViewById(R.id.transaction_amount_converted);
-            currency_converted = itemView.findViewById(R.id.transaction_currency);
             currency = itemView.findViewById(R.id.transaction_currency_basis);
             transactionLayout = itemView.findViewById(R.id.transaction_layout);
         }
