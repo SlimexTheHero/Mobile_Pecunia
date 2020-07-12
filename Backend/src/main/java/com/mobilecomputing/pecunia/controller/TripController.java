@@ -93,6 +93,9 @@ public class TripController {
             notification.setNotificationType(4);
             notification.setUserId(eMail);
             notification.setTripId(TripId);
+            notification.setTripName(trip.getTripName());
+            notification.setNotificationMessage("You are now admin of the trip "+trip.getTripName());
+            notificationRepository.save(notification);
             return ResponseEntity.ok(HttpStatus.OK);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
@@ -114,9 +117,6 @@ public class TripController {
     @GetMapping("/getTripsByUser")
     public ResponseEntity getTripsByUser(@RequestParam String eMail) {
 
-        if(userRepository.findById(eMail).get()==null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
         ArrayList<Trip> temp = new ArrayList<>();
         ArrayList<Trip> response = new ArrayList<>();
         tripRepository.findAll().forEach(trip -> {
