@@ -122,6 +122,23 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         return i==1;
     }
 
+    public void updateMemberList(ArrayList<String> mUserEMails, ArrayList<String> mUserNames, ArrayList<Boolean> mUserAdmin) {
+        mUserAdmin.clear();
+        mUserEMails.clear();
+        mUserNames.clear();
+
+        this.mUserEMails.addAll(mUserEMails);
+        this.mUserNames.addAll(mUserNames);
+        this.mUserAdmin.addAll(mUserAdmin);
+
+        mContext.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+
+    }
 
     public void setAdmin(int position) {
             MaterialAlertDialogBuilder confirmAdmin = new MaterialAlertDialogBuilder(mContext.getActivity());

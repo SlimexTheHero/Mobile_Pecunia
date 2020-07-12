@@ -82,7 +82,7 @@ public class BillingCalculator {
                 if(!transactions.get(i).getCurrency().equals(baseCurrency)){
                     tempLoan=tempLoan/(Double)currencyMap.get(transactions.get(i).getCurrency());
                 }
-                billString+= transactions.get(i).getTransactionName()+": "+transactions.get(i).getCreditor()+" owes "+
+                billString+= transactions.get(i).getLocation()+": "+transactions.get(i).getCreditor()+" owes "+
                         transactions.get(i).getDebtor()+" "+transactions.get(i).getLoan()+" "+baseCurrency+"\n";
 
                 if(transactions.get(i).getDebtor().equals(userA.geteMail())){

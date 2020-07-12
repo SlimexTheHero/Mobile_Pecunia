@@ -1,5 +1,6 @@
 package com.example.mobileapp.networking;
 
+import com.example.mobileapp.model.Notification;
 import com.example.mobileapp.model.User;
 
 import okhttp3.ResponseBody;
@@ -18,7 +19,7 @@ public interface UserService {
     public Call<String> registrateUser(@Body User user);
 
     @POST("user/addUserToTrip")
-    public Call<String> addUserToTrip(@Body User user);
+    public Call<String> addUserToTrip(@Query("eMail") String eMail,@Query("tripId") String tripId,@Body Notification notification);
 
     @POST("user/changeNameOfUser")
     public Call<String> changeNameOfUser(@Query("eMail") String eMail,@Query("newName") String newName);

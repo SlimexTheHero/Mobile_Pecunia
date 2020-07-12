@@ -76,21 +76,22 @@ public class UserController {
     }
 
     @PostMapping("/addUserToTrip")
-    public ResponseEntity addUserToTrip(@RequestParam String eMail, @RequestParam String tripId, @RequestBody Notification notification) {
-        boolean userAlreadyexists = false;
+    public ResponseEntity addUserToTrip(@RequestParam String eMail, @RequestParam String tripId,
+                                        @RequestBody Notification notification) {
+        boolean userAlreadyExists = false;
         try{
             Trip trip = tripRepository.findById(tripId).get();
             User user = userRepository.findById(eMail).get();
-            notificationRepository.save(notification);
+           // notificationRepository.save(notification);
 
             for (String currentUserEMail : trip.getTripParticipants()) {
                 if (currentUserEMail.equals(eMail)) {
-                    userAlreadyexists = true;
+                    userAlreadyExists = true;
                 }
             }
 
-            if (userAlreadyexists) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+            if (userAlreadyExists) {
+                return ResponseEntity.ok("User already exists");
             }
             if (trip == null || user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -99,7 +100,7 @@ public class UserController {
             trip.getTripParticipants().add(eMail);
             tripRepository.save(trip);
 
-            return ResponseEntity.ok(HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(user.getName());
 
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");

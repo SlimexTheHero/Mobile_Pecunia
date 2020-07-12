@@ -1,6 +1,7 @@
 package com.example.mobileapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.mobileapp.model.CompleteTrip;
+import com.example.mobileapp.model.Notification;
 import com.example.mobileapp.model.Trip;
 import com.example.mobileapp.model.User;
 import com.example.mobileapp.networking.RetrofitClient;
@@ -51,6 +53,7 @@ public class MemberFragment extends Fragment {
     private CompleteTrip completeTrip;
     private Button endTrip;
     private Button addMember;
+    private Recycler_View_Adapter_User adapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +100,7 @@ public class MemberFragment extends Fragment {
         }
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
-        Recycler_View_Adapter_User adapter = new Recycler_View_Adapter_User(this, mUserNames,
+        adapter = new Recycler_View_Adapter_User(this, mUserNames,
                 mUserEmails, mUserImages, mUserAdmin,isAdmin,single_trip.geteMail(),completeTrip);
 
         recyclerView.setAdapter(adapter);
@@ -135,6 +138,41 @@ public class MemberFragment extends Fragment {
         addUser.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Notification notification = new Notification();
+                notification.setTripId(tripId);
+                notification.setUserId(single_trip.getiD());
+                notification.setNotificationType(2);
+                notification.setNotificationMessage(""); // TODO Message?
+
+                Call<String> call = userService.addUserToTrip(addUserText.getText().toString(),tripId,notification);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Toast.makeText(getActivity(), response.body(), Toast.LENGTH_SHORT).show();
+                        System.out.println(response.raw()+"------------------------");
+                        if(response.body()==null){
+                            Toast.makeText(getActivity(), "User not found", Toast.LENGTH_SHORT).show();
+                            //return;
+                        }
+                        mUserEmails.add(addUserText.getText().toString());
+                        mUserAdmin.add(false);
+                        mUserNames.add(response.body());
+                        //adapter.notifyItemChanged(mUserAdmin.size()-1);
+                        //adapter.notifyItemRangeChanged(mUserAdmin.size()-1,mUserAdmin.size());
+
+                        //adapter.updateMemberList(mUserEmails,mUserNames,mUserAdmin);
+                        getActivity().finish();
+                        Intent intent = new Intent(getContext(),Single_Trip.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(getActivity(), "OnFailure", Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
                 return;
             }
         });
