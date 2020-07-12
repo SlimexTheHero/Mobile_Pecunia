@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mobileapp.model.User;
@@ -25,6 +27,7 @@ public class Start_Screen extends AppCompatActivity {
     private TextInputLayout textInputEmail;
     private TextInputLayout textInputPW;
     private UserService userService;
+    private LinearLayout startScreenLayout;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String EMAIL = "E-Mail";
@@ -42,6 +45,18 @@ public class Start_Screen extends AppCompatActivity {
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         textInputEmail = findViewById(R.id.text_input_email);
         textInputPW = findViewById(R.id.text_input_pw);
+        startScreenLayout = findViewById(R.id.start_screen_layout);
+
+        startScreenLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                textInputEmail.getEditText().clearFocus();
+                imm.hideSoftInputFromWindow(textInputEmail.getEditText().getWindowToken(),0);
+                textInputPW.getEditText().clearFocus();
+                imm.hideSoftInputFromWindow(textInputPW.getEditText().getWindowToken(),0);
+            }
+        });
     }
 
     @Override

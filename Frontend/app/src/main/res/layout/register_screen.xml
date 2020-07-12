@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#141412"
+    android:id="@+id/register_screen_layout"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
     tools:context=".Register_Screen">

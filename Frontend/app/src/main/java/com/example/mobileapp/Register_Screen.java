@@ -3,9 +3,12 @@ package com.example.mobileapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mobileapp.model.User;
@@ -22,6 +25,7 @@ import retrofit2.http.HTTP;
 
 public class Register_Screen extends AppCompatActivity {
 
+    private LinearLayout registerScreenLayout;
     private TextInputLayout textInputEmail;
     private TextInputLayout textInputName;
     private TextInputLayout textInputPW;
@@ -34,11 +38,27 @@ public class Register_Screen extends AppCompatActivity {
         setContentView(R.layout.register_screen);
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
 
+        registerScreenLayout = findViewById(R.id.register_screen_layout);
         textInputEmail = findViewById(R.id.text_input_email);
         textInputName = findViewById(R.id.text_input_name);
         textInputPW = findViewById(R.id.text_input_pw);
         textInputPWConfirm = findViewById(R.id.text_input_pw_confirm);
 
+        registerScreenLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                textInputEmail.getEditText().clearFocus();
+                textInputPW.getEditText().clearFocus();
+                textInputName.getEditText().clearFocus();
+                textInputPWConfirm.getEditText().clearFocus();
+
+                imm.hideSoftInputFromWindow(textInputEmail.getEditText().getWindowToken(),0);
+                imm.hideSoftInputFromWindow(textInputPW.getEditText().getWindowToken(),0);
+                imm.hideSoftInputFromWindow(textInputName.getEditText().getWindowToken(),0);
+                imm.hideSoftInputFromWindow(textInputPWConfirm.getWindowToken(),0);
+            }
+        });
     }
 
 
