@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.graphics.Color;
 import android.os.Build;
 
+
 public class Notification_Popup extends Application {
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
@@ -13,7 +14,6 @@ public class Notification_Popup extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         createNotificationChannels();
     }
 
@@ -38,7 +38,6 @@ public class Notification_Popup extends Application {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);
             manager.createNotificationChannel(channel2);
-
         }
     }
 
