@@ -100,15 +100,17 @@ public class Notifications_Screen extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<com.example.mobileapp.model.Notification>> call,
                                    Response<List<com.example.mobileapp.model.Notification>> response) {
-                response.body().forEach(notification -> {
-                    notificationId.add(notification.getNotificationId());
-                    notificationType.add(notification.getNotificationType());
-                    notificationMessage.add(notification.getNotificationMessage());
-                    notificationTripName.add(notification.getTripName());
-                    notificationTripId.add(notification.getTripId());
-                    notificationTransactionId.add(notification.getTransactionId());
-                    notificationUserId.add(notification.getUserId());
-                });
+                if(response.body()!=null){
+                    response.body().forEach(notification -> {
+                        notificationId.add(notification.getNotificationId());
+                        notificationType.add(notification.getNotificationType());
+                        notificationMessage.add(notification.getNotificationMessage());
+                        notificationTripName.add(notification.getTripName());
+                        notificationTripId.add(notification.getTripId());
+                        notificationTransactionId.add(notification.getTransactionId());
+                        notificationUserId.add(notification.getUserId());
+                    });
+                }
 
                 initRecyclerView();
             }

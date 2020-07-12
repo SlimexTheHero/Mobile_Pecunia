@@ -36,7 +36,7 @@ public class NotificationController {
                     response.add(notification);
                 }
             });
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
 
         }catch (NoSuchElementException e){
             e.printStackTrace();
