@@ -18,7 +18,6 @@ public class Notification_Popup extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        askForNotification();
         createNotificationChannels();
     }
 
