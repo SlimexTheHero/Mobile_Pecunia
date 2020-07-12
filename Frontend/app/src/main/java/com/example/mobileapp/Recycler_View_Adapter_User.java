@@ -71,10 +71,6 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Glide.with(mContext)
-                .asBitmap()
-                .load(mUserImages.get(position))
-                .into(holder.userImage);
         holder.userName.setText(mUserNames.get(position));
 
         if (isAdmin) {
