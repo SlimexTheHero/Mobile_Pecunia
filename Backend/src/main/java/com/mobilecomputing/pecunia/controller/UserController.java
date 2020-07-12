@@ -99,6 +99,8 @@ public class UserController {
             trip.getTripParticipants().add(eMail);
             tripRepository.save(trip);
             notification.setNotificationMessage("You were added to the trip "+trip.getTripName());
+            notification.setUserId(eMail);
+            notification.setTripName(trip.getTripName());
             notificationRepository.save(notification);
             return ResponseEntity.status(HttpStatus.OK).body(user.getName());
 
