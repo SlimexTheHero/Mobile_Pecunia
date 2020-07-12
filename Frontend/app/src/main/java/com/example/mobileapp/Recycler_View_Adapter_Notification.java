@@ -23,9 +23,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Recycler_View_Adapter_Notification.ViewHolder>{
+public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Recycler_View_Adapter_Notification.ViewHolder> {
 
-    private ArrayList<String> notificationId= new ArrayList<>();
+    private ArrayList<String> notificationId = new ArrayList<>();
     private ArrayList<Integer> notificationType = new ArrayList<>();
     private ArrayList<String> notificationTripName = new ArrayList<>();
     private ArrayList<String> notificationTripId = new ArrayList<>();
@@ -35,6 +35,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
     private Context context;
     private NotificationService notificationService;
     private TransactionService transactionService;
+    int count;
 
     public Recycler_View_Adapter_Notification(ArrayList<String> notificationId, ArrayList<Integer> notificationType,
                                               ArrayList<String> notificationTripName,
@@ -64,6 +65,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         holder.groupName.setText(notificationTripName.get(position));
         notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
         transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
+         count = 0;
 
         holder.notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,23 +74,23 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                 switch (notificationType.get(position)) {
                     case 0:
                         holder.notificationTitle.setText("New Transaction");
-                        transactionTwoDetails(position,"New Transaction");
+                        transactionTwoDetails(position, "New Transaction");
                         break;
                     case 1:
                         holder.notificationTitle.setText("Transaction deletion");
-                        transactionTwoDetails(position,"Transaction deletion");
+                        transactionTwoDetails(position, "Transaction deletion");
                         break;
                     case 2:
                         holder.notificationTitle.setText("Added to Trip");
-                        transactionOneDetails(position,"Added to Trip");
+                        transactionOneDetails(position, "Added to Trip");
                         break;
                     case 3:
                         holder.notificationTitle.setText("Removed from Trip");
-                        transactionOneDetails(position,"Removed from Trip");
+                        transactionOneDetails(position, "Removed from Trip");
                         break;
                     case 4:
                         holder.notificationTitle.setText("Adminrights gained");
-                        transactionOneDetails(position,"Adminrights gained");
+                        transactionOneDetails(position, "Adminrights gained");
                         break;
                     default:
                         return;
@@ -97,14 +99,13 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         });
     }
 
-    public void transactionOneDetails (int position,String title) {
+    public void transactionOneDetails(int position, String title) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(context);
         seeDetails.setTitle(title);
         seeDetails.setMessage(notificationMessage.get(position));
         seeDetails.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 return;
             }
         });
@@ -123,13 +124,27 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                         t.printStackTrace();
                     }
                 });
+                notifyItemChangeInThisAdapter(position);
                 return;
             }
         });
         seeDetails.show();
     }
 
-    public void transactionTwoDetails (int position,String title) {
+    private void notifyItemChangeInThisAdapter(int position){
+    count++;
+    System.out.println(count+"---------------------------------- Count");
+        this.notificationId.remove(position);
+        this.notificationType.remove(position);
+        this.notificationTripName.remove(position);
+        this.notificationTripId.remove(position);
+        this.notificationTransactionId.remove(position);
+        this.notificationMessage.remove(position);
+        this.notificationUserId.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void transactionTwoDetails(int position, String title) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(context);
         seeDetails.setTitle(title);
         seeDetails.setMessage(notificationMessage.get(position));
@@ -138,9 +153,9 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
             public void onClick(DialogInterface dialog, int which) {
                 //Notification will be accepted
                 //---------------------- Accept Transaction ---------------------------
-                if(notificationType.get(position)==0){
+                if (notificationType.get(position) == 0) {
                     Call<String> call = transactionService.addTransactionToTrip(notificationTransactionId.get(position),
-                            notificationTripId.get(position),notificationId.get(position));
+                            notificationTripId.get(position), notificationId.get(position));
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
@@ -152,23 +167,26 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                             t.printStackTrace();
                         }
                     });
-                }else
+                    notifyItemChangeInThisAdapter(position);
+                } else
                     //---------------------- Accept delete Transaction -----------------------
-                    if(notificationType.get(position)==1){
-                    Call<String> call = transactionService.deleteTransaction(notificationTransactionId.get(position),
-                            notificationTripId.get(position),notificationId.get(position));
-                            call.enqueue(new Callback<String>() {
-                                @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
+                    if (notificationType.get(position) == 1) {
+                        Call<String> call = transactionService.deleteTransaction(notificationTransactionId.get(position),
+                                notificationTripId.get(position), notificationId.get(position));
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                            }
 
-                                }
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                        notifyItemChangeInThisAdapter(position);
+                    }
 
-                                @Override
-                                public void onFailure(Call<String> call, Throwable t) {
-                                    t.printStackTrace();
-                                }
-                            });
-                }
+
                 return;
             }
         });
@@ -177,8 +195,8 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
             public void onClick(DialogInterface dialog, int which) {
                 //Notification will be deleted
                 //---------------------- Decline Transaction invite ---------------------------
-                if(notificationType.get(position)==0){
-                    Call<String> call = transactionService.deleteTransactionInvite(notificationTransactionId.get(position),notificationId.get(position));
+                if (notificationType.get(position) == 0) {
+                    Call<String> call = transactionService.deleteTransactionInvite(notificationTransactionId.get(position), notificationId.get(position));
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
@@ -190,9 +208,10 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                             t.printStackTrace();
                         }
                     });
+                    notifyItemChangeInThisAdapter(position);
                 }
                 //---------------------- Decline Transaction deletion ---------------------------
-                if(notificationType.get(position)==1){
+                if (notificationType.get(position) == 1) {
                     Call<String> call = notificationService.deleteNotification(notificationId.get(position));
                     call.enqueue(new Callback<String>() {
                         @Override
@@ -206,6 +225,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
                         }
                     });
                 }
+                notifyItemChangeInThisAdapter(position);
                 return;
             }
         });
@@ -224,7 +244,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         return notificationId.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView notificationTitle;
         TextView groupName;

@@ -29,7 +29,6 @@ public class NotificationController {
     @GetMapping("/getNotificationsFromUser")
     public ResponseEntity getNotificationsFromUser(@RequestParam String userId){
         ArrayList<Notification> response = new ArrayList<>();
-        System.out.println("Angfrage gesendet");
         try{
             notificationRepository.findAll().forEach(notification -> {
                 if(notification.getUserId().equals(userId)){
