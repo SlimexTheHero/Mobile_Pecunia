@@ -262,7 +262,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
 
 
 
-        Call<String> call = tripService.addTrip(trip);
+        Call<String> call = tripService.addTrip(trip,userEmail);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

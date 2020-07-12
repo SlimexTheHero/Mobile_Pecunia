@@ -55,7 +55,7 @@ public class TripController {
     }
 
     @PostMapping("/addTrip")
-    public ResponseEntity addTrip(@RequestBody Trip trip) {
+    public ResponseEntity addTrip(@RequestBody Trip trip,@RequestParam String creator) {
         ArrayList<String> participants = new ArrayList<>();
         ArrayList<String> userList = new ArrayList<>();
         userRepository.findAll().forEach(user -> {
@@ -71,7 +71,9 @@ public class TripController {
                     tempNotification.setUserId(participant);
                     tempNotification.setNotificationType(2);
                     tempNotification.setNotificationMessage("You were added to the trip "+trip.getTripName()); //TODO Nachricht bestimmen
-                    notificationRepository.save(tempNotification);
+                    if(!participant.equals(creator)){
+                        notificationRepository.save(tempNotification);
+                    }
                 }
                 trip.setTripParticipants(participants);
             });

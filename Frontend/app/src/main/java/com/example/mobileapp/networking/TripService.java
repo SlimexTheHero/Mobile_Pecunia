@@ -25,7 +25,7 @@ public interface TripService {
     public Call<List<Trip>> getTripsByUser(@Query("eMail") String eMail);
 
     @POST("trip/addTrip")
-    public Call<String> addTrip(@Body Trip trip);
+    public Call<String> addTrip(@Body Trip trip,@Query("creator") String userId);
 
     @POST("trip/addAdminToTrip")
     public Call<String> addAdminToTrip(@Query("eMail") String eMail,@Query("TripId") String tripId);
