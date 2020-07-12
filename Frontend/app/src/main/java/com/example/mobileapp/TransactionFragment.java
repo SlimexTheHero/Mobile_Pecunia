@@ -69,7 +69,6 @@ public class TransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        initImageBitmaps();
         View rootView = inflater.inflate(R.layout.fragment_transaction_fragement, container, false);
         single_trip = (Single_Trip) getActivity();
         tripId=single_trip.getiD();
@@ -103,7 +102,7 @@ public class TransactionFragment extends Fragment {
         bundle.putStringArrayList("Participants_EMail",mUserEmails);
         bundle.putString("TripId",tripId);
 
-        Recycler_View_Adapter_Transaction adapter = new Recycler_View_Adapter_Transaction(Debtor,Creditor,mTitles,mAmount,mCurrency,this,mDate);
+        Recycler_View_Adapter_Transaction adapter = new Recycler_View_Adapter_Transaction(Debtor,Creditor,mTitles,mAmount,mCurrency,this,mDate,single_trip.geteMail(),single_trip.getiD());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -136,103 +135,6 @@ public class TransactionFragment extends Fragment {
             mCurrency.add(transaction.getCurrency());
             mDate.add(transaction.getDate());
         });
-    }
-
-
-    private void initImageBitmaps() {
-
-/*
-        Debtor.add("Filip");
-        Creditor.add("Bruno");
-        mTitles.add("Restaurant");
-        mAmount.add("50.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("€");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Jan");
-        mTitles.add("Themenpark");
-        mAmount.add("120.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("$");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Filip");
-        Creditor.add("Jan");
-        mTitles.add("Einkaufen");
-        mAmount.add("1680.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("¥");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Bruno");
-        mTitles.add("Bar");
-        mAmount.add("20.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("£");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Bruno");
-        mTitles.add("Bar");
-        mAmount.add("20.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("£");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Bruno");
-        mTitles.add("Bar");
-        mAmount.add("20.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("£");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Bruno");
-        mTitles.add("Bar");
-        mAmount.add("20.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("£");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Bruno");
-        mTitles.add("Bar");
-        mAmount.add("20.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("£");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
-        Debtor.add("Dennis");
-        Creditor.add("Bruno");
-        mTitles.add("Bar");
-        mAmount.add("20.00");
-        mCurrency.add("€");
-        mAmount_Converted.add("2.00");
-        mCurrency_Converted.add("£");
-        mDate.add("25.02.2020");
-        mTime.add("15:48");
-
- */
     }
 
 }

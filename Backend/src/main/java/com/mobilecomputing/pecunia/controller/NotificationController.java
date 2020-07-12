@@ -53,4 +53,10 @@ public class NotificationController {
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @PostMapping("/createDeleteTransactionNotification")
+    public ResponseEntity createDeleteTransactionNotification(@RequestBody Notification notification){
+        notificationRepository.save(notification);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

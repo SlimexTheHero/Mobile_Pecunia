@@ -52,8 +52,9 @@ public class TransactionController {
     public ResponseEntity addTransaction(@RequestBody Transaction transaction, @RequestParam String userId,
                                          @RequestParam String notificationMessage, @RequestParam String tripId) {
         try {
+            Trip trip =tripRepository.findById(tripId).get();
             Notification notification = new Notification();
-            notification.setNotificationMessage(notificationMessage);
+            notification.setNotificationMessage("Trip: "+trip.getTripName()+"\n"+notificationMessage);
             notification.setNotificationType(0);
             notification.setUserId(userId);
             notification.setTransactionId(transactionRepository.save(transaction).getTransactionId());
@@ -95,19 +96,6 @@ public class TransactionController {
                     trip.getTransactions().remove(i);
                 }
             }
-            notificationRepository.deleteById(notificationId);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");
-        }
-
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @DeleteMapping("/deleteTransactionInvite")
-    public ResponseEntity deleteTransactioninvite(@RequestParam String transactionId,
-                                                  @RequestParam String notificationId) {
-        try {
-            transactionRepository.deleteById(transactionId);
             notificationRepository.deleteById(notificationId);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");

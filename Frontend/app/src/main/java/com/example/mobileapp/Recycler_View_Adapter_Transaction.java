@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobileapp.model.Notification;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -23,11 +24,13 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
     private ArrayList<String> mCurrency;
     private TransactionFragment mContext;
     private ArrayList<String> mDate;
+    private String activeUserEmail;
+    private String activeTripId;
 
     public Recycler_View_Adapter_Transaction(ArrayList<String> debtor, ArrayList<String> creditor,
                                              ArrayList<String> mTitles, ArrayList<String> mAmount,
                                              ArrayList<String> mCurrency, TransactionFragment mContext,
-                                             ArrayList<String> mDate) {
+                                             ArrayList<String> mDate,String activeUserEmail,String activeTripId) {
         this.debtor = debtor;
         this.creditor = creditor;
         this.mTitles = mTitles;
@@ -35,6 +38,8 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         this.mCurrency = mCurrency;
         this.mContext = mContext;
         this.mDate = mDate;
+        this.activeUserEmail=activeUserEmail;
+        this.activeTripId=activeTripId;
     }
 
     @NonNull
@@ -78,6 +83,9 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         seeDetails.setNeutralButton("Ask for Deletion", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //Logik für Transaction löschen
+                Notification notification = new Notification();
+                notification.setNotificationMessage("");
                 return;
             }
         });

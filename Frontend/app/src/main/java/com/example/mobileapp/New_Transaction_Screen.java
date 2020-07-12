@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
@@ -166,7 +167,8 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         if (!validateUser() | !validateAmount() | !validateLocation() | !validateDate()) {
             return;
         }
-        String text = "Title: " + location + "\n" +
+        String text =
+                "Title: " + location + "\n" +
                 "From: " + debtor + "\n" +
                 "To: " + creditor + "\n" +
                 "Amount: " + amount + "\n" +
@@ -189,10 +191,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
             }
         });
-
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-
-
+        finish();
     }
 
     private String cleanCurrency(String currency) {
