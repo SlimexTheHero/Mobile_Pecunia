@@ -5,9 +5,9 @@ import org.springframework.data.annotation.Id;
 public class Transaction {
     @Id
     private String transactionId;
-    private String debtor; //Schuldner //TODO
-    private String creditor; // Gläubiger
-    private String currency; // vllt Enum?
+    private String debtor;
+    private String creditor;
+    private String currency;
     private double loan;
     private String location;
     private String date;

@@ -241,7 +241,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
 
     @Override
     public int getItemCount() {
-        return notificationId.size();
+        return notificationTripName.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

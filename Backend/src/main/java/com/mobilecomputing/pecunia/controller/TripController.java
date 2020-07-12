@@ -56,7 +56,28 @@ public class TripController {
 
     @PostMapping("/addTrip")
     public ResponseEntity addTrip(@RequestBody Trip trip) {
-        //TODO Gegenprüfen ob es alle User gibt
+        ArrayList<String> participants = new ArrayList<>();
+        ArrayList<String> userList = new ArrayList<>();
+        userRepository.findAll().forEach(user -> {
+            userList.add(user.geteMail());
+        });
+        try{
+            trip.getTripParticipants().forEach(participant->{
+                if(userList.contains(participant)){
+                    participants.add(participant);
+                    Notification tempNotification = new Notification();
+                    tempNotification.setTripName(trip.getTripName());
+                    tempNotification.setTripId(trip.getTripId());
+                    tempNotification.setUserId(participant);
+                    tempNotification.setNotificationType(2);
+                    tempNotification.setNotificationMessage("You were added to the trip "+trip.getTripName()); //TODO Nachricht bestimmen
+                    notificationRepository.save(tempNotification);
+                }
+                trip.setTripParticipants(participants);
+            });
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+        }
         return ResponseEntity.ok(tripRepository.save(trip).getTripId());
     }
 

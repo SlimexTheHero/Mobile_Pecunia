@@ -142,8 +142,6 @@ public class MemberFragment extends Fragment {
                 notification.setTripId(tripId);
                 notification.setUserId(single_trip.getiD());
                 notification.setNotificationType(2);
-                notification.setNotificationMessage(""); // TODO Message?
-
                 Call<String> call = userService.addUserToTrip(addUserText.getText().toString(),tripId,notification);
                 call.enqueue(new Callback<String>() {
                     @Override

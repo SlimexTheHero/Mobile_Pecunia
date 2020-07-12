@@ -82,7 +82,6 @@ public class UserController {
         try{
             Trip trip = tripRepository.findById(tripId).get();
             User user = userRepository.findById(eMail).get();
-           // notificationRepository.save(notification);
 
             for (String currentUserEMail : trip.getTripParticipants()) {
                 if (currentUserEMail.equals(eMail)) {
@@ -99,7 +98,8 @@ public class UserController {
 
             trip.getTripParticipants().add(eMail);
             tripRepository.save(trip);
-
+            notification.setNotificationMessage("You were added to the trip "+trip.getTripName());
+            notificationRepository.save(notification);
             return ResponseEntity.status(HttpStatus.OK).body(user.getName());
 
         }catch (NoSuchElementException e){
