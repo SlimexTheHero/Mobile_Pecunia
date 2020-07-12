@@ -44,9 +44,7 @@ import retrofit2.Response;
 
 public class New_Trip_Screen extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 //TODO validator
-    //TODO Tastaurlayout member hinzufügen
 
-    //TODO Bild
     private static final int PICK_IMAGE = 100;
     CircleImageView tripProfile;
     Uri imageUri;
@@ -209,6 +207,38 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
 
+    private boolean validateName() {
+        if (name.trim().isEmpty()) {
+            nameHolder.setError("Field cannot be empty");
+            return false;
+        } else {
+            nameHolder.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateStart() {
+        if(startDuration.trim().isEmpty()) {
+            startDurationHolder.setError("Field cannot be empty");
+            return false;
+        } else {
+            startDurationHolder.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateEnd() {
+        if(endDuration.trim().isEmpty()) {
+            endDurationHolder.setError("Field cannot be empty");
+            return false;
+        } else {
+            endDurationHolder.setError(null);
+            return true;
+        }
+    }
+
+
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
@@ -223,6 +253,9 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
     public void createTrip (View view) {
+        if (!validateEnd() | !validateName() | !validateStart()) {
+            return;
+        }
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("E-Mail", "");
         ArrayList<String> admins = new ArrayList<>();
