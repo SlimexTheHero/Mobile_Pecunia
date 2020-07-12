@@ -47,8 +47,8 @@
     android:orientation="vertical">
         <TextView
             android:id="@+id/trip_name"
+            android:ellipsize="end"
             android:layout_width="match_parent"
-            android:maxLength="190"
             android:layout_height="wrap_content"
             android:text="Groupname"
             android:textColor="#C5B358"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:text="Zeitspanne"
             android:textColor="#C5B358"
-            android:textSize="20dp" />
+            android:textSize="16dp" />
 
 </LinearLayout>
         
