@@ -3,17 +3,22 @@ package com.example.mobileapp;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 
 public class Notification_Popup extends Application {
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
+    private boolean permissionGranted;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        askForNotification();
         createNotificationChannels();
     }
 
@@ -39,6 +44,28 @@ public class Notification_Popup extends Application {
             manager.createNotificationChannel(channel1);
             manager.createNotificationChannel(channel2);
         }
+    }
+
+    private void askForNotification () {
+        MaterialAlertDialogBuilder permission = new MaterialAlertDialogBuilder(this);
+        permission.setTitle("Receive Notifications");
+        permission.setMessage("Do you want to receive Notifications about Trips and Transactions? \n");
+        permission.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                permissionGranted = true;
+                dialog.dismiss();
+            }
+        });
+        permission.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                permissionGranted = false;
+                dialog.dismiss();
+            }
+        });
+        permission.setCancelable(false);
+        permission.show();
     }
 
 }
