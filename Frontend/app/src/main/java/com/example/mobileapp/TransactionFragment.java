@@ -47,6 +47,7 @@ public class TransactionFragment extends Fragment {
 
     private ArrayList<String> mUserNames = new ArrayList<>();
     private ArrayList<String> mUserEmails = new ArrayList<>();
+    private ArrayList<String> mTransactionsId =new ArrayList<>();
 
     //Point of Time of the Transaction
     private ArrayList <String> mDate = new ArrayList<>();
@@ -102,7 +103,9 @@ public class TransactionFragment extends Fragment {
         bundle.putStringArrayList("Participants_EMail",mUserEmails);
         bundle.putString("TripId",tripId);
 
-        Recycler_View_Adapter_Transaction adapter = new Recycler_View_Adapter_Transaction(Debtor,Creditor,mTitles,mAmount,mCurrency,this,mDate,single_trip.geteMail(),single_trip.getiD());
+        Recycler_View_Adapter_Transaction adapter = new Recycler_View_Adapter_Transaction(Debtor,
+                Creditor,mTitles,mAmount,mCurrency,this,mDate,single_trip.geteMail(),
+                single_trip.getiD(),single_trip.getTripName(),mTransactionsId);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -128,6 +131,7 @@ public class TransactionFragment extends Fragment {
         });
 
         completeTrip.getTransactions().forEach(transaction -> {
+            mTransactionsId.add(transaction.getTransactionId());
             Debtor.add(transaction.getDebtor());
             Creditor.add(transaction.getCreditor());
             mTitles.add(transaction.getLocation());

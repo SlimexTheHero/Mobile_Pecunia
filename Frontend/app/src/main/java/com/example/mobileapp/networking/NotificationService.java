@@ -5,8 +5,10 @@ import com.example.mobileapp.model.Notification;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface NotificationService {
@@ -16,4 +18,7 @@ public interface NotificationService {
 
     @DELETE("notification/deleteNotification")
     public Call<String> deleteNotification(@Query("notificationId") String notificationId);
+
+    @POST("notification/createDeleteTransactionNotification")
+    public Call<String> createDeleteTransactionNotification(@Body Notification notification);
 }

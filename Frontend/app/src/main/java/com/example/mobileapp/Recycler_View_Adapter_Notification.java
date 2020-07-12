@@ -62,9 +62,28 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.groupName.setText(notificationTripName.get(position));
+        switch (notificationType.get(position)) {
+            case 0:
+                holder.notificationTitle.setText("New Transaction");
+                break;
+            case 1:
+                holder.notificationTitle.setText("Transaction deletion");
+                break;
+            case 2:
+                holder.notificationTitle.setText("Added to Trip");
+                break;
+            case 3:
+                holder.notificationTitle.setText("Removed from Trip");
+                break;
+            case 4:
+                holder.notificationTitle.setText("Adminrights gained");
+                break;
+            default:
+                return;
+        }
         notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
         transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
+        holder.groupName.setText(notificationTripName.get(position));
          count = 0;
 
         holder.notificationLayout.setOnClickListener(new View.OnClickListener() {
@@ -73,23 +92,18 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
 
                 switch (notificationType.get(position)) {
                     case 0:
-                        holder.notificationTitle.setText("New Transaction");
                         transactionTwoDetails(position, "New Transaction");
                         break;
                     case 1:
-                        holder.notificationTitle.setText("Transaction deletion");
                         transactionTwoDetails(position, "Transaction deletion");
                         break;
                     case 2:
-                        holder.notificationTitle.setText("Added to Trip");
                         transactionOneDetails(position, "Added to Trip");
                         break;
                     case 3:
-                        holder.notificationTitle.setText("Removed from Trip");
                         transactionOneDetails(position, "Removed from Trip");
                         break;
                     case 4:
-                        holder.notificationTitle.setText("Adminrights gained");
                         transactionOneDetails(position, "Adminrights gained");
                         break;
                     default:

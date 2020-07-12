@@ -11,9 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileapp.model.Notification;
+import com.example.mobileapp.networking.NotificationService;
+import com.example.mobileapp.networking.RetrofitClient;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_View_Adapter_Transaction.ViewHolder> {
 
@@ -26,11 +32,15 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
     private ArrayList<String> mDate;
     private String activeUserEmail;
     private String activeTripId;
+    private String tripName;
+    private ArrayList<String> mTransactionsId;
+    private NotificationService notificationService;
 
     public Recycler_View_Adapter_Transaction(ArrayList<String> debtor, ArrayList<String> creditor,
                                              ArrayList<String> mTitles, ArrayList<String> mAmount,
                                              ArrayList<String> mCurrency, TransactionFragment mContext,
-                                             ArrayList<String> mDate,String activeUserEmail,String activeTripId) {
+                                             ArrayList<String> mDate, String activeUserEmail, String activeTripId,
+                                             String tripName, ArrayList<String> mTransactionsId) {
         this.debtor = debtor;
         this.creditor = creditor;
         this.mTitles = mTitles;
@@ -38,8 +48,10 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         this.mCurrency = mCurrency;
         this.mContext = mContext;
         this.mDate = mDate;
-        this.activeUserEmail=activeUserEmail;
-        this.activeTripId=activeTripId;
+        this.activeUserEmail = activeUserEmail;
+        this.activeTripId = activeTripId;
+        this.tripName = tripName;
+        this.mTransactionsId = mTransactionsId;
     }
 
     @NonNull
@@ -53,7 +65,7 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
         holder.userName.setText(creditor.get(position));
         holder.title.setText(mTitles.get(position));
         holder.amount.setText(mAmount.get(position));
@@ -75,17 +87,39 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
     public void transactionDetails(int position) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(mContext.getActivity());
         seeDetails.setTitle(mTitles.get(position));
-        String amount = "Amount: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + mAmount.get(position) + "\t" + mCurrency.get(position);
-        String one = "Debtor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + debtor.get(position);
-        String two = "Creditor: " + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + creditor.get(position);
-        String date = "Transaction Date: " + "\t\t\t\t" + mDate.get(position);
-        seeDetails.setMessage(amount + "\n" + "\n" + one + "\n" + two + "\n" + date + "\n");
+        String text = "Title: " + tripName + "\n" +
+                "Transactiontitle: "+""+"\n"+ // TODO Title der Transaktion hinzufügen
+                "From: " + debtor.get(position) + "\n" +
+                "To: " + creditor.get(position) + "\n" +
+                "Amount: " + mAmount.get(position) + "\n" +
+                "Currency: " + mCurrency.get(position) + "\n" +
+                "Date: " + mDate.get(position);
+        seeDetails.setMessage(text);
         seeDetails.setNeutralButton("Ask for Deletion", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Logik für Transaction löschen
+                String notificationReceiver = debtor.get(position);
+                if (activeUserEmail.equals(debtor.get(position))) {
+                    notificationReceiver = creditor.get(position);
+                }
                 Notification notification = new Notification();
-                notification.setNotificationMessage("");
+                notification.setUserId(notificationReceiver);
+                notification.setTripName(tripName);
+                notification.setNotificationType(1);
+                notification.setNotificationMessage(activeUserEmail + " asks for deleting the following transaction\n"+text);
+                notification.setTransactionId(mTransactionsId.get(position));
+                Call<String> call = notificationService.createDeleteTransactionNotification(notification);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
                 return;
             }
         });

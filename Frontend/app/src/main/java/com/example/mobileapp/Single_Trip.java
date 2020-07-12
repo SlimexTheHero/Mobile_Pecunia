@@ -211,4 +211,8 @@ public class Single_Trip extends AppCompatActivity {
     public ArrayList<String> getAdmins() {
         return admins;
     }
+
+    public String getTripName() {
+        return tripName.getText().toString();
+    }
 }
