@@ -43,7 +43,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class New_Trip_Screen extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-//TODO validator
 
     private static final int PICK_IMAGE = 100;
     CircleImageView tripProfile;
@@ -208,7 +207,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
 
 
     private boolean validateName() {
-        if (name.trim().isEmpty()) {
+        if (name == null || name.trim().isEmpty()) {
             nameHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -218,7 +217,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
     private boolean validateStart() {
-        if(startDuration.trim().isEmpty()) {
+        if(startDuration == null || startDuration.trim().isEmpty()) {
             startDurationHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -228,7 +227,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
     private boolean validateEnd() {
-        if(endDuration.trim().isEmpty()) {
+        if(endDuration == null || endDuration.trim().isEmpty()) {
             endDurationHolder.setError("Field cannot be empty");
             return false;
         } else {
@@ -253,9 +252,7 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
     public void createTrip (View view) {
-        if (!validateEnd() | !validateName() | !validateStart()) {
-            return;
-        }
+
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("E-Mail", "");
         ArrayList<String> admins = new ArrayList<>();
@@ -293,7 +290,9 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
 
         trip.setCurrency(cleanCurrency);
 
-
+        if (!validateEnd() | !validateName() | !validateStart()) {
+            return;
+        }
 
         Call<String> call = tripService.addTrip(trip,userEmail);
         call.enqueue(new Callback<String>() {
