@@ -47,8 +47,6 @@ public class TransactionFragment extends Fragment {
 
     private ArrayList<String> mUserNames = new ArrayList<>();
     private ArrayList<String> mUserEmails = new ArrayList<>();
-    private ArrayList<String> mUserImages = new ArrayList<>();
-    private ArrayList<Boolean> mUserAdmin = new ArrayList<>();
 
     //Point of Time of the Transaction
     private ArrayList <String> mDate = new ArrayList<>();
@@ -126,10 +124,8 @@ public class TransactionFragment extends Fragment {
         Call<CompleteTrip> call = tripService.getCompleteTripById(tripId);
         completeTrip =call.execute().body();
         completeTrip.getTripParticipants().forEach(participant -> {
-            mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
             mUserNames.add(participant.getName());
             mUserEmails.add(participant.geteMail());
-            mUserAdmin.add(completeTrip.getAdmins().contains(participant.geteMail()));
         });
 
         completeTrip.getTransactions().forEach(transaction -> {

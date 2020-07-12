@@ -44,17 +44,6 @@ public class NotificationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/addDeleteTransactionNotification")
-    public ResponseEntity addDeleteTransaction(@RequestBody Notification notification){
-        try{
-            notificationRepository.save(notification);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
     @DeleteMapping("/deleteNotification")
     public ResponseEntity deleteNotification(@RequestParam String notificationId){
         try{

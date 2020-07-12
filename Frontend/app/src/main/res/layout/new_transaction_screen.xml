@@ -42,7 +42,6 @@
             android:focusable="false"
             android:gravity="left|center_vertical"
             android:hint="Participant"
-            android:maxLength="7"
             android:textSize="30dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -58,7 +57,7 @@
             app:startIconTint="#C5B358"
             android:layout_marginLeft="30dp"
             android:layout_gravity="center"
-            app:startIconDrawable="@drawable/transaction_arrow"></com.google.android.material.textfield.TextInputLayout>
+            app:startIconDrawable="@drawable/transaction_arrow" />
 
         <RadioGroup
             android:id="@+id/transaction_decider"

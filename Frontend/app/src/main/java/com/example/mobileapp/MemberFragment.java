@@ -148,23 +148,14 @@ public class MemberFragment extends Fragment {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Toast.makeText(getActivity(), response.body(), Toast.LENGTH_SHORT).show();
-                        System.out.println(response.raw()+"------------------------");
                         if(response.body()==null){
                             Toast.makeText(getActivity(), "User not found", Toast.LENGTH_SHORT).show();
-                            //return;
                         }
                         mUserEmails.add(addUserText.getText().toString());
                         mUserAdmin.add(false);
                         mUserNames.add(response.body());
-                        //adapter.notifyItemChanged(mUserAdmin.size()-1);
-                        //adapter.notifyItemRangeChanged(mUserAdmin.size()-1,mUserAdmin.size());
-
-                        //adapter.updateMemberList(mUserEmails,mUserNames,mUserAdmin);
-                        getActivity().finish();
-                        Intent intent = new Intent(getContext(),Single_Trip.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        adapter.notifyItemChanged(mUserAdmin.size()-1);
+                        adapter.notifyItemRangeChanged(mUserAdmin.size()-1,mUserAdmin.size());
                     }
 
                     @Override

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,7 +33,6 @@ public class Notifications_Screen extends AppCompatActivity {
 
     private ArrayList<String> notificationId= new ArrayList<>();
     private ArrayList<Integer> notificationType = new ArrayList<>();
-    private ArrayList<String> notificationTitle = new ArrayList<>();
     private ArrayList<String> notificationTripName = new ArrayList<>();
     private ArrayList<String> notificationTripId = new ArrayList<>();
     private ArrayList<String> notificationTransactionId = new ArrayList<>();
@@ -42,13 +42,17 @@ public class Notifications_Screen extends AppCompatActivity {
     private TextView testButtonOne;
     private NotificationManagerCompat notificationManager;
     private NotificationService notificationService;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("E-Mail", "");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications_screen);
         notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
-        initNotifications();
+        //initNotifications();
+        requestNotifications(userEmail);
 
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -105,6 +109,8 @@ public class Notifications_Screen extends AppCompatActivity {
                     notificationTransactionId.add(notification.getTransactionId());
                     notificationUserId.add(notification.getUserId());
                 });
+
+                initRecyclerView();
             }
 
             @Override
@@ -115,39 +121,13 @@ public class Notifications_Screen extends AppCompatActivity {
     }
 
 
-    private void initNotifications() {
-
-        notificationType.add(0);
-        notificationTitle.add("Test 0");
-        notificationTripName.add("Group 0");
-        notificationMessage.add("This is 0");
-
-        notificationType.add(1);
-        notificationTitle.add("Test 1");
-        notificationTripName.add("Group 1");
-        notificationMessage.add("This is 1");
-
-        notificationType.add(2);
-        notificationTitle.add("Test 2");
-        notificationTripName.add("Group 2");
-        notificationMessage.add("This is 2");
-
-        notificationType.add(3);
-        notificationTitle.add("Test 3");
-        notificationTripName.add("Group 3");
-        notificationMessage.add("This is 3");
-
-        notificationType.add(4);
-        notificationTitle.add("Test 4");
-        notificationTripName.add("Group 4");
-        notificationMessage.add("This is 4");
-
-        initRecyclerView();
-    }
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_notification);
-        Recycler_View_Adapter_Notification adapter_transaction = new Recycler_View_Adapter_Notification(this, notificationType, notificationTitle, notificationTripName, notificationMessage);
+        Recycler_View_Adapter_Notification adapter_transaction = new Recycler_View_Adapter_Notification(notificationId,notificationType,
+                notificationTripName,notificationTripId,notificationTransactionId,notificationMessage,
+                notificationUserId,this);
+
         recyclerView.setAdapter(adapter_transaction);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

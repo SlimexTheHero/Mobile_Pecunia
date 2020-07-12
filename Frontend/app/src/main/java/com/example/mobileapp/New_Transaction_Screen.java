@@ -60,7 +60,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
     private int flag = 0;
     public static final int FLAG_PICK_DATE = 2;
     private TransactionService transactionService;
-    String userEmail;
+    private String userEmail;
 
     //ScreenLayout
     LinearLayout transactionLayout;
@@ -86,6 +86,9 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         vParticipant = findViewById(R.id.second_participant);
         currencyDropdown = findViewById(R.id.currency_dropdown);
         transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("E-Mail", "");
 
 
         //List of all supported currencies, will be swapped with DB
@@ -163,9 +166,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         if (!validateUser() | !validateAmount() | !validateLocation() | !validateDate()) {
             return;
         }
-
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        userEmail = sharedPreferences.getString("E-Mail", "");
         String text = "Title: " + location + "\n" +
                 "From: " + debtor + "\n" +
                 "To: " + creditor + "\n" +
@@ -279,11 +279,9 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
      */
     public void chooseParticipant() {
         //Will be replaced by all members of a trip minus account user
-        String[] names = new String[getIntent().getExtras().getStringArrayList("Participants_EMail").size()];
-
-        for(int i =0; i<names.length;i++){
-            names[i] = getIntent().getExtras().getStringArrayList("Participants_EMail").get(i);
-        }
+        ArrayList<String> listWithEmails= getIntent().getExtras().getStringArrayList("Participants_EMail");
+        listWithEmails.remove(userEmail);
+        String[] names = listWithEmails.toArray(new String[listWithEmails.size()]);
 
 
         int checkedName = -1;

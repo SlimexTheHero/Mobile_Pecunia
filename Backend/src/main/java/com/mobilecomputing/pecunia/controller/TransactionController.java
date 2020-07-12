@@ -101,4 +101,17 @@ public class TransactionController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @DeleteMapping("/deleteTransactionInvite")
+    public ResponseEntity deleteTransactioninvite(@RequestParam String transactionId,
+                                                  @RequestParam String notificationId) {
+        try {
+            transactionRepository.deleteById(transactionId);
+            notificationRepository.deleteById(notificationId);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");
+        }
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

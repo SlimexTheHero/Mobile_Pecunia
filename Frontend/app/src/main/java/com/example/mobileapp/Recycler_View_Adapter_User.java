@@ -131,12 +131,16 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         this.mUserNames.addAll(mUserNames);
         this.mUserAdmin.addAll(mUserAdmin);
 
+        notifyDataSetChanged();
+/*
         mContext.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 notifyDataSetChanged();
             }
         });
+
+ */
 
     }
 

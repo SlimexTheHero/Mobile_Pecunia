@@ -14,10 +14,10 @@ import retrofit2.http.Query;
 public interface TransactionService {
 
     @POST("transaction/addTransactionToTrip")
-    public Call<String> addTransactionToTrip(@Body Transaction transaction, @Query("tripId") String tripId);
+    public Call<String> addTransactionToTrip(@Query("transactionId") String transactionId, @Query("tripId") String tripId,@Query("notificationId") String notification);
 
     @DELETE("transaction/deleteTransaction")
-    public Call <String> deleteTransactionFromTrip(@Query("transactionId") String transactionId,@Query("tripId") String tripId);
+    public Call <String> deleteTransaction(@Query("transactionId") String transactionId,@Query("tripId") String tripId,@Query("notificationId")String notificationId);
 
     @GET("transaction/getAllTransactionsByTrip")
     public Call <List<Transaction>> getAllTransactionsByTrip(@Query("tripId") String tripId);
@@ -26,4 +26,9 @@ public interface TransactionService {
     public Call<String> addTransaction(@Body Transaction transaction, @Query("userId") String eMail,
                                        @Query("notificationMessage") String notificationMessage,
                                        @Query("tripId") String tripId);
+
+    @DELETE("transaction/deleteTransactionInvite")
+    public Call<String> deleteTransactionInvite(@Query("transactionId") String transactionId,@Query("notificationId")String notificationId);
 }
+
+
