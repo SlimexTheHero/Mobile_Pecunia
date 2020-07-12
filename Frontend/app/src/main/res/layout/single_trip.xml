@@ -2,87 +2,98 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/single_trip"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/single_trip"
     android:layout_gravity="center_horizontal"
     android:background="#141412"
-    tools:context=".Single_Trip"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Single_Trip">
 
-
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_gravity="left"
-        android:src="@drawable/back_button"
-        android:clickable="true"
-        android:onClick="backButton"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginLeft="40dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="40dp"
+        android:layout_marginRight="40dp"
         android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/trip_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:civ_border_color="#C5B358"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"
-        app:civ_border_width="1dp" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:onClick="backButton"
+            android:src="@drawable/back_button" />
 
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="13dp"
-    android:orientation="vertical">
-        <TextView
-            android:id="@+id/trip_name"
-            android:ellipsize="end"
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            android:text="Groupname"
-            android:textColor="#C5B358"
-            android:textSize="35dp" />
-
-        <TextView
-            android:id="@+id/trip_duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Zeitspanne"
-            android:textColor="#C5B358"
-            android:textSize="14dp" />
-
-</LinearLayout>
-        
         <ImageView
             android:id="@+id/leave_trip_image"
             android:layout_width="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
             android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
             android:src="@drawable/leave_trip" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/trip_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="#C5B358"
+            app:civ_border_width="1dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="13dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/trip_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#C5B358"
+                android:textSize="28dp" />
+
+            <TextView
+                android:id="@+id/trip_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#C5B358"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-   <com.google.android.material.tabs.TabLayout
-       android:id="@+id/tab_layout"
-       android:layout_marginTop="30dp"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       app:tabTextColor="#716528"
-       app:tabIndicatorColor="#C5B358"
-       app:tabSelectedTextColor="#C5B358"/>
-
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:tabIndicatorColor="#C5B358"
+        app:tabSelectedTextColor="#C5B358"
+        app:tabTextColor="#716528" />
 
 
     <androidx.viewpager.widget.ViewPager
