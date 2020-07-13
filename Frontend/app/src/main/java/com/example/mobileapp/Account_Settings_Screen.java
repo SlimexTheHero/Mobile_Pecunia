@@ -56,6 +56,8 @@ public class Account_Settings_Screen extends AppCompatActivity {
 
     Button applyChanges;
 
+    Boolean unlocked = false;
+
     Context context = this;
 
     UserService userService;
@@ -117,6 +119,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         //Hier wird der Check mit dem momentanen PW stattfinden
                         unlockPw.setVisibility(View.GONE);
                         unlockPWInputLayout.setVisibility(View.VISIBLE);
+                        unlocked = true;
                     }
                 });
                 unlock.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -132,7 +135,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
         applyChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (unlockPw.getVisibility() != View.VISIBLE) {
+                if (!unlocked) {
                     if (changeNameHolder.getEditText().getText().toString().isEmpty()) {
                         finish();
                         startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
