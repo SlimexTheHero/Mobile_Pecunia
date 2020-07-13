@@ -15,7 +15,6 @@ public class PecuniaApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PecuniaApplication.class, args);
-        //new MailManager().sendEmail();
     }
 }
 
