@@ -23,6 +23,8 @@ public class Lost_PW extends AppCompatActivity {
     private TextInputLayout textInputCode;
     private String email;
     private Button sendEmail;
+    private Button resetPW;
+    private boolean emailSend = false;
     private Context context = this;
 
     @Override
@@ -33,6 +35,7 @@ public class Lost_PW extends AppCompatActivity {
         textInputEmail = findViewById(R.id.text_input_email);
         textInputCode = findViewById(R.id.text_input_reset_code);
         sendEmail = findViewById(R.id.send_email_button);
+        resetPW = findViewById(R.id.reset_password_button);
 
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +52,14 @@ public class Lost_PW extends AppCompatActivity {
                         "Pecunia Password reset",
                         "This is your 6 digit code to reset your password: \n" + code);
                 sm.execute();
+                emailSend = true;
+            }
+        });
+
+        resetPW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetPW();
             }
         });
 
@@ -62,15 +73,16 @@ public class Lost_PW extends AppCompatActivity {
             return false;
         } else {
             textInputEmail.setError(null);
-
             return true;
         }
     }
 
     private boolean validateCode() {
         String codeInput = textInputCode.getEditText().getText().toString();
-
-        if (codeInput.isEmpty()) {
+        if (!emailSend) {
+            textInputEmail.setError("You need to send the email before");
+            return false;
+        } else if (codeInput.isEmpty()) {
             textInputCode.setError("Field cannot be empty");
             return false;
         } else if (codeInput.length()!=6) {
@@ -82,7 +94,7 @@ public class Lost_PW extends AppCompatActivity {
         }
     }
 
-    public void resetPW (View v) {
+    public void resetPW () {
         if (!validateEmail() || (!validateCode())) {
             return;
         } else {
