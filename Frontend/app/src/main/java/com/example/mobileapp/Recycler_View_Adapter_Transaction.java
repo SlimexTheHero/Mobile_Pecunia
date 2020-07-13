@@ -106,7 +106,7 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
                 notification.setUserId(notificationReceiver);
                 notification.setTripName(tripName);
                 notification.setNotificationType(1);
-                notification.setNotificationMessage(activeUserEmail + " asks for deleting the following transaction\n"+text);
+                notification.setNotificationMessage(activeUserEmail + " asks for deleting the following transaction:\n\n"+text);
                 notification.setTransactionId(mTransactionsId.get(position));
                 Call<String> call = notificationService.createDeleteTransactionNotification(notification);
                 call.enqueue(new Callback<String>() {

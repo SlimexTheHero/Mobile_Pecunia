@@ -119,35 +119,42 @@ public class TripController {
 
         ArrayList<Trip> temp = new ArrayList<>();
         ArrayList<Trip> response = new ArrayList<>();
-        tripRepository.findAll().forEach(trip -> {
-            temp.add(trip);
-        });
+        try{
+            tripRepository.findAll().forEach(trip -> {
+                temp.add(trip);
+            });
 
-        for (Trip t: temp) {
-            boolean userIsParticipant = false;
-            for(String tempEmail: t.getTripParticipants()){
-                if(tempEmail.equals(eMail)){
-                    userIsParticipant=true;
+            for (Trip t: temp) {
+                boolean userIsParticipant = false;
+                for(String tempEmail: t.getTripParticipants()){
+                    if(tempEmail.equals(eMail)){
+                        userIsParticipant=true;
+                    }
+                }
+
+                if(userIsParticipant){
+                    response.add(t);
                 }
             }
 
-            if(userIsParticipant){
-                response.add(t);
+            if(response.size()==0){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User has no trip");
             }
-        }
 
-        if(response.size()==0){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User has no trip");
-        }
+            return ResponseEntity.ok(response);
 
-        return ResponseEntity.ok(response);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
     }
 
     @GetMapping("/getBillFromTrip")
     public ResponseEntity getBillFromTrip(@RequestParam String tripId){
         try{
+            ArrayList<String> responseList = new ArrayList<>();
            String billingString= billingCalculator.calcBill(tripRepository.findById(tripId).get());
-            return ResponseEntity.ok(billingString);
+           responseList.add(billingString);
+            return ResponseEntity.status(HttpStatus.OK).body(responseList);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
         }

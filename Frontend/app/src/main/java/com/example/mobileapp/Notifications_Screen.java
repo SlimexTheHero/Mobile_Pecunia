@@ -126,6 +126,7 @@ public class Notifications_Screen extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_notification);
+        System.out.println(notificationTripId);
         Recycler_View_Adapter_Notification adapter_transaction = new Recycler_View_Adapter_Notification(notificationId,notificationType,
                 notificationTripName,notificationTripId,notificationTransactionId,notificationMessage,
                 notificationUserId,this);

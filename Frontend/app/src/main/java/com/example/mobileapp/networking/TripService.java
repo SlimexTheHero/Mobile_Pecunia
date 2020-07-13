@@ -33,8 +33,8 @@ public interface TripService {
     @DELETE("trip/deleteAdmin")
     public Call <String> deleteAdminFromTrip(@Query("eMail") String eMail,@Query("TripId") String tripId);
 
-    @POST("trip/getBillFromTrip")
-    public Call<String> getBillFromTrip(@Query("tripId") String tripId);
+    @GET("trip/getBillFromTrip")
+    public Call<List<String>> getBillFromTrip(@Query("tripId") String tripId);
 
     @GET("trip/getCompleteTripById")
     public Call<CompleteTrip> getCompleteTripById(@Query("tripId") String tripId);

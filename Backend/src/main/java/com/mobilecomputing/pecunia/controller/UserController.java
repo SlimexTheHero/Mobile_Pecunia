@@ -38,7 +38,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/changeNameOfUser")
+    @PutMapping("/changeNameOfUser")
     public ResponseEntity changeNameOfUser(@RequestParam String eMail, @RequestParam String newName){
         try{
             User user = userRepository.findById(eMail).get();

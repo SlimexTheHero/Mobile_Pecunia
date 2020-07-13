@@ -25,6 +25,9 @@ public class Trip {
         this.transactions = transactions;
         this.admins = admins;
     }
+    public Trip(){
+
+    };
 
     public String getImageBase64String() {
         return imageBase64String;

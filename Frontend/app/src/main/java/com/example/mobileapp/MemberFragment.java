@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
@@ -54,11 +56,13 @@ public class MemberFragment extends Fragment {
     private Button endTrip;
     private Button addMember;
     private Recycler_View_Adapter_User adapter;
+    public static final String TAG = "E Mail test";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         single_trip = (Single_Trip) getActivity();
-        tripId=single_trip.getiD();
+        tripId = single_trip.getiD();
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
 
@@ -91,17 +95,17 @@ public class MemberFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_member_fragement, container, false);
 
-        endTrip= rootView.findViewById(R.id.leave_trip);
-        addMember=rootView.findViewById(R.id.add_member);
+        endTrip = rootView.findViewById(R.id.leave_trip);
+        addMember = rootView.findViewById(R.id.add_member);
 
-        if(!isAdmin){
+        if (!isAdmin) {
             endTrip.setVisibility(View.GONE);
             addMember.setVisibility(View.GONE);
         }
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
         adapter = new Recycler_View_Adapter_User(this, mUserNames,
-                mUserEmails, mUserImages, mUserAdmin,isAdmin,single_trip.geteMail(),completeTrip);
+                mUserEmails, mUserImages, mUserAdmin, isAdmin, single_trip.geteMail(), completeTrip);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -142,18 +146,18 @@ public class MemberFragment extends Fragment {
                 notification.setTripId(tripId);
                 notification.setUserId(single_trip.getiD());
                 notification.setNotificationType(2);
-                Call<String> call = userService.addUserToTrip(addUserText.getText().toString(),tripId,notification);
+                Call<String> call = userService.addUserToTrip(addUserText.getText().toString(), tripId, notification);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.body()==null){
+                        if (response.body() == null) {
                             Toast.makeText(getActivity(), "User not found", Toast.LENGTH_SHORT).show();
                         }
                         mUserEmails.add(addUserText.getText().toString());
                         mUserAdmin.add(false);
                         mUserNames.add(response.body());
-                        adapter.notifyItemChanged(mUserAdmin.size()-1);
-                        adapter.notifyItemRangeChanged(mUserAdmin.size()-1,mUserAdmin.size());
+                        adapter.notifyItemChanged(mUserAdmin.size() - 1);
+                        adapter.notifyItemRangeChanged(mUserAdmin.size() - 1, mUserAdmin.size());
                     }
 
                     @Override
@@ -185,7 +189,26 @@ public class MemberFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //Send a notification to every member and create the PDF
                 //Kick all Members and delete the trip
-                getActivity().finish();
+
+                Call<List<String>> call = tripService.getBillFromTrip(tripId);
+                call.enqueue(new Callback<List<String>>() {
+                    @Override
+                    public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                        System.out.println(response.body());
+                        for (String eMail : mUserEmails) {
+                            SendMail sendMail = new SendMail(getActivity().getApplicationContext(), eMail.trim(), "Pecunia Bill", response.body().get(0));
+                            System.err.println(eMail);
+                            Log.d(TAG, "Send to this User " + response.body());
+                            sendMail.execute();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<String>> call, Throwable t) {
+
+                    }
+                });
+                //getActivity().finish();
             }
         });
         endTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
@@ -201,8 +224,8 @@ public class MemberFragment extends Fragment {
     private void fillWithMember(String tripId) throws IOException {
 
         Call<CompleteTrip> call = tripService.getCompleteTripById(tripId);
-        completeTrip =call.execute().body();
-        isAdmin= completeTrip.getAdmins().contains(single_trip.geteMail());
+        completeTrip = call.execute().body();
+        isAdmin = completeTrip.getAdmins().contains(single_trip.geteMail());
         completeTrip.getTripParticipants().forEach(participant -> {
             mUserImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
             mUserNames.add(participant.getName());

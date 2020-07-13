@@ -16,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.example.mobileapp.model.Notification;
 import com.example.mobileapp.model.Trip;
+import com.example.mobileapp.networking.NotificationService;
 import com.example.mobileapp.networking.RetrofitClient;
 import com.example.mobileapp.networking.TripService;
 import com.example.mobileapp.networking.UserService;
@@ -40,6 +42,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     private ImageView settings;
     private ImageView notifications;
     private TripService tripService;
+    private NotificationService notificationService;
     private Loading_Dialog loading_dialog;
 
     @Override
@@ -50,6 +53,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
 
         loading_dialog = new Loading_Dialog(Trip_Overview_Screen.this);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
+        notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
         settings = findViewById(R.id.settings_button);
         notifications = findViewById(R.id.notifications);
 
@@ -114,6 +118,32 @@ public class Trip_Overview_Screen extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Trip>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Make sure to have a connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        Call<List<Notification>> notiCall = notificationService.getNotificationFromUser(userEmail);
+        notiCall.enqueue(new Callback<List<Notification>>() {
+            @Override
+            public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
+                Call<List<Notification>> notiCall = notificationService.getNotificationFromUser(userEmail);
+                notiCall.enqueue(new Callback<List<Notification>>() {
+                    @Override
+                    public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
+                        if(response.body().size()>0){
+                            notifications.setImageResource(R.drawable.bell_active);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Notification>> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<Notification>> call, Throwable t) {
 
             }
         });

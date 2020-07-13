@@ -31,14 +31,13 @@ public class BillingCalculator {
         trip.getTransactions().forEach(t->{
             allTransactionsOfTrip.add(transactionRepository.findById(t).get());
         });
-        // 1.Beziehungen des Trips bestimmen
         // Create all unique relations between the users
         for (int i = 0; i < trip.getTripParticipants().size(); i++) {
             User tempA = userRepository.findById(trip.getTripParticipants().get(i)).get();
             for (int k = i + 1; k < trip.getTripParticipants().size(); k++) {
                 User tempB = userRepository.findById(trip.getTripParticipants().get(k)).get();
                 ArrayList<Transaction> tempListOfTransactions = new ArrayList<>();
-                // 2. Transaktionen aller Parteien suchen
+                // Search transactions of all pairs
                 allTransactionsOfTrip.forEach(transaction -> {
                     if((transaction.getCreditor().equals(tempA.geteMail()) // User A is Creditor and User B ist Debtor
                             &&transaction.getDebtor().equals(tempB.geteMail()))
@@ -75,7 +74,8 @@ public class BillingCalculator {
 
         public String calcBill(){
             double status =0;
-            String billString= userA.getName()+" and "+userB.getName()+"\n";
+            String billString="";
+            billString= userA.getName()+" and "+userB.getName()+"\n";
             for(int i=0; i<transactions.size();i++){
                 //if transaction currency doesnt matches the trip currency
                 double tempLoan = transactions.get(i).getLoan();

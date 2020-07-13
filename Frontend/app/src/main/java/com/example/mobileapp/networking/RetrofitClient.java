@@ -14,7 +14,7 @@ public class RetrofitClient {
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private static Retrofit retrofit;
     private static Gson gson;
-    private static final String BASE_URL = "https://a83a764ab145.ngrok.io/";
+    private static final String BASE_URL = "https://94d75c7868d8.ngrok.io/";
 
 
     public static Retrofit getRetrofitInstance() {

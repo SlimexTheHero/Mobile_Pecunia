@@ -31,6 +31,9 @@ public class NotificationController {
         ArrayList<Notification> response = new ArrayList<>();
         try{
             notificationRepository.findAll().forEach(notification -> {
+                if(notification.getTripId()==null){
+                    notification.setTripId("default");
+                }
                 if(notification.getUserId().equals(userId)){
                     response.add(notification);
                 }

@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+//TODO negative Zahlen validate
 public class New_Trip_Screen extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final int PICK_IMAGE = 100;

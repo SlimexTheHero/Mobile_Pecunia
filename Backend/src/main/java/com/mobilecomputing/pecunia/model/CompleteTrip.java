@@ -2,6 +2,9 @@ package com.mobilecomputing.pecunia.model;
 
 import java.util.List;
 
+/**
+ * Wrapper for the Models
+ */
 public class CompleteTrip {
     private String tripId;
     private String tripName;

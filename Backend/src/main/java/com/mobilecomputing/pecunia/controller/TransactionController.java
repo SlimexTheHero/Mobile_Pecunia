@@ -88,14 +88,26 @@ public class TransactionController {
     @DeleteMapping("/deleteTransaction")
     public ResponseEntity deleteTransaction(@RequestParam String transactionId, @RequestParam String tripId,
                                             @RequestParam String notificationId) {
+        ArrayList<Trip> listOfTrips = new ArrayList<>();
+        Trip tempTrip = new Trip();
+        tripRepository.findAll().forEach(trip->{
+            listOfTrips.add(trip);
+        });
+        for(Trip trip: listOfTrips){
+            if(trip.getTransactions().contains(transactionId)){
+                tempTrip=trip;
+            }
+        }
+
+
         try {
-            Trip trip = tripRepository.findById(tripId).get();
             transactionRepository.deleteById(transactionId);
-            for (int i = 0; i < trip.getTransactions().size(); i++) {
-                if (trip.getTransactions().get(i).equals(transactionId)) {
-                    trip.getTransactions().remove(i);
+            for (int i = 0; i < tempTrip.getTransactions().size(); i++) {
+                if (tempTrip.getTransactions().get(i).equals(transactionId)) {
+                    tempTrip.getTransactions().remove(i);
                 }
             }
+            tripRepository.save(tempTrip);
             notificationRepository.deleteById(notificationId);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element not found");
