@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Settings_Screen extends AppCompatActivity {
-
+        //TODO NAME UND EMAIL ANZEIGEN LASSEN
     public static final String SHARED_PREFS = "sharedPrefs";
     private Button profileButton;
     private Button logOutButton;

@@ -62,8 +62,35 @@ public class Start_Screen extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(!getUserEmail().isEmpty() && !getUserPassword().isEmpty()) {
-            startActivity(new Intent(Start_Screen.this,Trip_Overview_Screen.class));
+        if(!getUserEmail().isEmpty()&&!getUserPassword().isEmpty()){
+            getUserEmail();
+            getUserPassword();
+            Call<User> call = userService.getUserByEmail(getUserEmail().trim());
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    Toast.makeText(getApplicationContext(), "Logging in ...", Toast.LENGTH_SHORT).show();
+                    System.out.println("Das ist eine Antwort: " + response.body());
+                    if (response.body() == null) {
+                        textInputEmail.setError("Invalid Data");
+                        textInputPW.setError("Invalid Data");
+                    } else {
+                        User testUser = response.body();
+                        if(!testUser.getPassword().equals(getUserPassword().trim())){
+                            return;
+                        }
+                        userEmail = testUser.geteMail();
+                        userName = testUser.getName();
+                        userPassword = testUser.getPassword();
+                        startActivity(new Intent(Start_Screen.this,Trip_Overview_Screen.class));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Make sure to have a connection", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -105,7 +132,6 @@ public class Start_Screen extends AppCompatActivity {
         if (!validateEmail() | !validatePW()) {
             return;
         }
-        //Toast.makeText(this, "Logging in ...", Toast.LENGTH_SHORT).show();
         Call<User> call = userService.getUserByEmail(textInputEmail.getEditText().getText().toString().trim());
         call.enqueue(new Callback<User>() {
             @Override
@@ -117,6 +143,11 @@ public class Start_Screen extends AppCompatActivity {
                     textInputPW.setError("Invalid Data");
                 } else {
                     User testUser = response.body();
+                    if(!testUser.getPassword().equals(textInputPW.getEditText().getText().toString().trim())){
+                        textInputEmail.setError("Invalid Data");
+                        textInputPW.setError("Invalid Data");
+                        return;
+                    }
                     userEmail = testUser.geteMail();
                     userName = testUser.getName();
                     userPassword = testUser.getPassword();

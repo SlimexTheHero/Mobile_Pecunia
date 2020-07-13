@@ -202,6 +202,7 @@ public class MemberFragment extends Fragment {
                             sendMail.execute();
                         }
                         getActivity().finish();
+                        startActivity(new Intent(getActivity().getApplicationContext(),Trip_Overview_Screen.class));
                     }
 
                     @Override

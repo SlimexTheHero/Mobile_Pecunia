@@ -154,7 +154,7 @@ public class TripController {
             ArrayList<String> responseList = new ArrayList<>();
            String billingString= billingCalculator.calcBill(tripRepository.findById(tripId).get());
            responseList.add(billingString);
-           //todo gruppe löschen
+            tripRepository.deleteById(tripId);
             return ResponseEntity.status(HttpStatus.OK).body(responseList);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
@@ -209,6 +209,11 @@ public class TripController {
     public ResponseEntity deleteUserFromTrip(@RequestParam String eMail,@RequestParam String tripId,@RequestBody Notification notification){
         try{
             Trip trip =tripRepository.findById(tripId).get();
+            trip.getTransactions().forEach(transaction->{
+                if(transaction.equals(eMail)){
+                    transactionRepository.deleteById(transaction);
+                }
+            });
             trip.getTripParticipants().remove(eMail);
             tripRepository.save(trip);
             if(notification.getUserId()!=null){

@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface UserService {
@@ -19,10 +20,18 @@ public interface UserService {
     public Call<String> registrateUser(@Body User user);
 
     @POST("user/addUserToTrip")
-    public Call<String> addUserToTrip(@Query("eMail") String eMail,@Query("tripId") String tripId,@Body Notification notification);
+    public Call<String> addUserToTrip(@Query("eMail") String eMail,@Query("tripId") String tripId,
+                                      @Body Notification notification);
 
-    @POST("user/changeNameOfUser")
+    @PUT("user/changeNameOfUser")
     public Call<String> changeNameOfUser(@Query("eMail") String eMail,@Query("newName") String newName);
+
+    @PUT("user/changePWOfUser")
+    public Call<String> changePWOfUser(@Query("eMail") String eMail,@Query("newPw") String newPw);
+
+    @PUT("user/changeNameAndPWOfUser")
+    public Call<String> changeNameAndPWOfUser(@Query("eMail") String eMail,@Query("newName") String newName,
+                                              @Query("newPw") String newPw);
 
     @POST("user/deleteUser")
     public Call<String> deleteUser(@Query("eMail") String eMail);

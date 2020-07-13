@@ -53,6 +53,41 @@ public class UserController {
         }
     }
 
+    @PutMapping("/changePWOfUser")
+    public ResponseEntity changePasswordOfUser(@RequestParam String eMail,@RequestParam String newPw){
+        try{
+            User user = userRepository.findById(eMail).get();
+            if(user==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            user.setPassword(newPw);
+            userRepository.save(user);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+    @PutMapping("/changeNameAndPWOfUser")
+    public ResponseEntity changeNameAndPasswordOfUser(@RequestParam String eMail,@RequestParam String newName,
+                                                      @RequestParam String newPw){
+        try{
+            User user = userRepository.findById(eMail).get();
+            if(user==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            
+            user.setPassword(newPw);
+            user.setName(newName);
+            userRepository.save(user);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+
     @GetMapping("/getAll")
     public ResponseEntity getAllUsers() {
         ArrayList<User> response = new ArrayList<>();

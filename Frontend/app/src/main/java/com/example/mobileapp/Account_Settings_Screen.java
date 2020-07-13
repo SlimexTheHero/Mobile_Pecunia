@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mobileapp.logic.ImageEncoder;
+import com.example.mobileapp.model.User;
 import com.example.mobileapp.networking.RetrofitClient;
 import com.example.mobileapp.networking.UserService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -36,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Account_Settings_Screen extends AppCompatActivity {
-
+//TODO CLEAR Tastatur layout
     private static final int PICK_IMAGE = 100;
     CircleImageView userProfile;
     Uri imageUri;
@@ -53,6 +55,8 @@ public class Account_Settings_Screen extends AppCompatActivity {
 
     TextInputLayout changePWConfirmationHolder;
     TextInputEditText changePWConfirmationText;
+
+    String userEmail;
 
     Button applyChanges;
 
@@ -80,6 +84,9 @@ public class Account_Settings_Screen extends AppCompatActivity {
         changePWConfirmationHolder = findViewById(R.id.change_pw_confirm_holder);
         changePWConfirmationText = findViewById(R.id.change_pw_confirm);
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
+        userEmail = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getString("E-Mail","");
+        changeNameHolder.setHint(getSharedPreferences("sharedPrefs", MODE_PRIVATE).getString("Name",""));
+
 
 
         userProfile.setOnClickListener(v -> changePicture());
@@ -116,10 +123,25 @@ public class Account_Settings_Screen extends AppCompatActivity {
                 unlock.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Hier wird der Check mit dem momentanen PW stattfinden
-                        unlockPw.setVisibility(View.GONE);
-                        unlockPWInputLayout.setVisibility(View.VISIBLE);
-                        unlocked = true;
+                        Call<User> call = userService.getUserByEmail(userEmail);
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                if(response.body().getPassword().equals(unlockPWText.getText().toString().trim())){
+                                    unlockPw.setVisibility(View.GONE);
+                                    unlockPWInputLayout.setVisibility(View.VISIBLE);
+                                    unlocked = true;
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Wrong password",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+
+                            }
+                        });
+
                     }
                 });
                 unlock.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -140,8 +162,25 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
                     } else {
-                        //Anfrage nur namen ändern
-                        Toast.makeText(context, "Nur name ändern ohne pw", Toast.LENGTH_SHORT).show();
+                        Call<String> call = userService.changeNameOfUser(userEmail,changeNameHolder.getEditText().getText().toString().trim());
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+                                        .edit()
+                                        .remove("E-Mail")
+                                        .remove("Password")
+                                        .remove("Name")
+                                        .apply();
+                                finish();
+                                startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+
+                            }
+                        });
                     }
 
 
@@ -150,18 +189,76 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
                     } else if (changePWHolder.getEditText().getText().toString().isEmpty()) {
-                        //Anfrage nur namen ändern
-                        Toast.makeText(context, "Nur name ändern", Toast.LENGTH_SHORT).show();
+                        Call<String> call = userService.changeNameOfUser(userEmail,changeNameHolder.getEditText().getText().toString().trim());
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+                                        .edit()
+                                        .remove("E-Mail")
+                                        .remove("Password")
+                                        .remove("Name")
+                                        .apply();
+                                Toast.makeText(getApplicationContext(),"Changes applied",Toast.LENGTH_SHORT);
+                                finish();
+                                startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+
+                            }
+                        });
 
                     }else{
                         if(validatePWConfirmation()&&changeNameHolder.getEditText().getText().toString().isEmpty()){
                             //Anfrage pw
                             Toast.makeText(context, "Nur PW ändern", Toast.LENGTH_SHORT).show();
+                            Call<String> call = userService.changePWOfUser(userEmail,changePWText.getText().toString().trim());
+                            call.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                    getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+                                            .edit()
+                                            .remove("E-Mail")
+                                            .remove("Password")
+                                            .remove("Name")
+                                            .apply();
+                                    Toast.makeText(getApplicationContext(),"Changes applied",Toast.LENGTH_SHORT);
+                                    finish();
+                                    startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+
+                                }
+                            });
 
                         }
                         else{
-                            // ANfrage pw und name
-                            Toast.makeText(context, "Alles ändern", Toast.LENGTH_SHORT).show();
+                            Call<String> call = userService.changeNameAndPWOfUser(userEmail,
+                                    changeNameHolder.getEditText().getText().toString().trim(),
+                                    changePWText.getText().toString().trim());
+                            call.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                    getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+                                            .edit()
+                                            .remove("E-Mail")
+                                            .remove("Password")
+                                            .remove("Name")
+                                            .apply();
+                                    Toast.makeText(getApplicationContext(),"Changes applied",Toast.LENGTH_SHORT);
+                                    finish();
+                                    startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+
+                                }
+                            });
 
                         }
                     }
