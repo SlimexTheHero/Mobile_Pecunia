@@ -85,13 +85,13 @@ public class Account_Settings_Screen extends AppCompatActivity {
         accountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 changeName.clearFocus();
                 changePWText.clearFocus();
                 changePWConfirmationText.clearFocus();
-                imm.hideSoftInputFromWindow(changeName.getWindowToken(),0);
-                imm.hideSoftInputFromWindow(changePWText.getWindowToken(),0);
-                imm.hideSoftInputFromWindow(changePWConfirmationText.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(changeName.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(changePWText.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(changePWConfirmationText.getWindowToken(), 0);
             }
         });
 
@@ -104,7 +104,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                 unlock.setTitle("Unlock password change");
                 unlock.setMessage("To unlock the password change, confirm your actual password.");
                 unlockPWText.setHint("Actual password");
-                unlockPWLayout.setPadding(60,0,60,30);
+                unlockPWLayout.setPadding(60, 0, 60, 30);
                 unlockPWLayout.addView(unlockPWText);
                 unlockPWLayout.setStartIconDrawable(R.drawable.pw_icon);
                 unlockPWText.setSingleLine();
@@ -133,19 +133,34 @@ public class Account_Settings_Screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (unlockPw.getVisibility() != View.VISIBLE) {
-                    if (!validatePWConfirmation()) {
-                        return;
-                    } else {
-                        Toast.makeText(context, "Changes applied", Toast.LENGTH_SHORT).show();
+                    if (changeNameHolder.getEditText().getText().toString().isEmpty()) {
                         finish();
+                        startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
+                    } else {
+                        //Anfrage nur namen ändern
+                        Toast.makeText(context, "Nur name ändern ohne pw", Toast.LENGTH_SHORT).show();
                     }
+
+
                 } else {
-                    if (changeNameHolder.getEditText().getText().toString().isEmpty() | changePWHolder.getEditText().getText().toString().isEmpty()) {
-                        Toast.makeText(context, "No changes were made", Toast.LENGTH_SHORT).show();
+                    if (changeNameHolder.getEditText().getText().toString().isEmpty() && changePWHolder.getEditText().getText().toString().isEmpty()) {
                         finish();
-                    } else {
-                        Toast.makeText(context, "Changes applied", Toast.LENGTH_SHORT).show();
-                        finish();
+                        startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
+                    } else if (changePWHolder.getEditText().getText().toString().isEmpty()) {
+                        //Anfrage nur namen ändern
+                        Toast.makeText(context, "Nur name ändern", Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        if(validatePWConfirmation()&&changeNameHolder.getEditText().getText().toString().isEmpty()){
+                            //Anfrage pw
+                            Toast.makeText(context, "Nur PW ändern", Toast.LENGTH_SHORT).show();
+
+                        }
+                        else{
+                            // ANfrage pw und name
+                            Toast.makeText(context, "Alles ändern", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                 }
             }
@@ -169,10 +184,11 @@ public class Account_Settings_Screen extends AppCompatActivity {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE ) {
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imageUri = data.getData();
             userProfile.setImageURI(imageUri);
             InputStream imageStream = null;
@@ -200,11 +216,12 @@ public class Account_Settings_Screen extends AppCompatActivity {
             }
         }else {
             Toast.makeText(getApplicationContext(), "Format nicht unterstützt", Toast.LENGTH_SHORT).show();
-        //TODO vor abgabe löschen*/
+ */
         }
     }
 
     public void backButton(View view) {
         finish();
+        startActivity(new Intent(this, Settings_Screen.class));
     }
 }

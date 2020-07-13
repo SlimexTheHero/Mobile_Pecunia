@@ -16,23 +16,15 @@ import android.widget.Toast;
 public class Settings_Screen extends AppCompatActivity {
 
     public static final String SHARED_PREFS = "sharedPrefs";
-    private TextView counter;
     private Button profileButton;
     private Button logOutButton;
     private TextView appInfo;
-
-    int trips;
-    int transactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
 
-
-        trips = 5;
-        transactions = 10;
-        counter = findViewById(R.id.tripTransactionCounter);
         profileButton = findViewById(R.id.profileButton);
         logOutButton = findViewById(R.id.logoutButton);
         appInfo = findViewById(R.id.appInfo);
@@ -53,6 +45,7 @@ public class Settings_Screen extends AppCompatActivity {
                 editor.remove("Password");
                 editor.remove("E-Mail");
                 editor.apply();
+                finish();
                 startActivity(new Intent(Settings_Screen.this, Start_Screen.class));
             }
         });
@@ -65,21 +58,6 @@ public class Settings_Screen extends AppCompatActivity {
                 startActivity(new Intent(Settings_Screen.this, App_Info_Screen.class));
             }
         });
-
-        //Will be replaced by actual amount
-        int trips = 5;
-        int transactions = 10;
-        counter.setText("Active trips: \t\t\t\t\t\t\t\t\t" + trips +"\n" +
-                                "Active transactions: \t\t" + transactions);
-    }
-
-
-    public void enableNotification (View view) {
-        if(((CheckBox)view).isChecked()) {
-            //Activate notifications
-        } else {
-            //Disable notifications
-        }
     }
 
     public void backButton(View view) {

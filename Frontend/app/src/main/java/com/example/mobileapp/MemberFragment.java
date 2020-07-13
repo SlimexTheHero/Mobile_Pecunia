@@ -201,6 +201,7 @@ public class MemberFragment extends Fragment {
                             Log.d(TAG, "Send to this User " + response.body());
                             sendMail.execute();
                         }
+                        getActivity().finish();
                     }
 
                     @Override
@@ -208,7 +209,6 @@ public class MemberFragment extends Fragment {
 
                     }
                 });
-                //getActivity().finish();
             }
         });
         endTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {

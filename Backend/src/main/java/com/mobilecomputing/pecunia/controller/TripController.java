@@ -154,6 +154,7 @@ public class TripController {
             ArrayList<String> responseList = new ArrayList<>();
            String billingString= billingCalculator.calcBill(tripRepository.findById(tripId).get());
            responseList.add(billingString);
+           //todo gruppe löschen
             return ResponseEntity.status(HttpStatus.OK).body(responseList);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trip not found");
