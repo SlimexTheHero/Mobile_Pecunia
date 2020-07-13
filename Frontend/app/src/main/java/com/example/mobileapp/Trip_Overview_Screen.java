@@ -149,42 +149,6 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         });
     }
 
-    private void initImageBitmaps() {
-
-        mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mTripNames.add("Trondheim");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mTripNames.add("Portugal");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.redd.it/j6myfqglup501.jpg");
-        mTripNames.add("Max. 25 Zeichen, wegen Space");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mTripNames.add("Mahahual");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mTripNames.add("Frozen Lake");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.redd.it/glin0nwndo501.jpg");
-        mTripNames.add("White Sands Desert");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.redd.it/obx4zydshg601.jpg");
-        mTripNames.add("Austrailia");
-        mTripDuration.add("21.05 - 28.08");
-
-        mTripImages.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mTripNames.add("Washington");
-        mTripDuration.add("21.05 - 28.08");
-
-        initRecyclerView();
-    }
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);

@@ -1,5 +1,6 @@
 package com.example.mobileapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -77,6 +78,7 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         content.putStringArrayList("Transactions",mTransactions.get(position));
         content.putStringArrayList("Admins",mAdmins.get(position));
         intent.putExtras(content);
+        ((Trip_Overview_Screen)mContext).finish();
         mContext.startActivity(intent);
     }
 

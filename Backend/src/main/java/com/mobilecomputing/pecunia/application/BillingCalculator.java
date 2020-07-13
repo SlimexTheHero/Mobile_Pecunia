@@ -77,19 +77,31 @@ public class BillingCalculator {
             String billString="";
             billString= userA.getName()+" and "+userB.getName()+"\n";
             for(int i=0; i<transactions.size();i++){
+                boolean otherCurrency= false;
                 //if transaction currency doesnt matches the trip currency
                 double tempLoan = transactions.get(i).getLoan();
                 if(!transactions.get(i).getCurrency().equals(baseCurrency)){
                     tempLoan=tempLoan/(Double)currencyMap.get(transactions.get(i).getCurrency());
+                    tempLoan= Math.round(tempLoan*100.0)/100.0;
+                    otherCurrency=true;
                 }
-                billString+= transactions.get(i).getLocation()+": "+transactions.get(i).getCreditor()+" owes "+
-                        transactions.get(i).getDebtor()+" "+transactions.get(i).getLoan()+" "+baseCurrency+"\n";
+                if(otherCurrency){
+                    billString+= transactions.get(i).getLocation()+": "+transactions.get(i).getCreditor()+" owes "+
+                            transactions.get(i).getDebtor()+" "+transactions.get(i).getLoan()+" "+transactions.get(i).getCurrency()
+                            +" ("+tempLoan+" "+baseCurrency+")"+"\n\n";
+                }else{
+                    billString+= transactions.get(i).getLocation()+": "+transactions.get(i).getCreditor()+" owes "+
+                            transactions.get(i).getDebtor()+" "+transactions.get(i).getLoan()+" "+transactions.get(i).getCurrency()
+                            +"\n\n";
+                }
 
                 if(transactions.get(i).getDebtor().equals(userA.geteMail())){
                     status-=tempLoan;
                 }else {
                     status+=tempLoan;
                 }
+
+                status=Math.round(status*100.0)/100.0;
 
             }
             billString+="------------Sum-------------"+"\n";

@@ -214,6 +214,11 @@ public class TripController {
                     transactionRepository.deleteById(transaction);
                 }
             });
+            for(int i=0;i<trip.getAdmins().size();i++){
+                if(trip.getAdmins().get(i).equals(eMail)){
+                    trip.getAdmins().remove(i);
+                }
+            }
             trip.getTripParticipants().remove(eMail);
             tripRepository.save(trip);
             if(notification.getUserId()!=null){

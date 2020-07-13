@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileapp.model.Notification;
@@ -103,6 +104,7 @@ public class Single_Trip extends AppCompatActivity {
 
     public void backButton(View view) {
         finish();
+        startActivity(new Intent(this,Trip_Overview_Screen.class));
     }
 
     private boolean lastAdmin(){
@@ -118,45 +120,43 @@ public class Single_Trip extends AppCompatActivity {
     }
 
     public void leaveTripButton() {
-        MaterialAlertDialogBuilder leaveTrip = new MaterialAlertDialogBuilder(this);
-        leaveTrip.setTitle("Leave Trip");
+        if(admins.size()!=1) {
+            MaterialAlertDialogBuilder leaveTrip = new MaterialAlertDialogBuilder(this);
+            leaveTrip.setTitle("Leave Trip");
 
-        //Kommende IF Abfrage ob
-        //1. Man ein Admin ist
-        //2. Eine Aktive Transaktion hat
-        //Punkte 1 und 2 können ignoriert werden falls der Trip in der Vergangenheit liegt.
-        if(!lastAdmin()){ //todo der letzte admin darf nicht abschließen
-            Notification notification = new Notification();
-            Call<String> call = tripService.deleteUserFromTrip(eMail,tripId,notification);
-            call.enqueue(new Callback<String>() {
+            leaveTrip.setMessage("Do you want to leave this trip? Be aware that once you leave this trip only an admin can add you back.");
+            leaveTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onClick(DialogInterface dialog, int which) {
 
-                }
+                    Notification notification = new Notification();
+                    Call<String> call = tripService.deleteUserFromTrip(eMail, tripId, notification);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
 
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                        }
 
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), Trip_Overview_Screen.class));
                 }
             });
+            leaveTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                }
+            });
+            leaveTrip.show();
+        }else{
+            Toast.makeText(getApplicationContext(),"Last admin can´t leave the trip",Toast.LENGTH_LONG).show();
         }
-
-        leaveTrip.setMessage("Do you want to leave this trip? Be aware that once you leave this trip only an admin can add you back.");
-        leaveTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Delete User from Group, so he cant see it anymore
-                finish();
-                startActivity(new Intent(getApplicationContext(),Trip_Overview_Screen.class));
-            }
-        });
-        leaveTrip.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        });
-        leaveTrip.show();
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
