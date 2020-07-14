@@ -76,12 +76,12 @@ public class Notifications_Screen extends AppCompatActivity {
 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Type der Notification, siehe 0-4") //TODO Wird durch IF Abfrage nach Typ geändert
+                .setContentTitle("Type der Notification, siehe 0-4")
                 .setContentText("Gruppenname")
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Hier steht die gesamte Transaktion als Notification. Hier steht so viel scheiße drinnen, da es nicht komplett angezeigt werden kann.") //TODO
-                        .setBigContentTitle("Hier kommt der Gruppenname hin") //TODO
-                        .setSummaryText("Transaction oder Trip")) //TODO
+                        .bigText("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et")
+                        .setBigContentTitle("Hier kommt der Gruppenname hin")
+                        .setSummaryText("Transaction oder Trip"))
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setColor(Color.parseColor("#C5B358"))
                 .setContentIntent(contentIntent)

@@ -212,7 +212,7 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
             }
     }
 
-    public void removeUser(int position) { //TODO admin check
+    public void removeUser(int position) {
         if (!actualUserEMail.equals(mUserEMails.get(position)) && !mUserAdmin.get(position) &&!(mUserNames.size()==1)) {
             MaterialAlertDialogBuilder deleteUser = new MaterialAlertDialogBuilder(mContext.getActivity());
             deleteUser.setTitle("Remove User");
@@ -222,7 +222,7 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                 public void onClick(DialogInterface dialog, int which) {
                     Recycler_View_Adapter_User.this.notifyItemChanged(position);
                     Notification notification = new Notification();
-                    notification.setNotificationMessage(""); // TODO message?
+                    notification.setNotificationMessage("");
                     notification.setNotificationType(3);
                     notification.setTripName(completeTrip.getTripName());
                     notification.setUserId(mUserEMails.get(position));

@@ -14,11 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Settings_Screen extends AppCompatActivity {
-        //TODO NAME UND EMAIL ANZEIGEN LASSEN
     public static final String SHARED_PREFS = "sharedPrefs";
     private Button profileButton;
     private Button logOutButton;
     private TextView appInfo;
+    private TextView name;
+    private TextView email;
+private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,12 @@ public class Settings_Screen extends AppCompatActivity {
         profileButton = findViewById(R.id.profileButton);
         logOutButton = findViewById(R.id.logoutButton);
         appInfo = findViewById(R.id.appInfo);
+        name = findViewById(R.id.settings_name);
+        email = findViewById(R.id.settings_email);
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
+        name.setText(sharedPreferences.getString("Name",""));
+        email.setText(sharedPreferences.getString("E-Mail", ""));
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +47,7 @@ public class Settings_Screen extends AppCompatActivity {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("Name");
                 editor.remove("Password");

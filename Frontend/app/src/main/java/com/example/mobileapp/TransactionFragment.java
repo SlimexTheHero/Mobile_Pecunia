@@ -77,7 +77,7 @@ public class TransactionFragment extends Fragment {
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
         transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
 
-        @SuppressLint("StaticFieldLeak") AsyncTask asyncTask = new AsyncTask() { //TODO Sollte vllt static sein?
+        @SuppressLint("StaticFieldLeak") AsyncTask asyncTask = new AsyncTask() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             protected Object doInBackground(Object[] objects) {

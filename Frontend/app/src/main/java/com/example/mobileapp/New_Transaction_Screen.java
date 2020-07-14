@@ -132,7 +132,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //TODO currency = groupcurrency
             }
         });
     }
@@ -342,6 +341,9 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         if (amount == null | amount.isEmpty()) {
             amountHolder.setError("Field cannot be empty");
             return false;
+        } else if(amount.startsWith("-")) {
+            amountHolder.setError("No negative numbers");
+            return false;
         } else {
             amountHolder.setError(null);
             return true;
@@ -392,7 +394,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         int idx = decider.indexOfChild(radioButton);
         if (idx == 0) {
             debtor = participant;
-            creditor = userEmail;//TODO creditor wird null gesetzt
+            creditor = userEmail;
         } else {
             creditor = participant;
             debtor = userEmail;

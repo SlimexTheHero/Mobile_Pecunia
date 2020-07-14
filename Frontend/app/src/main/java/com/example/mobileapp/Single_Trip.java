@@ -34,7 +34,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Single_Trip extends AppCompatActivity {
-//TODO layout tripname anpassen
     private TextView tripName;
     private ImageView tripImage;
     private TextView tripDuration;

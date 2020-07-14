@@ -38,7 +38,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Account_Settings_Screen extends AppCompatActivity {
-//TODO CLEAR Tastatur layout
     private static final int PICK_IMAGE = 100;
     CircleImageView userProfile;
     Uri imageUri;
@@ -95,12 +94,12 @@ public class Account_Settings_Screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                changeName.clearFocus();
-                changePWText.clearFocus();
-                changePWConfirmationText.clearFocus();
-                imm.hideSoftInputFromWindow(changeName.getWindowToken(), 0);
-                imm.hideSoftInputFromWindow(changePWText.getWindowToken(), 0);
-                imm.hideSoftInputFromWindow(changePWConfirmationText.getWindowToken(), 0);
+                changeNameHolder.clearFocus();
+                changePWHolder.clearFocus();
+                changePWConfirmationHolder.clearFocus();
+                imm.hideSoftInputFromWindow(changeNameHolder.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(changePWHolder.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(changePWConfirmationHolder.getWindowToken(), 0);
             }
         });
 

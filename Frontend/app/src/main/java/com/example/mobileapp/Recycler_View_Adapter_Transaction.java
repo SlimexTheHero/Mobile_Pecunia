@@ -88,7 +88,7 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(mContext.getActivity());
         seeDetails.setTitle(mTitles.get(position));
         String text = "Title: " + tripName + "\n" +
-                "Transactiontitle: "+""+"\n"+ // TODO Title der Transaktion hinzufügen
+                "Transactiontitle: "+""+"\n"+
                 "From: " + debtor.get(position) + "\n" +
                 "To: " + creditor.get(position) + "\n" +
                 "Amount: " + mAmount.get(position) + "\n" +
