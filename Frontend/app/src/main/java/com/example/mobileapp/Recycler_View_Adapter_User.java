@@ -69,6 +69,10 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         return holder;
     }
 
+    /**
+     * Sets values with the information we got from the constructor
+     * and sets OnClickListener
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.userName.setText(mUserNames.get(position));
@@ -86,7 +90,6 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         }
 
 
-        //Remove User
         holder.userName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +99,6 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
             }
         });
 
-        //Set Admin
         holder.userAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +109,10 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         });
     }
 
+    /**
+     * Checks if the user is the last admin in the trip
+     * @return
+     */
     private boolean lastAdmin(){
         int i =0;
         for(int k =0;k< mUserAdmin.size();k++){
@@ -118,28 +124,12 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
         return i==1;
     }
 
-    public void updateMemberList(ArrayList<String> mUserEMails, ArrayList<String> mUserNames, ArrayList<Boolean> mUserAdmin) {
-        mUserAdmin.clear();
-        mUserEMails.clear();
-        mUserNames.clear();
 
-        this.mUserEMails.addAll(mUserEMails);
-        this.mUserNames.addAll(mUserNames);
-        this.mUserAdmin.addAll(mUserAdmin);
-
-        notifyDataSetChanged();
-/*
-        mContext.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                notifyDataSetChanged();
-            }
-        });
-
- */
-
-    }
-
+    /**
+     * Let an admin set another admin
+     * Creates a AlertDialog for this purpose
+     * @param position
+     */
     public void setAdmin(int position) {
             MaterialAlertDialogBuilder confirmAdmin = new MaterialAlertDialogBuilder(mContext.getActivity());
             confirmAdmin.setTitle("Admin rights");
@@ -148,6 +138,12 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                 confirmAdmin.setIcon(R.drawable.no_admin_crown);
                 confirmAdmin.setMessage("Do you want to give " + mUserNames.get(position) + " Admin rights?");
                 confirmAdmin.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+                    /**
+                     * Requests backend to add chosen user as admin
+                     * @param dialog
+                     * @param which
+                     */
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mUserAdmin.set(position, true);
@@ -175,11 +171,19 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                     }
                 });
                 confirmAdmin.show();
+
+                /**
+                 * If clicked on own admin crown, it will ask to delete your own admin rights
+                 */
             } else if(mUserEMails.get(position).equals(actualUserEMail)&&!lastAdmin()) {
                 confirmAdmin.setIcon(R.drawable.admin_crown);
-                //Check ob er nicht der letzte Admin ist, wenn ja ist keine Admin entnahme möglich
                 confirmAdmin.setMessage("Do you want to remove your own Admin rights?");
                 confirmAdmin.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    /**
+                     * Requests backend to delete admin rights
+                     * @param dialog
+                     * @param which
+                     */
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mUserAdmin.set(position, false);
@@ -212,6 +216,10 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
             }
     }
 
+    /**
+     * An admin can remove a user from a trip by clicking on him and accepting the dialog
+     * @param position
+     */
     public void removeUser(int position) {
         if (!actualUserEMail.equals(mUserEMails.get(position)) && !mUserAdmin.get(position) &&!(mUserNames.size()==1)) {
             MaterialAlertDialogBuilder deleteUser = new MaterialAlertDialogBuilder(mContext.getActivity());
@@ -230,6 +238,12 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                     Call<String> call = tripService.deleteUserFromTrip(mUserEMails.get(position),
                             completeTrip.getTripId(), notification);
                     call.enqueue(new Callback<String>() {
+
+                        /**
+                         * Requests backend to remove user from trip
+                         * @param call
+                         * @param response
+                         */
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
 
@@ -241,6 +255,10 @@ public class Recycler_View_Adapter_User extends RecyclerView.Adapter<Recycler_Vi
                         }
 
                     });
+
+                    /**
+                     * Removes user from frontend
+                     */
                     mUserNames.remove(position);
                     mUserAdmin.remove(position);
                     Recycler_View_Adapter_User.this.notifyItemRemoved(position);

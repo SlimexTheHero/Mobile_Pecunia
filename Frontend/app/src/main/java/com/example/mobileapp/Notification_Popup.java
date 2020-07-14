@@ -9,6 +9,7 @@ import android.os.Build;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+//----------------------------------------------------------------------------UNDER CONSTRUCTION
 
 public class Notification_Popup extends Application {
     public static final String CHANNEL_1_ID = "channel1";

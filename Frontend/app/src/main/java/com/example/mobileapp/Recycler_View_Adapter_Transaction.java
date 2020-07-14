@@ -64,6 +64,10 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         return holder;
     }
 
+    /**
+     * Sets values with the information we got from the constructor
+     * and sets OnClickListener
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -97,6 +101,10 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         return mTitles.size();
     }
 
+    /**
+     * Creates AlertDialog, which shows the detailed information about clicked trip
+     * @param position
+     */
     public void transactionDetails(int position) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(mContext.getActivity());
         seeDetails.setTitle(mTitles.get(position));
@@ -108,6 +116,10 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
                 "Currency: " + mCurrency.get(position) + "\n" +
                 "Date: " + mDate.get(position);
         seeDetails.setMessage(text);
+
+        /**
+         * Requests backend to send a notification for deletion request
+         */
         seeDetails.setNeutralButton("Ask for Deletion", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

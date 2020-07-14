@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+
+//--------------------------------------------------UNDER CONSTRUCTION-----------------------------------------------------
+
+
 public class ImageEncoder {
     public String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

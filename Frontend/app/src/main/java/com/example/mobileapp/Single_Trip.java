@@ -101,23 +101,18 @@ public class Single_Trip extends AppCompatActivity {
         });
     }
 
+    /**
+     * Returns to previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
         startActivity(new Intent(this,Trip_Overview_Screen.class));
     }
 
-    private boolean lastAdmin(){
-        int i =0;
-        for(int k =0;k< admins.size();k++){
-            if(admins.get(k).equals("true")){
-                System.err.println(admins.get(k));
-                i++;
-            }
-        }
-
-        return i==1;
-    }
-
+    /**
+     * Leaves trip and removes user from it
+     */
     public void leaveTripButton() {
         if(admins.size()!=1) {
             MaterialAlertDialogBuilder leaveTrip = new MaterialAlertDialogBuilder(this);
@@ -131,6 +126,12 @@ public class Single_Trip extends AppCompatActivity {
                     Notification notification = new Notification();
                     Call<String> call = tripService.deleteUserFromTrip(eMail, tripId, notification);
                     call.enqueue(new Callback<String>() {
+
+                        /**
+                         * Requests backend to remove user from trip
+                         * @param call
+                         * @param response
+                         */
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
 

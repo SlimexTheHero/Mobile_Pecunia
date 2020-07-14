@@ -38,31 +38,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Account_Settings_Screen extends AppCompatActivity {
+
     private static final int PICK_IMAGE = 100;
     CircleImageView userProfile;
     Uri imageUri;
     LinearLayout accountLayout;
-
     TextInputLayout changeNameHolder;
     TextInputEditText changeName;
-
     LinearLayout unlockPw;
     LinearLayout unlockPWInputLayout;
-
     TextInputLayout changePWHolder;
     TextInputEditText changePWText;
-
     TextInputLayout changePWConfirmationHolder;
     TextInputEditText changePWConfirmationText;
-
     String userEmail;
-
     Button applyChanges;
-
     Boolean unlocked = false;
-
     Context context = this;
-
     UserService userService;
 
 
@@ -83,13 +75,12 @@ public class Account_Settings_Screen extends AppCompatActivity {
         changePWConfirmationHolder = findViewById(R.id.change_pw_confirm_holder);
         changePWConfirmationText = findViewById(R.id.change_pw_confirm);
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
-        userEmail = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getString("E-Mail","");
-        changeNameHolder.setHint(getSharedPreferences("sharedPrefs", MODE_PRIVATE).getString("Name",""));
+        userEmail = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getString("E-Mail", "");
+        changeNameHolder.setHint(getSharedPreferences("sharedPrefs", MODE_PRIVATE).getString("Name", ""));
 
-
-
-        userProfile.setOnClickListener(v -> changePicture());
-
+        /**
+         * Remove keyboardlayout when clicking outside the inputfield
+         */
         accountLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +94,13 @@ public class Account_Settings_Screen extends AppCompatActivity {
             }
         });
 
+
+        /**
+         * 1. Creates AlertDialog for the password change unlock
+         * 2. Checks for correct password input
+         * 3. If input is correct, shows the passwort change input fields
+         *    If input is wrong, shows a toast with a message
+         */
         unlockPw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,12 +124,12 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         call.enqueue(new Callback<User>() {
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {
-                                if(response.body().getPassword().equals(unlockPWText.getText().toString().trim())){
+                                if (response.body().getPassword().equals(unlockPWText.getText().toString().trim())) {
                                     unlockPw.setVisibility(View.GONE);
                                     unlockPWInputLayout.setVisibility(View.VISIBLE);
                                     unlocked = true;
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Wrong password",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Wrong password", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -153,6 +151,10 @@ public class Account_Settings_Screen extends AppCompatActivity {
             }
         });
 
+
+        /**
+         * Applies accountinformation changes
+         */
         applyChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +163,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
                     } else {
-                        Call<String> call = userService.changeNameOfUser(userEmail,changeNameHolder.getEditText().getText().toString().trim());
+                        Call<String> call = userService.changeNameOfUser(userEmail, changeNameHolder.getEditText().getText().toString().trim());
                         call.enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
@@ -172,7 +174,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                                         .remove("Name")
                                         .apply();
                                 finish();
-                                startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                                startActivity(new Intent(getApplicationContext(), Start_Screen.class));
                             }
 
                             @Override
@@ -188,7 +190,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                         finish();
                         startActivity(new Intent(getApplicationContext(), Settings_Screen.class));
                     } else if (changePWHolder.getEditText().getText().toString().isEmpty()) {
-                        Call<String> call = userService.changeNameOfUser(userEmail,changeNameHolder.getEditText().getText().toString().trim());
+                        Call<String> call = userService.changeNameOfUser(userEmail, changeNameHolder.getEditText().getText().toString().trim());
                         call.enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
@@ -198,9 +200,9 @@ public class Account_Settings_Screen extends AppCompatActivity {
                                         .remove("Password")
                                         .remove("Name")
                                         .apply();
-                                Toast.makeText(getApplicationContext(),"Changes applied",Toast.LENGTH_SHORT);
+                                Toast.makeText(getApplicationContext(), "Changes applied", Toast.LENGTH_SHORT);
                                 finish();
-                                startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                                startActivity(new Intent(getApplicationContext(), Start_Screen.class));
                             }
 
                             @Override
@@ -209,11 +211,11 @@ public class Account_Settings_Screen extends AppCompatActivity {
                             }
                         });
 
-                    }else{
-                        if(validatePWConfirmation()&&changeNameHolder.getEditText().getText().toString().isEmpty()){
+                    } else {
+                        if (validatePWConfirmation() && changeNameHolder.getEditText().getText().toString().isEmpty()) {
                             //Anfrage pw
                             Toast.makeText(context, "Nur PW ändern", Toast.LENGTH_SHORT).show();
-                            Call<String> call = userService.changePWOfUser(userEmail,changePWText.getText().toString().trim());
+                            Call<String> call = userService.changePWOfUser(userEmail, changePWText.getText().toString().trim());
                             call.enqueue(new Callback<String>() {
                                 @Override
                                 public void onResponse(Call<String> call, Response<String> response) {
@@ -223,9 +225,9 @@ public class Account_Settings_Screen extends AppCompatActivity {
                                             .remove("Password")
                                             .remove("Name")
                                             .apply();
-                                    Toast.makeText(getApplicationContext(),"Changes applied",Toast.LENGTH_SHORT);
+                                    Toast.makeText(getApplicationContext(), "Changes applied", Toast.LENGTH_SHORT);
                                     finish();
-                                    startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                                    startActivity(new Intent(getApplicationContext(), Start_Screen.class));
                                 }
 
                                 @Override
@@ -234,8 +236,7 @@ public class Account_Settings_Screen extends AppCompatActivity {
                                 }
                             });
 
-                        }
-                        else{
+                        } else {
                             Call<String> call = userService.changeNameAndPWOfUser(userEmail,
                                     changeNameHolder.getEditText().getText().toString().trim(),
                                     changePWText.getText().toString().trim());
@@ -248,9 +249,9 @@ public class Account_Settings_Screen extends AppCompatActivity {
                                             .remove("Password")
                                             .remove("Name")
                                             .apply();
-                                    Toast.makeText(getApplicationContext(),"Changes applied",Toast.LENGTH_SHORT);
+                                    Toast.makeText(getApplicationContext(), "Changes applied", Toast.LENGTH_SHORT);
                                     finish();
-                                    startActivity(new Intent(getApplicationContext(),Start_Screen.class));
+                                    startActivity(new Intent(getApplicationContext(), Start_Screen.class));
                                 }
 
                                 @Override
@@ -266,6 +267,12 @@ public class Account_Settings_Screen extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Validates the password
+     * If the password change input field is empty or the confirmation field doesn´t match the password input field, it throws an error
+     * @return false if error occurs, else true
+     */
     private boolean validatePWConfirmation() {
         if (changePWConfirmationHolder.getEditText().getText().toString().isEmpty()) {
             changePWConfirmationHolder.setError("Field cannot be empty if you want to change the password");
@@ -279,11 +286,15 @@ public class Account_Settings_Screen extends AppCompatActivity {
         }
     }
 
+
+    //----------------UNDER CONSTRUCTION
     public void changePicture() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+
+    //----------------UNDER CONSTRUCTION
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -319,6 +330,11 @@ public class Account_Settings_Screen extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Returns to previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
         startActivity(new Intent(this, Settings_Screen.class));

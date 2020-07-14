@@ -28,14 +28,7 @@
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click to change Image"
-        android:layout_gravity="center_horizontal"
-        android:textSize="10dp"
-        android:layout_marginTop="5dp"
-        android:textColor="#716528"/>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/trip_name_holder"

@@ -38,7 +38,6 @@ import retrofit2.Response;
 
 public class New_Transaction_Screen extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    //Layouts,Views and their associated texts
     Spinner currencyDropdown;
     String currency;
 
@@ -63,11 +62,8 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
     private TransactionService transactionService;
     private String userEmail;
 
-    //ScreenLayout
     LinearLayout transactionLayout;
 
-
-    //Strings for decision
     String debtor;
     String creditor;
     RadioGroup decider;
@@ -78,7 +74,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_transaction_screen);
 
-        //Gives the views their content
         transactionLayout = findViewById(R.id.new_transaction_layout);
         vLocation = findViewById(R.id.new_transaction_title);
         vDate = findViewById(R.id.new_transaction_date);
@@ -92,13 +87,16 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         userEmail = sharedPreferences.getString("E-Mail", "");
 
 
-        //List of all supported currencies, will be swapped with DB
-        //Creation of dropdown for currencies
+        /**
+         * Creation of dropdown for currencies
+         */
         String[] currencies = new String[]{"€ EUR", "$ USD", "£ GBP"};
         ArrayAdapter<String> currency_adapter = new ArrayAdapter<String>(this, R.layout.transaction_dropdown_item, currencies);
         currencyDropdown.setAdapter(currency_adapter);
 
-        //Remove focus of input and removes keyboard from the screen
+        /**
+         * Remove keyboardlayout when clicking outside the inputfield
+         */
         transactionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +107,9 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         });
 
 
-        //Calls for participant-, location-, date-lists and currency dropdown
+        /**
+         * Calls for datePicker
+         */
         vDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,10 +120,14 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
             }
         });
 
+
         vParticipant.setOnClickListener(v -> chooseParticipant());
 
         vLocation.setOnClickListener(v -> chooseLocation());
 
+        /**
+         * Gets currency from dropdownlist
+         */
         currencyDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -140,7 +144,13 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         flag = i;
     }
 
-
+    /**
+     * Creates the String for the picked date
+     * @param view
+     * @param year
+     * @param month
+     * @param dayOfMonth
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
@@ -154,8 +164,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
     }
 
     /**
-     * Creates transaction and displays the input as a toast, also checks if there is any input
-     *
+     * Creates transaction and displays the input as a toast
      * @param view with no view the calendar wont be displayed
      */
     public void createTransaction(View view) {
@@ -193,6 +202,11 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         finish();
     }
 
+    /**
+     * Cleans the currency pick from their symbol
+     * @param currency
+     * @return
+     */
     private String cleanCurrency(String currency) {
         String cleanCurrency = "EUR";
         switch (currency) {
@@ -276,7 +290,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
      * Creates dialog with a list off all members of a trip
      */
     public void chooseParticipant() {
-        //Will be replaced by all members of a trip minus account user
         ArrayList<String> listWithEmails= getIntent().getExtras().getStringArrayList("Participants_EMail");
         listWithEmails.remove(userEmail);
         String[] names = listWithEmails.toArray(new String[listWithEmails.size()]);
@@ -316,7 +329,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if userfield is empty
-     *
      * @return false if empty, true if not
      */
     public boolean validateUser() {
@@ -333,7 +345,7 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if amountfield is empty
-     *
+     * Checks if the input is negativ
      * @return false if empty, true if not
      */
     public boolean validateAmount() {
@@ -353,7 +365,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if locationfield is empty
-     *
      * @return false if empty, true if not
      */
     public boolean validateLocation() {
@@ -370,7 +381,6 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
 
     /**
      * Checks if datefield is empty
-     *
      * @return false if empty, true if not
      */
     public boolean validateDate() {
@@ -401,7 +411,10 @@ public class New_Transaction_Screen extends AppCompatActivity implements DatePic
         }
     }
 
-
+    /**
+     * Returns to the previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
     }

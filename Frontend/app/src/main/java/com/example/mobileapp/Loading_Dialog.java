@@ -13,6 +13,9 @@ public class Loading_Dialog {
         this.activity = activity;
     }
 
+    /**
+     * Starts Loading screen
+     */
     void startLoadingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
@@ -24,6 +27,9 @@ public class Loading_Dialog {
         dialog.show();
     }
 
+    /**
+     * Ends loading screen
+     */
     void dismissDialog() {
         dialog.dismiss();
     }

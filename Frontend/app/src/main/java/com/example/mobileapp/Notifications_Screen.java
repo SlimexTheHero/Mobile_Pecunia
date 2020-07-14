@@ -51,13 +51,13 @@ public class Notifications_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications_screen);
         notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
-        //initNotifications();
         requestNotifications(userEmail);
-
         notificationManager = NotificationManagerCompat.from(this);
 
+        /**
+         * For test purpose, click on the test button in the notification and be surprised
+         */
         testButtonOne = findViewById(R.id.notifications_test_one);
-
         testButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +67,7 @@ public class Notifications_Screen extends AppCompatActivity {
 
 
     }
-
+//-----------------------UNDER CONSTRUCTION
     public void sendOnChannel1() {
 
         Intent activityIntent = new Intent(this, Notifications_Screen.class);
@@ -92,7 +92,13 @@ public class Notifications_Screen extends AppCompatActivity {
 
         notificationManager.notify(1, notification);
     }
+//-----------------------------------------
 
+
+    /**
+     * Requests backend to send all notifications regarding the user
+     * @param userId
+     */
     private void requestNotifications(String userId){
         Call<List<com.example.mobileapp.model.Notification>> call = notificationService.getNotificationFromUser(userId);
         call.enqueue(new Callback<List<com.example.mobileapp.model.Notification>>() {
@@ -136,6 +142,10 @@ public class Notifications_Screen extends AppCompatActivity {
     }
 
 
+    /**
+     * Returns to previous activity
+     * @param v
+     */
     public void backButton(View v) {
         finish();
         startActivity(new Intent(this,Trip_Overview_Screen.class));

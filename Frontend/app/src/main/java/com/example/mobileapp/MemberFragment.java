@@ -59,6 +59,7 @@ public class MemberFragment extends Fragment {
     private Recycler_View_Adapter_User adapter;
     public static final String TAG = "E Mail test";
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,10 @@ public class MemberFragment extends Fragment {
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
 
+
+        /**
+         * Executes "fillWithMember" in an AsyncTask
+         */
         @SuppressLint("StaticFieldLeak") AsyncTask asyncTask = new AsyncTask() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -100,10 +105,14 @@ public class MemberFragment extends Fragment {
         endTrip = rootView.findViewById(R.id.leave_trip);
         addMember = rootView.findViewById(R.id.add_member);
 
+        /**
+         * If user is no admin, he wont see the add member or leave trip buttons
+         */
         if (!isAdmin) {
             endTrip.setVisibility(View.GONE);
             addMember.setVisibility(View.GONE);
         }
+
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_user_view);
         adapter = new Recycler_View_Adapter_User(this, mUserNames,
@@ -129,11 +138,17 @@ public class MemberFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Opens a AlertDialog in which an admin can add a new user to the trip
+     */
     public void addUserButton() {
         MaterialAlertDialogBuilder addUser = new MaterialAlertDialogBuilder(getActivity());
         final TextInputLayout addUserLayout = new TextInputLayout(getActivity());
         final TextInputEditText addUserText = new TextInputEditText(getActivity());
 
+        /**
+         * Creates AlertDialog
+         */
         addUser.setTitle("Add user to trip");
         addUser.setMessage("Type in the E-Mail of the user you want to add.");
         addUserText.setHint("E-Mail");
@@ -142,6 +157,12 @@ public class MemberFragment extends Fragment {
         addUserLayout.setStartIconDrawable(R.drawable.person_icon);
         addUser.setView(addUserLayout);
         addUser.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+            /**
+             * If action "Confirm" is clicked it sends a request to the backend to add the user
+             * @param dialog
+             * @param which
+             */
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Notification notification = new Notification();
@@ -180,6 +201,10 @@ public class MemberFragment extends Fragment {
         addUser.show();
     }
 
+
+    /**
+     * Ends the trip, kicks all members in it and sends an email to every member with the summed up transactions
+     */
     public void endTripButton() {
         MaterialAlertDialogBuilder endTrip = new MaterialAlertDialogBuilder(getActivity());
         endTrip.setTitle("End Trip");
@@ -189,8 +214,6 @@ public class MemberFragment extends Fragment {
         endTrip.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Send a notification to every member and create the PDF
-                //Kick all Members and delete the trip
 
                 Call<List<String>> call = tripService.getBillFromTrip(tripId);
                 call.enqueue(new Callback<List<String>>() {
@@ -223,6 +246,12 @@ public class MemberFragment extends Fragment {
         endTrip.show();
     }
 
+
+    /**
+     * Requests a complete trip to build the memberlist
+     * @param tripId
+     * @throws IOException
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void fillWithMember(String tripId) throws IOException {
 

@@ -47,6 +47,9 @@ public class Start_Screen extends AppCompatActivity {
         textInputPW = findViewById(R.id.text_input_pw);
         startScreenLayout = findViewById(R.id.start_screen_layout);
 
+        /**
+         * Remove keyboardlayout when clicking outside the inputfield
+         */
         startScreenLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +62,9 @@ public class Start_Screen extends AppCompatActivity {
         });
     }
 
+    /**
+     * Autologin if user was already logged in once and did not log out
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -69,8 +75,6 @@ public class Start_Screen extends AppCompatActivity {
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
-                    Toast.makeText(getApplicationContext(), "Logging in ...", Toast.LENGTH_SHORT).show();
-                    System.out.println("Das ist eine Antwort: " + response.body());
                     if (response.body() == null) {
                         textInputEmail.setError("Invalid Data");
                         textInputPW.setError("Invalid Data");
@@ -94,6 +98,10 @@ public class Start_Screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Validates Email input field
+     * @return false if empty, else true
+     */
     private boolean validateEmail() {
         String emailInput = textInputEmail.getEditText().getText().toString().trim();
         if (emailInput.isEmpty()) {
@@ -106,14 +114,26 @@ public class Start_Screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Opens Lost_PW activity
+     * @param v
+     */
     public void forgotPW(View v) {
         startActivity(new Intent(Start_Screen.this, Lost_PW.class));
     }
 
+    /**
+     * Opens register activity
+     * @param v
+     */
     public void joinNow(View v) {
         startActivity(new Intent(Start_Screen.this, Register_Screen.class));
     }
 
+    /**
+     * Validates pw input field
+     * @return false if field is empty, else true
+     */
     private boolean validatePW() {
         String pwInput = textInputPW.getEditText().getText().toString().trim();
 
@@ -127,17 +147,24 @@ public class Start_Screen extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Logs the user into the app it email exists and the password matches to the email
+     * @param v
+     */
     public void login(View v) {
         if (!validateEmail() | !validatePW()) {
             return;
         }
         Call<User> call = userService.getUserByEmail(textInputEmail.getEditText().getText().toString().trim());
         call.enqueue(new Callback<User>() {
+            /**
+             * Requests backend to check if email exists and checks if the input password is equal with the db password
+             * @param call
+             * @param response
+             */
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Toast.makeText(getApplicationContext(), "Logging in ...", Toast.LENGTH_SHORT).show();
-                System.out.println("Das ist eine Antwort: " + response.body());
                 if (response.body() == null) {
                     textInputEmail.setError("Invalid Data");
                     textInputPW.setError("Invalid Data");
@@ -162,31 +189,11 @@ public class Start_Screen extends AppCompatActivity {
             }
         });
     }
-    
-    public void setUserName(String input) {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(NAME);
-        editor.putString(NAME, input);
-        editor.apply();
-    }
 
-    public void setUserPassword(String input) {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(PASSWORD);
-        editor.putString(PASSWORD, input);
-        editor.apply();
-    }
 
     public String getUserEmail() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         return sharedPreferences.getString(EMAIL, "");
-    }
-
-    public String getUserName() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        return sharedPreferences.getString(NAME, "");
     }
 
     public String getUserPassword() {

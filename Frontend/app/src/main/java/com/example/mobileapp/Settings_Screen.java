@@ -34,6 +34,9 @@ private SharedPreferences sharedPreferences;
         email = findViewById(R.id.settings_email);
         sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
+        /**
+         * Sets name and email to user name and user email
+         */
         name.setText(sharedPreferences.getString("Name",""));
         email.setText(sharedPreferences.getString("E-Mail", ""));
 
@@ -44,6 +47,9 @@ private SharedPreferences sharedPreferences;
             }
         });
 
+        /**
+         * Removes shared prefs on logout
+         */
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,15 +65,22 @@ private SharedPreferences sharedPreferences;
         });
 
 
-
+        /**
+         * Opens app info screen
+         */
         appInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 startActivity(new Intent(Settings_Screen.this, App_Info_Screen.class));
             }
         });
     }
 
+    /**
+     * Returns to previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
         startActivity(new Intent(this,Trip_Overview_Screen.class));

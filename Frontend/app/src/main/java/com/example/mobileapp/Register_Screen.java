@@ -45,23 +45,31 @@ public class Register_Screen extends AppCompatActivity {
         textInputPWConfirm = findViewById(R.id.text_input_pw_confirm);
 
         registerScreenLayout.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Remove keyboardlayout when clicking outside the inputfield
+             */
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                textInputEmail.getEditText().clearFocus();
-                textInputPW.getEditText().clearFocus();
-                textInputName.getEditText().clearFocus();
-                textInputPWConfirm.getEditText().clearFocus();
+                textInputEmail.clearFocus();
+                textInputPW.clearFocus();
+                textInputName.clearFocus();
+                textInputPWConfirm.clearFocus();
 
-                imm.hideSoftInputFromWindow(textInputEmail.getEditText().getWindowToken(),0);
-                imm.hideSoftInputFromWindow(textInputPW.getEditText().getWindowToken(),0);
-                imm.hideSoftInputFromWindow(textInputName.getEditText().getWindowToken(),0);
+                imm.hideSoftInputFromWindow(textInputEmail.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(textInputPW.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(textInputName.getWindowToken(),0);
                 imm.hideSoftInputFromWindow(textInputPWConfirm.getWindowToken(),0);
             }
         });
     }
 
 
+    /**
+     * Validates E-Mail field input
+     * @return false if empty, else true
+     */
     private boolean validateEmail() {
         String emailInput = textInputEmail.getEditText().getText().toString().trim();
 
@@ -75,6 +83,10 @@ public class Register_Screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Validates name field input
+     * @return false if empty, else true
+     */
     private boolean validateName() {
         String nameInput = textInputName.getEditText().getText().toString().trim();
 
@@ -88,10 +100,12 @@ public class Register_Screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Validates password field input
+     * @return false if empty, else true
+     */
     private boolean validatePW() {
         String pwInput = textInputPW.getEditText().getText().toString().trim();
-
-
 
         if (pwInput.isEmpty()) {
             textInputPW.setError("Field cannot be empty");
@@ -103,7 +117,10 @@ public class Register_Screen extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Validates confirm password field input
+     * @return false if empty, false if not matching with password input field, else true
+     */
     private boolean confirmPW() {
         String pwInput = textInputPW.getEditText().getText().toString().trim();
         String secondPWInput = textInputPWConfirm.getEditText().getText().toString().trim();
@@ -122,15 +139,23 @@ public class Register_Screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Returns to previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
     }
 
+
+    /**
+     * Checks if email is already in use
+     * @param view
+     */
     public void register(View view) {
         if (!validateEmail() | !validateName() | !validatePW() | !confirmPW()) {
             return;
         } else {
-            Toast.makeText(this, "Registrierung erfolgreich", Toast.LENGTH_SHORT).show();
             User temp = new User();
             temp.seteMail(textInputEmail.getEditText().getText().toString());
             temp.setName(textInputName.getEditText().getText().toString());

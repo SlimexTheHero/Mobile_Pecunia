@@ -102,10 +102,17 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
 
+        /**
+         * Creation of dropdown for currencies
+         */
         String[] currencies = new String[]{"€ EUR", "$ USD" , "£ GBP"};
         ArrayAdapter<String> currency_adapter = new ArrayAdapter<String>(this, R.layout.transaction_dropdown_item, currencies);
         currencyDropdownTrip.setAdapter(currency_adapter);
 
+        /**
+         * Add the member in the frontend
+         * NOT IN THE BACKEND HERE
+         */
         addMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +125,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
                 }
         });
 
-        tripProfile.setOnClickListener(v -> changePicture());
 
+        /**
+         * Remove keyboardlayout when clicking outside the inputfield
+         */
         tripLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +144,9 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             }
         });
 
+        /**
+         * Inputs start datum
+         */
         vStartDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +157,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             }
         });
 
+
+        /**
+         * Inputs end datum
+         */
         vEndDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +171,11 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             }
         });
 
+        /**
+         * Creates AlertDialog when clicked on a member
+         * Works only as Admin
+         * Requests backend to remove a member of this trip
+         */
         addMemberLayout.setOnItemClickListener((parent, view, position, id) -> {
             MaterialAlertDialogBuilder deleteDialog = new MaterialAlertDialogBuilder(this);
             deleteDialog.setTitle("Remove " + addMemberLayout.getItemAtPosition(position).toString());
@@ -175,6 +196,11 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             deleteDialog.show();
         });
 
+
+        /**
+         * Saves currency dropdown input
+         * If no currency is chosen, EUR will be chosen by default
+         */
         currencyDropdownTrip.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -188,6 +214,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         });
     }
 
+    /**
+     * Validates add member input
+     * @return false if input is empty
+     */
     public boolean validateMemberName () {
         String nameInput = addMemberNameText.getText().toString();
         if(nameInput.isEmpty()) {
@@ -205,6 +235,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
 
+    /**
+     * Validates trip name input
+     * @return false if input is empty
+     */
     private boolean validateName() {
         if (name == null || name.trim().isEmpty()) {
             nameHolder.setError("Field cannot be empty");
@@ -215,6 +249,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         }
     }
 
+    /**
+     * Validates start date input
+     * @return false if input is empty
+     */
     private boolean validateStart() {
         if(startDuration == null || startDuration.trim().isEmpty()) {
             startDurationHolder.setError("Field cannot be empty");
@@ -225,6 +263,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         }
     }
 
+    /**
+     * Validates end date input
+     * @return false if input is empty
+     */
     private boolean validateEnd() {
         if(endDuration == null || endDuration.trim().isEmpty()) {
             endDurationHolder.setError("Field cannot be empty");
@@ -236,7 +278,13 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
     }
 
 
-
+    /**
+     * Creates datepicker and saves it´s input as a String
+     * @param view
+     * @param year
+     * @param month
+     * @param dayOfMonth
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
@@ -250,23 +298,41 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
         }
     }
 
+    /**
+     * Creates Trip with given input
+     * @param view
+     */
     public void createTrip (View view) {
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("E-Mail", "");
         ArrayList<String> admins = new ArrayList<>();
         ArrayList<String> transactions = new ArrayList<>();
+
+        /**
+         * Adds creator as admin
+         */
         admins.add(userEmail);
+
+        /**
+         * Adds creator as member and removes all duplicated members
+         */
         arrayList.add(userEmail);
         Set<String> set = new HashSet<>(arrayList);
         arrayList.clear();
         arrayList.addAll(set);
+
+
         name = vName.getText().toString();
         startDuration = vStartDuration.getText().toString();
         endDuration = vEndDuration.getText().toString();
         totalDuration = startDuration + " - " + endDuration;
         String cleanCurrency ="";
         Trip trip = new Trip();
+
+        /**
+         * Cleans currency from symbols
+         */
         switch(currency){
             case "$ USD":
                 cleanCurrency="USD";
@@ -281,6 +347,10 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             break;
         }
 
+
+        /**
+         * Adds all information to the trip
+         */
         trip.setAdmins(admins);
         trip.setTransactions(transactions);
         trip.setTripDuration(totalDuration);
@@ -293,6 +363,9 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             return;
         }
 
+        /**
+         * Requests backend to create a trip with given input
+         */
         Call<String> call = tripService.addTrip(trip,userEmail);
         call.enqueue(new Callback<String>() {
             @Override
@@ -305,18 +378,11 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
 
             }
         });
-
-
-        String text = "Title: " + name + "\n" +
-                "From: " + startDuration + "\n" +
-                "To: " + endDuration + "\n" +
-                "Total: " + totalDuration;
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-        finish(); // Recyler Vied muss in Trip Overview geupdated werden, hier gruppe hinzufügen
+        finish();
         startActivity(new Intent(this, Trip_Overview_Screen.class));
     }
 
-
+//-------------UNDER CONSTRUCTION
     public void changePicture() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
@@ -329,7 +395,13 @@ public class New_Trip_Screen extends AppCompatActivity implements DatePickerDial
             tripProfile.setImageURI(imageUri);
         }
     }
+//--------------------------------
 
+
+    /**
+     * Returns to previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
         startActivity(new Intent(this,Trip_Overview_Screen.class));

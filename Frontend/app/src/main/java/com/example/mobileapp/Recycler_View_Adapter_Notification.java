@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Recycler_View_Adapter_Notification.ViewHolder> {
 
@@ -60,6 +59,10 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         return holder;
     }
 
+    /**
+     * Sets values with the information we got from the constructor
+     * and sets OnClickListener
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         switch (notificationType.get(position)) {
@@ -113,6 +116,12 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         });
     }
 
+    /**
+     * Creates AlertDialog for all notifications regarding a trip
+     * Request backend to delete a notification if the user clicks on the corresponding action button
+     * @param position
+     * @param title
+     */
     public void transactionOneDetails(int position, String title) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(context);
         seeDetails.setTitle(title);
@@ -147,7 +156,6 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
 
     private void notifyItemChangeInThisAdapter(int position){
     count++;
-    System.out.println(count+"---------------------------------- Count");
         this.notificationId.remove(position);
         this.notificationType.remove(position);
         this.notificationTripName.remove(position);
@@ -158,6 +166,14 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         notifyDataSetChanged();
     }
 
+
+    /**
+     * Creates AlertDialog for all notifications regarding a trip
+     * Request backend to delete a notification if the user clicks on the corresponding action button
+     * If a user accepts the transactions, the transaction will be displayed in the trip, otherwise it will be deleted
+     * @param position
+     * @param title
+     */
     public void transactionTwoDetails(int position, String title) {
         MaterialAlertDialogBuilder seeDetails = new MaterialAlertDialogBuilder(context);
         seeDetails.setTitle(title);
@@ -165,7 +181,6 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         seeDetails.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Notification will be accepted
                 //---------------------- Accept Transaction ---------------------------
                 if (notificationType.get(position) == 0) {
                     Call<String> call = transactionService.addTransactionToTrip(notificationTransactionId.get(position),
@@ -207,7 +222,6 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         seeDetails.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Notification will be deleted
                 //---------------------- Decline Transaction invite ---------------------------
                 if (notificationType.get(position) == 0) {
                     Call<String> call = transactionService.deleteTransactionInvite(notificationTransactionId.get(position), notificationId.get(position));
@@ -246,7 +260,7 @@ public class Recycler_View_Adapter_Notification extends RecyclerView.Adapter<Rec
         seeDetails.setNeutralButton("Decide later", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Decide later
+                //-------------------------Decide later-------------------------------------
                 return;
             }
         });

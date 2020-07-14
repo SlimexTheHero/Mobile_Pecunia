@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.mobileapp.model.CompleteTrip;
-import com.example.mobileapp.model.Transaction;
 import com.example.mobileapp.networking.RetrofitClient;
 import com.example.mobileapp.networking.TransactionService;
 import com.example.mobileapp.networking.TripService;
@@ -32,24 +31,14 @@ import retrofit2.Call;
 
 public class TransactionFragment extends Fragment {
 
-    //First User participating in the transaction, its the Accountuser himself, name is needed for admin
     private ArrayList <String> Debtor = new ArrayList<>();
-
-    //Second User participating in the transaction
     private ArrayList <String> Creditor = new ArrayList<>();
-
-    //Title of the transaction
     private ArrayList <String> mTitles = new ArrayList<>();
-
-    //Displaying the amount in the groups currency
     private ArrayList <String> mCurrency = new ArrayList<>();
     private ArrayList <String> mAmount = new ArrayList<>();
-
     private ArrayList<String> mUserNames = new ArrayList<>();
     private ArrayList<String> mUserEmails = new ArrayList<>();
     private ArrayList<String> mTransactionsId =new ArrayList<>();
-
-    //Point of Time of the Transaction
     private ArrayList <String> mDate = new ArrayList<>();
 
     Single_Trip single_trip;
@@ -65,6 +54,7 @@ public class TransactionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +93,10 @@ public class TransactionFragment extends Fragment {
         bundle.putStringArrayList("Participants_EMail",mUserEmails);
         bundle.putString("TripId",tripId);
 
+        /**
+         * Sets values with the information we got from the constructor
+         * and sets OnClickListener
+         */
         Recycler_View_Adapter_Transaction adapter = new Recycler_View_Adapter_Transaction(Debtor,
                 Creditor,mTitles,mAmount,mCurrency,this,mDate,single_trip.geteMail(),
                 single_trip.getiD(),single_trip.getTripName(),mTransactionsId);
@@ -120,6 +114,11 @@ public class TransactionFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Request backend to return transaction information to later build the transaction element in the overview
+     * @param tripId
+     * @throws IOException
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void fillWithTransactions(String tripId) throws IOException {
 

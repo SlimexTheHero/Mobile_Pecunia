@@ -42,6 +42,7 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         this.mContext = mContext;
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_trip, parent, false);
@@ -49,16 +50,20 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         return holder;
     }
 
+    /**
+     * Sets values with the information we got from the constructor
+     * and sets OnClickListener
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+
         Glide.with(mContext)
                 .asBitmap()
                 .load(mTripImages.get(position))
                 .into(holder.image);
-
         holder.tripName.setText(mTripNames.get(position));
         holder.tripDuration.setText(mTripDuration.get(position));
-
         holder.tripElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +72,11 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         });
     }
 
+
+    /**
+     * Opens trip, which was clicked on
+     * @param position
+     */
     public void openTrip(int position) {
         Intent intent = new Intent(mContext, Single_Trip.class);
         Bundle content = new Bundle();

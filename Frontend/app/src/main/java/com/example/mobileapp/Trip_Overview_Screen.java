@@ -49,7 +49,6 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip_main_screen);
-        //initImageBitmaps();
 
         loading_dialog = new Loading_Dialog(Trip_Overview_Screen.this);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
@@ -57,6 +56,10 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         settings = findViewById(R.id.settings_button);
         notifications = findViewById(R.id.notifications);
 
+
+        /**
+         * Opens notification activity
+         */
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +67,10 @@ public class Trip_Overview_Screen extends AppCompatActivity {
                 startActivity(new Intent(Trip_Overview_Screen.this, Notifications_Screen.class));
             }
         });
+
+        /**
+         * Opens settings activity
+         */
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +80,9 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         });
         buildTripsTable();
 
+        /**
+         * Starts loading dialog on separate thread
+         */
         loading_dialog.startLoadingDialog();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -84,11 +94,18 @@ public class Trip_Overview_Screen extends AppCompatActivity {
     }
 
 
+    /**
+     * Opens create trip activity
+     * @param view
+     */
     public void createNewTrip(View view) {
         finish();
         startActivity(new Intent(this, New_Trip_Screen.class));
     }
 
+    /**
+     * Requests backend to give information about all trips in which the user is a member
+     */
     private void buildTripsTable() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("E-Mail", "");
@@ -130,6 +147,9 @@ public class Trip_Overview_Screen extends AppCompatActivity {
                 notiCall.enqueue(new Callback<List<Notification>>() {
                     @Override
                     public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
+                        /**
+                         * If any notifications are there, switch the bell icon
+                         */
                         if(response.body().size()>0){
                             notifications.setImageResource(R.drawable.bell_active);
                         }
@@ -158,6 +178,10 @@ public class Trip_Overview_Screen extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * When hitting the back button in Android the App will close, instead
+     * of returning to the top activity in the stack
+     */
     @Override
     public void onBackPressed() {
         Intent close = new Intent(Intent.ACTION_MAIN);

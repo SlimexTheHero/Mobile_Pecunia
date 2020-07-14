@@ -37,6 +37,10 @@ public class Lost_PW extends AppCompatActivity {
         sendEmail = findViewById(R.id.send_email_button);
         resetPW = findViewById(R.id.reset_password_button);
 
+
+        /**
+         * Creates an instance of our email service and send a password reset code
+         */
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +60,7 @@ public class Lost_PW extends AppCompatActivity {
             }
         });
 
+
         resetPW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +70,12 @@ public class Lost_PW extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Validates the email input field
+     * If the email input field is empty it throws an error
+     * @return
+     */
     private boolean validateEmail() {
         email = textInputEmail.getEditText().getText().toString().trim();
 
@@ -77,6 +88,14 @@ public class Lost_PW extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Validates the code input field
+     * If the email was not send by the user clicking on "send email" it throws an error
+     * If the code input field is empty it throws an error
+     * If the code is to short it throws an error
+     * @return false if and error occurs, else true
+     */
     private boolean validateCode() {
         String codeInput = textInputCode.getEditText().getText().toString();
         if (!emailSend) {
@@ -94,6 +113,11 @@ public class Lost_PW extends AppCompatActivity {
         }
     }
 
+
+
+    /**
+     * If validation succeeded it opens the reset PW screen
+     */
     public void resetPW () {
         if (!validateEmail() || (!validateCode())) {
             return;
@@ -103,6 +127,10 @@ public class Lost_PW extends AppCompatActivity {
 
     }
 
+    /**
+     * Returns to previous activity
+     * @param view
+     */
     public void backButton(View view) {
         finish();
     }
