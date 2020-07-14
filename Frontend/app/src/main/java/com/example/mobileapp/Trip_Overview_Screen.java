@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class Trip_Overview_Screen extends AppCompatActivity {
 
     private ArrayList<String> mTripNames = new ArrayList<>();
-    private ArrayList<String> mTripImages = new ArrayList<>();
+    private ArrayList<Integer> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
     private ArrayList<String> mTripId = new ArrayList<>();
     private ArrayList<ArrayList<String>> mTripParticipants = new ArrayList<>();
@@ -102,7 +102,7 @@ public class Trip_Overview_Screen extends AppCompatActivity {
                     initRecyclerView();
                 } else {
                     trips.forEach(trip -> {
-                        mTripImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+                        mTripImages.add(R.mipmap.ic_launcher);
                         mTripNames.add(trip.getTripName());
                         mTripDuration.add(trip.getTripDuration());
                         mTripId.add(trip.getTripId());

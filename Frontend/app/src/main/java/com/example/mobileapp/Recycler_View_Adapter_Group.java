@@ -19,7 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_View_Adapter_Group.ViewHolder>{
 
     private ArrayList<String> mTripNames = new ArrayList<>();
-    private ArrayList<String> mTripImages = new ArrayList<>();
+    private ArrayList<Integer> mTripImages = new ArrayList<>();
     private ArrayList<String> mTripDuration = new ArrayList<>();
     private ArrayList<String> mTripIds = new ArrayList<>();
     private ArrayList<ArrayList<String>> mTripParticipants=new ArrayList<>();
@@ -27,7 +27,7 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
     private ArrayList<ArrayList<String>> mAdmins=new ArrayList<>();
     private Context mContext;
 
-    public Recycler_View_Adapter_Group(ArrayList<String> mTripNames, ArrayList<String> mTripImages,
+    public Recycler_View_Adapter_Group(ArrayList<String> mTripNames, ArrayList<Integer> mTripImages,
                                        ArrayList<String> mTripDuration, ArrayList<String> mTripIds,
                                        ArrayList<ArrayList<String>> mTripParticipants,
                                        ArrayList<ArrayList<String>> mTransactions,
@@ -72,7 +72,7 @@ public class Recycler_View_Adapter_Group extends RecyclerView.Adapter<Recycler_V
         Bundle content = new Bundle();
         content.putString("Name", mTripNames.get(position));
         content.putString("Duration", mTripDuration.get(position));
-        content.putString("Image", mTripImages.get(position));
+        content.putInt("Image", mTripImages.get(position));
         content.putString("Id",mTripIds.get(position));
         content.putStringArrayList("Participants",mTripParticipants.get(position));
         content.putStringArrayList("Transactions",mTransactions.get(position));

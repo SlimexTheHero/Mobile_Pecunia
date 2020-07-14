@@ -80,7 +80,7 @@ public class Single_Trip extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-        String image = bundle.getString("Image").toString();
+        int image = bundle.getInt("Image");
         String duration = bundle.getString("Duration").toString();
         String name = bundle.getString("Name").toString();
         tripId = bundle.getString("Id");
