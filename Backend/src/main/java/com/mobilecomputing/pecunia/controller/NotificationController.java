@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+
 @RestController
 @RequestMapping(value = "/notification")
 public class NotificationController {
@@ -26,6 +27,11 @@ public class NotificationController {
     @Autowired
     NotificationRepository notificationRepository;
 
+    /**
+     *
+     * @param userId
+     * @return all active Notifications of a specific user
+     */
     @GetMapping("/getNotificationsFromUser")
     public ResponseEntity getNotificationsFromUser(@RequestParam String userId){
         ArrayList<Notification> response = new ArrayList<>();
@@ -46,6 +52,11 @@ public class NotificationController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     *  this function deletes a specific notification
+     * @param notificationId
+     * @return
+     */
     @DeleteMapping("/deleteNotification")
     public ResponseEntity deleteNotification(@RequestParam String notificationId){
         try{
@@ -57,6 +68,11 @@ public class NotificationController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    /**
+     * This function creates a notification for the request of deleting a notification
+     * @param notification
+     * @return
+     */
     @PostMapping("/createDeleteTransactionNotification")
     public ResponseEntity createDeleteTransactionNotification(@RequestBody Notification notification){
         notificationRepository.save(notification);

@@ -32,6 +32,11 @@ public class TripController {
     @Autowired
     BillingCalculator billingCalculator;
 
+    /**
+     * This function returns a trip by the trip id
+     * @param TripId
+     * @return
+     */
     @GetMapping("/getTripById")
     public ResponseEntity getTripById(@RequestParam String TripId) {
         try{
@@ -54,6 +59,12 @@ public class TripController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * This functions adds a new trip to the database
+     * @param trip
+     * @param creator
+     * @return
+     */
     @PostMapping("/addTrip")
     public ResponseEntity addTrip(@RequestBody Trip trip,@RequestParam String creator) {
         ArrayList<String> participants = new ArrayList<>();
@@ -83,6 +94,12 @@ public class TripController {
         return ResponseEntity.ok(tripRepository.save(trip).getTripId());
     }
 
+    /**
+     * This function adds an admin to the trip
+     * @param eMail E-Mail of the admin
+     * @param TripId
+     * @return
+     */
     @PostMapping("/addAdminToTrip")
     public ResponseEntity addAdminToTrip(@RequestParam String eMail,@RequestParam String TripId){
         try{
@@ -102,6 +119,12 @@ public class TripController {
         }
     }
 
+    /**
+     * This function delete an specific admin of the trip
+     * @param eMail
+     * @param TripId
+     * @return
+     */
     @DeleteMapping("/deleteAdmin")
     public ResponseEntity deleteAdmin(@RequestParam String eMail, @RequestParam String TripId){
         try{
@@ -114,6 +137,11 @@ public class TripController {
         }
     }
 
+    /**
+     * This function returns all trips in which the specific user is signed
+     * @param eMail
+     * @return
+     */
     @GetMapping("/getTripsByUser")
     public ResponseEntity getTripsByUser(@RequestParam String eMail) {
 

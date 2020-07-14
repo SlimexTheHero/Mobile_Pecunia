@@ -27,6 +27,11 @@ public class TransactionController {
     @Autowired
     NotificationRepository notificationRepository;
 
+    /**
+     * This function returns a specific transaction
+     * @param id
+     * @return
+     */
     @GetMapping("/getTransactionById")
     public ResponseEntity getTransactionById(@RequestParam String id) {
         try {
@@ -39,6 +44,11 @@ public class TransactionController {
         }
     }
 
+    /**
+     * This function returns all trips by a specific trip id
+     * @param tripId
+     * @return
+     */
     @GetMapping("/getAllTransactionsByTrip")
     public ResponseEntity getAllTransactionsByTrip(@RequestParam String tripId) {
         try {
@@ -48,6 +58,14 @@ public class TransactionController {
         }
     }
 
+    /**
+     * This functions adds a transaction to the database
+     * @param transaction
+     * @param userId
+     * @param notificationMessage
+     * @param tripId
+     * @return
+     */
     @PostMapping("/addTransaction")
     public ResponseEntity addTransaction(@RequestBody Transaction transaction, @RequestParam String userId,
                                          @RequestParam String notificationMessage, @RequestParam String tripId) {
@@ -70,6 +88,13 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while creating Transaction");
     }
 
+    /**
+     * This function adds a existing transaction to a specific trip
+     * @param transactionId
+     * @param tripId
+     * @param notificationId
+     * @return
+     */
     @PostMapping("/addTransactionToTrip")
     public ResponseEntity addTransactionToTrip(@RequestParam String transactionId, @RequestParam String tripId,
                                                @RequestParam String notificationId) {
@@ -85,6 +110,13 @@ public class TransactionController {
 
     }
 
+    /**
+     * This function deletes a transaction
+     * @param transactionId
+     * @param tripId
+     * @param notificationId
+     * @return
+     */
     @DeleteMapping("/deleteTransaction")
     public ResponseEntity deleteTransaction(@RequestParam String transactionId, @RequestParam String tripId,
                                             @RequestParam String notificationId) {

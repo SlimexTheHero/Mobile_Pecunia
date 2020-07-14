@@ -21,7 +21,11 @@ public class BillingCalculator {
     @Autowired
     private TransactionRepository transactionRepository;
 
-
+    /**
+     * this function inits the calculation process
+     * @param trip
+     * @return String which contains the bill
+     */
     public String calcBill(Trip trip) {
         String bill ="Bill"+"\n";
         HashMap<String,Object> currencyMap = new CurrencyManager().getCurrencyValue(trip.getCurrency());
@@ -39,9 +43,9 @@ public class BillingCalculator {
                 ArrayList<Transaction> tempListOfTransactions = new ArrayList<>();
                 // Search transactions of all pairs
                 allTransactionsOfTrip.forEach(transaction -> {
-                    if((transaction.getCreditor().equals(tempA.geteMail()) // User A is Creditor and User B ist Debtor
+                    if((transaction.getCreditor().equals(tempA.geteMail()) // User A is Creditor and User B is Debtor
                             &&transaction.getDebtor().equals(tempB.geteMail()))
-                            ||(transaction.getCreditor().equals(tempB.geteMail()) // User B is Creditor and User A ist Debtor
+                            ||(transaction.getCreditor().equals(tempB.geteMail()) // User B is Creditor and User A is Debtor
                             &&transaction.getDebtor().equals(tempA.geteMail()))){
                         tempListOfTransactions.add(transaction);
                     }
@@ -55,6 +59,9 @@ public class BillingCalculator {
         return bill;
     }
 
+    /**
+     * This class represents the bllingRelation between the pairs
+     */
     private class billingRelation {
         private User userA, userB;
         private double billingValueA = 0;
@@ -72,6 +79,10 @@ public class BillingCalculator {
             this.baseCurrency=baseCurrency;
         }
 
+        /**
+         * this function calculates the bill between to trip participants
+         * @return String which contains the bill between two participants
+         */
         public String calcBill(){
             double status =0;
             String billString="";
@@ -105,7 +116,7 @@ public class BillingCalculator {
 
             }
             billString+="------------Sum-------------"+"\n";
-            if(status>=0){ // User A muss zahlen
+            if(status>=0){
                 billString+= userA.getName()+" owes "+status+" "+baseCurrency+" to "+userB.getName();
             }else{
                 status*=-1;
