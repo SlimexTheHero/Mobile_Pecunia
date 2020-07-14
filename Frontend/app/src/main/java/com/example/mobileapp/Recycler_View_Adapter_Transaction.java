@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,8 +66,20 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         notificationService = RetrofitClient.getRetrofitInstance().create(NotificationService.class);
-        holder.userName.setText(creditor.get(position));
+
+        if (creditor.get(position).equals(activeUserEmail)) {
+            holder.userName.setText(debtor.get(position));
+        } else {
+            holder.userName.setText(creditor.get(position));
+        }
+
+
+        if (debtor.get(position).equals(activeUserEmail)) {
+            holder.giveOrGet.setImageResource(R.drawable.give_symbol);
+        }
+
         holder.title.setText(mTitles.get(position));
         holder.amount.setText(mAmount.get(position));
         holder.currency.setText(mCurrency.get(position));
@@ -140,6 +153,7 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
         TextView amount;
         TextView currency;
         LinearLayout transactionLayout;
+        ImageView giveOrGet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -148,6 +162,7 @@ class Recycler_View_Adapter_Transaction extends RecyclerView.Adapter<Recycler_Vi
             amount = itemView.findViewById(R.id.transaction_amount);
             currency = itemView.findViewById(R.id.transaction_currency_basis);
             transactionLayout = itemView.findViewById(R.id.transaction_layout);
+            giveOrGet = itemView.findViewById(R.id.give_or_get);
         }
     }
 }

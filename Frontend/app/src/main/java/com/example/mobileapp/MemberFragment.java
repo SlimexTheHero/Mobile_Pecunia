@@ -55,6 +55,7 @@ public class MemberFragment extends Fragment {
     private CompleteTrip completeTrip;
     private Button endTrip;
     private Button addMember;
+    private String userEmail;
     private Recycler_View_Adapter_User adapter;
     public static final String TAG = "E Mail test";
 
@@ -63,6 +64,7 @@ public class MemberFragment extends Fragment {
         super.onCreate(savedInstanceState);
         single_trip = (Single_Trip) getActivity();
         tripId = single_trip.getiD();
+        userEmail = single_trip.geteMail();
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
 

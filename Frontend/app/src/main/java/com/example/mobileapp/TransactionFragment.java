@@ -72,7 +72,7 @@ public class TransactionFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_transaction_fragement, container, false);
         single_trip = (Single_Trip) getActivity();
-        tripId=single_trip.getiD();
+        tripId = single_trip.getiD();
         userService = RetrofitClient.getRetrofitInstance().create(UserService.class);
         tripService = RetrofitClient.getRetrofitInstance().create(TripService.class);
         transactionService = RetrofitClient.getRetrofitInstance().create(TransactionService.class);
